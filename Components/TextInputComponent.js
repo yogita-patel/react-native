@@ -7,26 +7,25 @@ const TextInputComponent = ({
   value,
   label = "",
   onChangeText,
-  leftIcon,
-  rightIcon,
   secureTextEntry = false,
   keyboardType = "default",
-  containerStyle,
-  inputStyle,
-  iconSize = 24,
-  iconColor = "#666",
+  error,
+  ...props
 }) => {
   return (
     <View style={styles.commonMarging10}>
       <Text style={styles.label}>{label}</Text>
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, error && { borderColor: "red" }]}
         placeholder={placeholder}
         keyboardType={keyboardType}
+        value={value}
         onChangeText={(newText) => onChangeText(newText)}
         secureTextEntry={secureTextEntry}
+        {...props}
       />
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };

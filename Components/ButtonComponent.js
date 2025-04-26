@@ -5,11 +5,8 @@ import styles from "../Styles/CommonStyle";
 const ButtonComponent = ({ label = "", onButtonPress }) => {
   return (
     <View style={styles.commonMarging10}>
-      <TouchableOpacity
-        style={{ alignSelf: "center" }}
-        onPress={() => onButtonPress}
-      >
-        <View style={styles.button}>
+      <TouchableOpacity style={{ alignSelf: "center" }} onPress={onButtonPress}>
+        <View style={styles.smallButton}>
           <Text style={styles.buttonText}>{label}</Text>
         </View>
       </TouchableOpacity>

@@ -6,7 +6,9 @@ import LoginScreen from "./Screens/Auth/LoginScreen";
 import DashboardScreen from "./Screens/Bottomtab/DashboardScreen";
 import SplashScreen from "./Screens/SplashScreen";
 import RegisterScreen from "./Screens/Auth/RegisterScreen";
-import InitialScreen from "./Screens/Intro/InitialScreen";
+import InitialScreen from "./Screens/Auth/InitialScreen";
+import Toast from "react-native-toast-message";
+import { isUserLoggedIn } from "./Controller/Authentication/LoginController";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,16 +18,16 @@ export default function App() {
 
   useEffect(() => {
     const checklogin = async () => {
-      // try {
-      //   const email = await getLoginData();
-      //   console.log("email = ", email);
-      //   email == null ? setIsLoggedIn(false) : setIsLoggedIn(true);
-      //   console.log("isLogin = ", isLoggedIn);
-      // } catch (e) {
-      //   console.error("Failed to get logindata:", e);
-      // } finally {
-      //   setIsLoading(false);
-      // }
+      try {
+        const isLogin = await isUserLoggedIn();
+        console.log("isLogin = ", isLogin);
+        setIsLoggedIn(isLogin);
+        console.log("isLogin = ", isLoggedIn);
+      } catch (e) {
+        console.error("Failed to get logindata:", e);
+      } finally {
+        setIsLoading(false);
+      }
       setTimeout(() => {
         setIsLoading(false);
         // setIsLoggedIn(true); // Uncomment to skip login screens
@@ -40,33 +42,32 @@ export default function App() {
   }
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="DashboardScreen"
-            component={DashboardScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="InitialScreen"
-            component={InitialScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      )}
+      <Stack.Navigator
+        initialRouteName={isLoggedIn ? "InitialScreen" : "Login"}
+      >
+        <Stack.Screen
+          name="InitialScreen"
+          component={InitialScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DashboardScreen"
+          component={DashboardScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+
+      <Toast />
     </NavigationContainer>
   );
 }

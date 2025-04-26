@@ -1,14 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import IntroButtonComponent from "../../Components/IntroButtonComponent";
+import styles from "../../Styles/CommonStyle";
 
 const DashboardScreen = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>DashboardScreen</Text>
+      <IntroButtonComponent
+        iconName={"business"}
+        onPress={() => console.log("create business")}
+        title={"Business"}
+      />
     </View>
   );
 };
 
 export default DashboardScreen;
-
-const styles = StyleSheet.create({});

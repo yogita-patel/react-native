@@ -6,4 +6,5 @@ export default {
   commonblack: "black",
   commonwhite: "white",
   commonblue: "blue",
+  commonRed: "red",
 };

@@ -13,7 +13,17 @@ const styles = StyleSheet.create({
   size20text: {
     fontSize: 20,
     fontWeight: "bold",
-    color: Colors.text,
+    color: Colors.commonwhite,
+  },
+  size10text: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: Colors.commonwhite,
+  },
+  welcomeText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: Colors.primary,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -39,6 +49,9 @@ const styles = StyleSheet.create({
   commonMarging10: {
     marginTop: 10,
   },
+  commonLeftMargine10: {
+    marginLeft: 10,
+  },
 
   input: {
     borderColor: Colors.primary,
@@ -47,12 +60,27 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 12,
   },
+  errorText: {
+    color: "red",
+    marginTop: 4,
+    fontSize: 12,
+    marginLeft: 5,
+  },
+  passwordInput: {
+    height: 60,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    borderRadius: 8,
+    paddingLeft: 16,
+    paddingRight: 50,
+    fontSize: 12,
+  },
   label: {
     padding: 5,
     fontSize: 14,
     fontWeight: "500",
   },
-  button: {
+  smallButton: {
     marginBottom: 20,
     marginTop: 20,
     width: 100,
@@ -89,12 +117,86 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
+    padding: 10,
   },
   container: {
     flex: 1, // Takes full screen height
     justifyContent: "center", // Centers vertically
     alignItems: "center", // Centers horizontally
-    backgroundColor: "#f8f9fa", // Optional background color
+    backgroundColor: "#f8f9fa",
+  },
+  passwordContainer: {
+    width: "100%",
+    marginVertical: 10,
+  },
+
+  eyeIcon: {
+    position: "absolute",
+    right: 16,
+    top: 13,
+  },
+
+  modalbg: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+  loaderbg: {
+    padding: 20,
+    backgroundColor: Colors.commonwhite,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  rightText: {
+    fontSize: 18,
+    textAlign: "right",
+    color: "black",
+  },
+  //confrimation css
+  confrimationOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dialog: {
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    elevation: 5,
+  },
+  message: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#555",
+  },
+  confrimationbuttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  Confrimationbutton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+
+  cancelText: {
+    color: Colors.commonRed,
+    fontSize: 16,
+  },
+  confirmText: {
+    color: Colors.commonwhite,
+    fontSize: 16,
+  },
+  confrimationtitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 });
 export default styles;
