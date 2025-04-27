@@ -35,9 +35,9 @@ export const loginUser = async (values) => {
     console.log("user:", user);
     // return !user ? false : true;
     await storeData({ key: "user", value: user[0] });
-    return true;
+    return user[0];
   } catch (e) {
     console.log("Error: LoginController.js loginUser:", e);
-    return false;
+    return null;
   }
 };

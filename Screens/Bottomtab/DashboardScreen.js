@@ -7,11 +7,6 @@ const DashboardScreen = () => {
   return (
     <View style={styles.container}>
       <Text>DashboardScreen</Text>
-      <IntroButtonComponent
-        iconName={"business"}
-        onPress={() => console.log("create business")}
-        title={"Business"}
-      />
     </View>
   );
 };

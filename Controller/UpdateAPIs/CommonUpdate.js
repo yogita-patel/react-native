@@ -15,6 +15,7 @@ export const addUserID = async ({ docRef, EditData }) => {
     console.log("doc ref", docRef);
     console.log("edddit", EditData);
     await updateDoc(docRef, EditData);
+    return true;
   } catch (error) {
     console.error("Error: commonUpdate.js addUserID:", error);
     throw error;

@@ -9,6 +9,12 @@ import RegisterScreen from "./Screens/Auth/RegisterScreen";
 import InitialScreen from "./Screens/Auth/InitialScreen";
 import Toast from "react-native-toast-message";
 import { isUserLoggedIn } from "./Controller/Authentication/LoginController";
+import CreateAppointment from "./Screens/Appointment/CreateAppointment";
+import CreateBuisness from "./Screens/Buisness/CreateBuisness";
+import CreateHospital from "./Screens/Hospital/CreateHospital";
+import HospitalDashboard from "./Screens/Bottomtab/HospitalDashboard";
+import BuisnessDashboard from "./Screens/Bottomtab/BuisnessDashboard";
+import styles from "./Styles/CommonStyle";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +50,11 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName={isLoggedIn ? "InitialScreen" : "Login"}
+        screenOptions={{
+          headerStyle: styles.appbarStyle,
+          headerTintColor: styles.appbarTintColor,
+          headerTitleAlign: "center",
+        }}
       >
         <Stack.Screen
           name="InitialScreen"
@@ -64,6 +75,31 @@ export default function App() {
           name="DashboardScreen"
           component={DashboardScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BuisnessDashboard"
+          component={BuisnessDashboard}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HosptalDashboard"
+          component={HospitalDashboard}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Create Buisness"
+          component={CreateBuisness}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateHospital"
+          component={CreateHospital}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MakeAppointment"
+          component={CreateAppointment}
+          // options={{ headerShown: false }}
         />
       </Stack.Navigator>
 

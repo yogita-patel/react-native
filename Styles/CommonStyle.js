@@ -198,5 +198,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  appbarStyle: {
+    backgroundColor: Colors.primary,
+  },
+  appbarTintColor: Colors.commonwhite,
+  appbarTitleStyle: {
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
 });
 export default styles;

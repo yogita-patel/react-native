@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import IntroButtonComponent from "../../Components/IntroButtonComponent";
 import styles from "../../Styles/CommonStyle";
-import { getLocalUser } from "../../Controller/Authentication/InitialScreenCOntroller";
+import { getLocalUser } from "../../Controller/global";
 import LoaderComponent from "../../Components/LoaderComponent";
 import HyperlinkTextComponent from "../../Components/HyperlinkTextComponent";
 import ConfrimationDialog from "../../Components/ConfrimationDialog";
@@ -47,17 +47,17 @@ const InitialScreen = ({ navigation }) => {
       <Text style={styles.welcomeText}>{"Welcome " + userFname}</Text>
       <IntroButtonComponent
         iconName={"business"}
-        onPress={() => console.log("create a business")}
+        onPress={() => navigation.navigate("Create Buisness")}
         title={"Create a business"}
       />
       <IntroButtonComponent
         iconName={"local-hospital"}
-        onPress={() => redirectToLogin()}
+        onPress={() => navigation.navigate("CreateHospital")}
         title={"Create a hospital"}
       />
       <IntroButtonComponent
         iconName={"person"}
-        onPress={() => redirectToLogin()}
+        onPress={() => navigation.navigate("MakeAppointment")}
         title={"Book an appointment"}
       />
       <ConfrimationDialog

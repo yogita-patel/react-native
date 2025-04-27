@@ -32,9 +32,12 @@ const LoginScreen = ({ navigation }) => {
             onSubmit={async (values) => {
               console.log("login clicked:", values);
               setIsLoading(true);
-              const istrue = await loginUser(values);
+              const user = await loginUser(values);
               setIsLoading(false);
-              if (istrue) {
+              if (user.businessID) {
+                //if current user have buisness then it redirect to buisness dashboard
+                navigation.navigate("BuisnessDashboard");
+              } else {
                 navigation.navigate("InitialScreen");
               }
             }}

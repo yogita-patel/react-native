@@ -1,30 +1,38 @@
 export class BusinessModel {
   constructor({
-    businessName = "",
-    businessType = "",
-    businessAddress = "",
-    businessContact = "",
+    ownerId = "",
+    buisnessName = "",
+    buisnessEmail = "",
+    buisnessAddress = "",
+    buisnessContact = "",
+    buisnessCategory = "",
+    cityId = "",
   }) {
     try {
-      this.businessName = businessName;
-      this.businessType = businessType;
-      this.businessAddress = businessAddress;
-      this.businessContact = businessContact;
-      this.createdAt = new Date();
+      this.ownerId = ownerId;
+      this.buisnessName = buisnessName;
+      this.buisnessEmail = buisnessEmail;
+      this.buisnessAddress = buisnessAddress;
+      this.buisnessContact = buisnessContact;
+      this.buisnessCategory = buisnessCategory;
+      (this.cityId = cityId), (this.createdAt = new Date());
+      this.updatedAt = new Date();
       this.isDelete = 0;
     } catch (e) {
-      console.log("Error: BusinessModel.js", e);
+      console.log("Error: buisnessModel.js", e);
     }
   }
   toJson() {
     return {
-      businessName: this.businessName,
-      businessType: this.businessType,
-      businessAddress: this.businessAddress,
-      businessContact: this.businessContact,
-      authID: this.authID,
-      userID: this.userID,
+      ownerId: this.ownerId,
+      cityId: this.cityId,
+      buisnessName: this.buisnessName,
+      buisnessEmail: this.buisnessEmail,
+      buisnessAddress: this.buisnessAddress,
+      buisnessContact: this.buisnessContact,
+      buisnessCategory: this.buisnessCategory,
       createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString(),
       isDelete: this.isDelete,
     };
   }
