@@ -7,4 +7,5 @@ export default {
   commonwhite: "white",
   commonblue: "blue",
   commonRed: "red",
+  lightGrey: "#e6e8e6",
 };

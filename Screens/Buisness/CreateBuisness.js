@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Formik } from "formik";
 import styles from "../../Styles/CommonStyle";
 import { CreateBuisnessValidation } from "../../Validations/CreateBuisnessValidation";
@@ -13,15 +13,20 @@ import TextInputComponent from "../../Components/TextInputComponent";
 import ButtonComponent from "../../Components/ButtonComponent";
 import Constants from "../../Constants/Strings";
 import DropDownComponent from "../../Components/DropDownComponent";
-import { onCreateBuisness } from "../../Controller/Buisness/BuisnessController";
+import {
+  onCreateBuisness,
+  updateBuisness,
+} from "../../Controller/Buisness/BuisnessController";
 import LoaderComponent from "../../Components/LoaderComponent";
 import { getLocalUser } from "../../Controller/global";
 
-const CreateBuisness = ({ navigation }) => {
+const CreateBuisness = ({ route, navigation }) => {
   const validation = CreateBuisnessValidation();
   const [categoryID, setcategoryID] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [countryId, setContryId] = useState();
+  const businessData = useState(route.params);
+
   const handelCategorySelection = (item, setFieldValue) => {
     try {
       setcategoryID(item.value);
@@ -38,10 +43,18 @@ const CreateBuisness = ({ navigation }) => {
       console.log("Error: createBuisness.js handelCitySelection:", e);
     }
   };
-
+  //change header title while  screen calls for edit
+  useLayoutEffect(() => {
+    if (businessData[0].title) {
+      console.log("change navigation title", businessData[0].title);
+      const title = businessData[0].title;
+      navigation.setOptions({ title: title });
+    }
+  }, [navigation, businessData]);
   useEffect(() => {
     const getCountryID = async () => {
       try {
+        console.log("buisnessdata for id", businessData[0].title);
         setIsLoading(true);
         const user = await getLocalUser();
         setContryId(user.countryID);
@@ -61,23 +74,34 @@ const CreateBuisness = ({ navigation }) => {
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Formik
               initialValues={{
-                bname: "",
-                email: "",
-                baddress: "",
-                bcontact: "",
-                bcat: "",
-                bcity: "",
+                bname: businessData[0].buisnessData.buisnessName || "",
+                email: businessData[0].buisnessData.buisnessEmail || "",
+                baddress: businessData[0].buisnessData.buisnessAddress || "",
+                bcontact: businessData[0].buisnessData.buisnessContact || "",
+                bcat: businessData[0].buisnessData.buisnessCategory || "",
+                bcity: businessData[0].buisnessData.cityId || "",
               }}
               validationSchema={validation}
               enableReinitialize
               onSubmit={async (values) => {
                 console.log("register clicked:", values);
                 setIsLoading(true);
-                const istrue = await onCreateBuisness(values);
-                setIsLoading(false);
-                if (istrue) {
-                  navigation.navigate("BuisnessDashboard");
+                if (businessData) {
+                  const updated = await updateBuisness({
+                    businessId: businessData[0].buisnessData.buisnessID,
+                    values: values,
+                  });
+                  if (updated) {
+                    navigation.goBack();
+                  }
+                } else {
+                  const istrue = await onCreateBuisness(values);
+
+                  if (istrue) {
+                    navigation.navigate("BuisnessDashboard");
+                  }
                 }
+                setIsLoading(false);
               }}
             >
               {({
@@ -166,7 +190,7 @@ const CreateBuisness = ({ navigation }) => {
                   <LoaderComponent show={isLoading} />
                   <ButtonComponent
                     onButtonPress={handleSubmit}
-                    label="Create"
+                    label={businessData ? "Edit Buisness" : "Create"}
                   />
                 </>
               )}

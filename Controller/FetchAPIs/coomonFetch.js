@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 
 // common function for fetch data
-export const fetchIDAndName = async (collectionName) => {
+export const fetchData = async (collectionName) => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionName));
     const items = [];
@@ -20,7 +20,7 @@ export const fetchIDAndName = async (collectionName) => {
     });
     return items;
   } catch (error) {
-    console.error("Error: coomonFetch.js fetchIDAndName:", error);
+    console.error("Error: coomonFetch.js fetchData:", error);
     throw error;
   }
 };
@@ -41,6 +41,7 @@ export const fetchByCondition = async ({
     querySnapshot.forEach((doc) => {
       items.push({ id: doc.id, ...doc.data() });
     });
+    // console.log("querySnapshot items", items);
     return items;
   } catch (error) {
     console.error("Error: coomonFetch.js fetchByCondition:", error);

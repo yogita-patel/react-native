@@ -7,6 +7,7 @@ export class BusinessModel {
     buisnessContact = "",
     buisnessCategory = "",
     cityId = "",
+    buisnessProfile = "",
   }) {
     try {
       this.ownerId = ownerId;
@@ -15,6 +16,7 @@ export class BusinessModel {
       this.buisnessAddress = buisnessAddress;
       this.buisnessContact = buisnessContact;
       this.buisnessCategory = buisnessCategory;
+      this.buisnessProfile = buisnessProfile;
       (this.cityId = cityId), (this.createdAt = new Date());
       this.updatedAt = new Date();
       this.isDelete = 0;
@@ -31,6 +33,7 @@ export class BusinessModel {
       buisnessAddress: this.buisnessAddress,
       buisnessContact: this.buisnessContact,
       buisnessCategory: this.buisnessCategory,
+      buisnessProfile: this.buisnessProfile,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
       isDelete: this.isDelete,

@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   smallButton: {
     marginBottom: 20,
     marginTop: 20,
-    width: 100,
+    width: 120,
     alignItems: "center",
     borderRadius: 8,
     backgroundColor: Colors.primary,
@@ -117,13 +117,14 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    // alignContent: "space-between",
+    // padding: 10,
   },
   container: {
-    flex: 1, // Takes full screen height
-    justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
-    backgroundColor: "#f8f9fa",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor: "#f8f9fa",
   },
   passwordContainer: {
     width: "100%",
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  //app bar style
   appbarStyle: {
     backgroundColor: Colors.primary,
   },
@@ -205,6 +207,46 @@ const styles = StyleSheet.create({
   appbarTitleStyle: {
     fontWeight: "bold",
     alignSelf: "center",
+    color: Colors.commonwhite,
+  },
+  //display info style
+  infoContainer: {
+    backgroundColor: Colors.lightGrey,
+    borderRadius: 10,
+    padding: 8,
+    marginTop: 10,
+    width: "100%",
+    alignSelf: "center",
+  },
+  image: {
+    backgroundColor: Colors.primary,
+  },
+  editIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: Colors.primary,
+    borderRadius: 12,
+    padding: 3,
+  },
+  infoHeading1: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.commonblack,
+  },
+  infoValue1: {
+    fontSize: 18,
+    fontWeight: 500,
+    color: Colors.commonblack,
+    flexWrap: "wrap",
+    flexShrink: 1,
+  },
+  //divider
+
+  divider: {
+    borderWidth: 0.5,
+    borderColor: Colors.primary,
+    marginVertical: 15,
   },
 });
 export default styles;

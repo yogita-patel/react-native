@@ -15,20 +15,29 @@ import CreateHospital from "./Screens/Hospital/CreateHospital";
 import HospitalDashboard from "./Screens/Bottomtab/HospitalDashboard";
 import BuisnessDashboard from "./Screens/Bottomtab/BuisnessDashboard";
 import styles from "./Styles/CommonStyle";
+import { getLocalUser } from "./Controller/global";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [initialRouteName, setIninitalRoute] = useState("Login");
 
   useEffect(() => {
     const checklogin = async () => {
       try {
-        const isLogin = await isUserLoggedIn();
-        console.log("isLogin = ", isLogin);
-        setIsLoggedIn(isLogin);
-        console.log("isLogin = ", isLoggedIn);
+        const currentUser = await getLocalUser();
+        if (!currentUser) {
+          setIninitalRoute("Login");
+        } else if (currentUser.businessID) {
+          setIninitalRoute("BuisnessDashboard");
+        } else if (currentUser.userID) {
+          console.log("userId login route", currentUser.businessID);
+          setIninitalRoute("InitialScreen");
+        } else {
+          setIninitalRoute("Login");
+        }
       } catch (e) {
         console.error("Failed to get logindata:", e);
       } finally {
@@ -49,7 +58,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isLoggedIn ? "InitialScreen" : "Login"}
+        initialRouteName={initialRouteName}
         screenOptions={{
           headerStyle: styles.appbarStyle,
           headerTintColor: styles.appbarTintColor,
@@ -79,7 +88,7 @@ export default function App() {
         <Stack.Screen
           name="BuisnessDashboard"
           component={BuisnessDashboard}
-          // options={{ headerShown: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="HosptalDashboard"

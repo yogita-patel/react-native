@@ -4,7 +4,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import styles from "../Styles/CommonStyle";
 import Colors from "../Constants/Colors";
 import {
-  fetchIDAndName,
+  fetchData,
   fetchByCondition,
 } from "../Controller/FetchAPIs/coomonFetch";
 
@@ -35,7 +35,7 @@ const DropDownComponent = ({
         var data;
         console.log("conditionvalue", conditionLabel);
         if (!conditionLabel) {
-          data = await fetchIDAndName(collectionName); //call API to get country
+          data = await fetchData(collectionName); //call API to get country
         } else {
           data = await fetchByCondition({
             collectionName: collectionName,
