@@ -2,7 +2,7 @@ export class UserModel {
   constructor({
     fullName = "",
     email = "",
-    roleID = 0,
+    roleID = "",
     cityID = 0,
     authID = "",
     userID = null,

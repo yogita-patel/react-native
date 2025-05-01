@@ -49,10 +49,16 @@ const styles = StyleSheet.create({
   commonMarging10: {
     marginTop: 10,
   },
+  commonMarging20: {
+    marginTop: 20,
+  },
   commonLeftMargine10: {
     marginLeft: 10,
   },
 
+  commonmarginVertical10: {
+    marginVertical: 10,
+  },
   input: {
     borderColor: Colors.primary,
     borderWidth: 2,
@@ -247,6 +253,27 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: Colors.primary,
     marginVertical: 15,
+  },
+
+  //card
+  card: {
+    backgroundColor: "#f5f5f5",
+    padding: 16,
+    borderRadius: 12,
+    marginVertical: 8,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  actions: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    flexDirection: "row",
+    zIndex: 1,
+    alignContent: "flex-end",
   },
 });
 export default styles;

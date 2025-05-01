@@ -16,6 +16,7 @@ import HospitalDashboard from "./Screens/Bottomtab/HospitalDashboard";
 import BuisnessDashboard from "./Screens/Bottomtab/BuisnessDashboard";
 import styles from "./Styles/CommonStyle";
 import { getLocalUser } from "./Controller/global";
+import CreateEmployee from "./Screens/Buisness/CreateEmployee";
 
 const Stack = createNativeStackNavigator();
 
@@ -99,6 +100,11 @@ export default function App() {
           name="Create Buisness"
           component={CreateBuisness}
           // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateEmployee"
+          component={CreateEmployee}
+          options={{ title: "Add Employee" }}
         />
         <Stack.Screen
           name="CreateHospital"

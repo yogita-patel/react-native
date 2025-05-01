@@ -83,6 +83,8 @@ const DropDownComponent = ({
         noDataText={noData}
         placeholder={placeholder}
         listMode="SCROLLVIEW"
+        searchable={true}
+        searchPlaceholder="Search..."
         style={[styles.input, error && { borderColor: "red" }]}
         arrowIconStyle={{
           tintColor: Colors.primary,

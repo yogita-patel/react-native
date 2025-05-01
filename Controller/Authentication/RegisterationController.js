@@ -5,6 +5,7 @@ import LoaderComponent from "../../Components/LoaderComponent";
 import { showToast } from "../../Components/ToastComponent";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { BusinessModel } from "../../Model/BuinessModel";
+import Constants from "../../Constants/Strings";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -47,6 +48,7 @@ const Registration = async ({ values }) => {
         cityID: values.city,
         email: values.email,
         countryID: values.country,
+        roleID: Constants.usersRole.citizen,
       });
       const userDocRef = await AddData({
         collectionName: "Users",

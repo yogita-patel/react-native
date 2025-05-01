@@ -6,6 +6,7 @@ import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { fetchByCondition } from "../FetchAPIs/coomonFetch";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
+import Constants from "../../Constants/Strings";
 export const onCreateBuisness = async (values) => {
   try {
     console.log("onCreateBuisness:", values);
@@ -39,7 +40,10 @@ export const onCreateBuisness = async (values) => {
       const businessDocRef = doc(db, "Users", bdocRef.id);
       userDoc = await addUserID({
         docRef: businessDocRef,
-        EditData: { buisnessID: bdocRef.id },
+        EditData: {
+          buisnessID: bdocRef.id,
+          roleID: Constants.usersRole.buisnessOwner,
+        },
       });
     }
     if (userDoc) {

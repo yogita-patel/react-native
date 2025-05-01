@@ -2,6 +2,9 @@ const strings = {
   appName: "BethelCity",
   emailPlaceholder: "Enter E-mail",
   fullNamePlaceholder: "Enter your full-name",
+  contact: "Enter Contact number",
+  address: "Enter Address",
+  payrate: "Enter hourly rate",
   businessNamePlaceholder: "Enter your business",
   businessTypePlaceholder: "Enter your business type",
   businessAddressPlaceholder: "Enter your business address",
@@ -26,6 +29,10 @@ const labels = {
   passwordLabel: "Password",
   repasswordLabel: "Re-Password",
   fullNameLabel: "Full-Name",
+  contact: "Contact-number",
+  address: "Address",
+  payrate: "Payrate($)",
+  weekdays: "Select Week-Days",
   businessNameLabel: "Business Name",
   businessTypeLabel: "Business Type",
   businessContactLabel: "Buisness Contact",
@@ -35,4 +42,17 @@ const labels = {
   hospitalContactLabel: "Hospital Contact",
 };
 
-export default { strings, labels };
+const usersRole = {
+  buisnessOwner: "Buisness-Owner",
+  citizen: "Citizen",
+  employee: "Employee",
+};
+
+const collectionName = {
+  buisness: "Buisness",
+  employee: "Employees",
+  user: "Users",
+};
+
+const lazyLoadLimit = 10;
+export default { strings, labels, usersRole, collectionName, lazyLoadLimit };

@@ -8,7 +8,10 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  orderBy,
+  limit,
 } from "firebase/firestore";
+import Constants from "../../Constants/Strings";
 
 // common function for fetch data
 export const fetchData = async (collectionName) => {
@@ -45,6 +48,46 @@ export const fetchByCondition = async ({
     return items;
   } catch (error) {
     console.error("Error: coomonFetch.js fetchByCondition:", error);
+    throw error;
+  }
+};
+
+export const fetchList = async ({ collectionName, lastDoc, filters = [] }) => {
+  try {
+    const baseRef = collection(db, collectionName);
+    // Basic filters (always apply)
+    let constraints = [
+      where("isDelete", "==", 0),
+      limit(Constants.lazyLoadLimit),
+    ];
+
+    // Add custom filters dynamically
+    filters.forEach((filter) => {
+      constraints.unshift(where(filter.field, filter.operator, filter.value));
+    });
+
+    // Add pagination
+    if (lastDoc) {
+      constraints.push(startAfter(lastDoc));
+    }
+    const q = query(baseRef, ...constraints);
+
+    const snapshot = await getDocs(q);
+
+    const list = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+
+    return {
+      list,
+      lastDoc: lastVisible,
+      hasMore: snapshot.docs.length === Constants.lazyLoadLimit,
+    };
+  } catch (error) {
+    console.error("Error: coomonFetch.js fetchList:", error);
     throw error;
   }
 };

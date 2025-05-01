@@ -4,6 +4,7 @@ export default {
   background: "#f1f1f1",
   text: "#333333",
   commonblack: "black",
+  shade2Black: "#666",
   commonwhite: "white",
   commonblue: "blue",
   commonRed: "red",

@@ -8,6 +8,7 @@ export class BusinessModel {
     buisnessCategory = "",
     cityId = "",
     buisnessProfile = "",
+    buisnessID = "",
   }) {
     try {
       this.ownerId = ownerId;
@@ -20,6 +21,7 @@ export class BusinessModel {
       (this.cityId = cityId), (this.createdAt = new Date());
       this.updatedAt = new Date();
       this.isDelete = 0;
+      this.buisnessID = buisnessID;
     } catch (e) {
       console.log("Error: buisnessModel.js", e);
     }
@@ -37,6 +39,7 @@ export class BusinessModel {
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
       isDelete: this.isDelete,
+      buisnessID: this.buisnessID,
     };
   }
 }

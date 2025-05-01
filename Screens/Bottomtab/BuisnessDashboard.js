@@ -49,7 +49,18 @@ const BuisnessDashboard = () => {
       <Tab.Screen
         name="EmployeeListScreen"
         component={EmployeeListScreen}
-        options={{ tabBarLabel: "Employee", headerTitle: "Employee" }}
+        options={({ navigation, route }) => ({
+          tabBarLabel: "Employee",
+          headerTitle: "Employee List",
+          headerRight: () => (
+            <IconButtonComponent
+              iconName={"add"}
+              onIconPress={() => {
+                navigation.navigate("CreateEmployee");
+              }}
+            />
+          ),
+        })}
       />
       <Tab.Screen
         name="BuisnessAcoountScreen"

@@ -5,6 +5,7 @@ import { addUserID } from "../UpdateAPIs/CommonUpdate";
 //common add function
 export const AddData = async ({ collectionName, modelName }) => {
   try {
+    console.log("Collection name: ", collectionName);
     const docRef = await addDoc(collection(db, collectionName), {
       ...modelName,
     });
