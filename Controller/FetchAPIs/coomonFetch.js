@@ -9,6 +9,8 @@ import {
   deleteDoc,
   doc,
   orderBy,
+  documentId,
+  startAfter,
   limit,
 } from "firebase/firestore";
 import Constants from "../../Constants/Strings";
@@ -80,7 +82,7 @@ export const fetchList = async ({ collectionName, lastDoc, filters = [] }) => {
     }));
 
     const lastVisible = snapshot.docs[snapshot.docs.length - 1];
-
+    console.log("fetched list:", list);
     return {
       list,
       lastDoc: lastVisible,
@@ -88,6 +90,25 @@ export const fetchList = async ({ collectionName, lastDoc, filters = [] }) => {
     };
   } catch (error) {
     console.error("Error: coomonFetch.js fetchList:", error);
+    throw error;
+  }
+};
+
+// common function for fetch data
+export const fetchDataByDoc = async ({ collectionName, IDs }) => {
+  try {
+    const snapshot = await getDocs(
+      query(collection(db, collectionName), where(documentId(), "in", IDs))
+    );
+
+    const dataMap = {};
+    snapshot.forEach((doc) => {
+      dataMap[doc.id] = doc.data();
+    });
+    console.log("dataMap-----", dataMap);
+    return dataMap;
+  } catch (error) {
+    console.error("Error: coomonFetch.js fetchDataByDoc:", error);
     throw error;
   }
 };

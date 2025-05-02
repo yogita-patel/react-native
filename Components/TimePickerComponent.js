@@ -40,6 +40,7 @@ const TimePickerComponent = ({
       <DateTimePickerModal
         isVisible={isPickerVisible}
         mode={mode}
+        is24Hour={true}
         accentColor={Colors.primary}
         onConfirm={handleConfirm}
         onCancel={() => setPickerVisible(false)}

@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   commonmarginVertical10: {
     marginVertical: 10,
   },
+  commonmarginHorizontol10: {
+    marginHorizontal: 10,
+  },
   input: {
     borderColor: Colors.primary,
     borderWidth: 2,
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginVertical: 8,
+    marginHorizontal: 8,
     elevation: 3,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -274,6 +278,42 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     zIndex: 1,
     alignContent: "flex-end",
+  },
+
+  //search field
+
+  searchContainer: {
+    flexDirection: "row",
+    backgroundColor: Colors.lightGrey,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    marginVertical: 8,
+  },
+
+  searchInput: {
+    flex: 1,
+    height: 40,
+    color: "grey",
+  },
+
+  //small button
+  smallButtonShadow: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: Colors.commonGreen, // green shade
+    borderRadius: 6,
+    alignSelf: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 2,
+  },
+  smallButtonText: {
+    color: Colors.commonwhite,
+    fontSize: 12,
+    fontWeight: "600",
   },
 });
 export default styles;

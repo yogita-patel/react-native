@@ -8,6 +8,8 @@ import Colors from "../../Constants/Colors";
 import EmployeeListScreen from "../Buisness/EmployeeListScreen";
 import styles from "../../Styles/CommonStyle";
 import IconButtonComponent from "../../Components/IconButtonComponent";
+import EmployeeAttendance from "../Buisness/EmployeeAttendance";
+import EmployeePayroll from "../Buisness/EmployeePayroll";
 const Tab = createBottomTabNavigator();
 const BuisnessDashboard = () => {
   return (
@@ -24,10 +26,10 @@ const BuisnessDashboard = () => {
             iconName = "home";
           } else if (route.name === "EmployeeListScreen") {
             iconName = "account-tie";
-          } else if (route.name === "Calculator") {
-            iconName = "calculator-variant";
-          } else if (route.name === "GamesScreen") {
-            iconName = "microsoft-xbox-controller";
+          } else if (route.name === "EmployeeAttendance") {
+            iconName = "check-circle";
+          } else if (route.name === "EmployeePayroll") {
+            iconName = "wallet";
           } else if (route.name === "BuisnessAcoountScreen") {
             iconName = "account-circle";
           } else {
@@ -61,6 +63,19 @@ const BuisnessDashboard = () => {
             />
           ),
         })}
+      />
+      <Tab.Screen
+        name="EmployeeAttendance"
+        component={EmployeeAttendance}
+        options={{
+          tabBarLabel: "Attendance",
+          headerTitle: "Employee Attendance",
+        }}
+      />
+      <Tab.Screen
+        name="EmployeePayroll"
+        component={EmployeePayroll}
+        options={{ tabBarLabel: "Payroll" }}
       />
       <Tab.Screen
         name="BuisnessAcoountScreen"

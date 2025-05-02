@@ -5,6 +5,9 @@ import styles from "../Styles/CommonStyle";
 import MaterialIconComponent from "./MaterialIconComponent";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../Constants/Colors";
+import DividerComponent from "./DividerComponent";
+import ButtonComponent from "./ButtonComponent";
+import SmallBUttonComponent from "./SmallButtonComponent";
 
 const EmployeeListCardComponent = ({
   name,
@@ -13,6 +16,8 @@ const EmployeeListCardComponent = ({
   role,
   onEdit,
   onDelete,
+  onView,
+  onMarkAttendace,
 }) => {
   // return (
   //   <View style={styles.card}>
@@ -44,13 +49,20 @@ const EmployeeListCardComponent = ({
         <MaterialIconComponent iconName={"badge"} color={Colors.shade2Black} />
         <Text style={styles.label}>{role}</Text>
       </View>
-
+      <DividerComponent />
+      <SmallBUttonComponent onPress={onMarkAttendace} label="Mark Attendance" />
       <View style={[styles.actions, styles.content]}>
         <TouchableOpacity onPress={onEdit}>
           <MaterialIconComponent iconName={"edit"} color={Colors.commonblue} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onDelete} style={{ marginLeft: 12 }}>
           <MaterialIconComponent iconName={"delete"} color={Colors.commonRed} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onView} style={{ marginLeft: 12 }}>
+          <MaterialIconComponent
+            iconName={"visibility"}
+            color={Colors.commonGreen}
+          />
         </TouchableOpacity>
       </View>
     </View>

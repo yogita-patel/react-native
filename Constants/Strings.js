@@ -22,6 +22,7 @@ const strings = {
   logoutMessage: "Are you sure you want to log out?",
   errorMessage: "Something went wrong. Please try again.",
   successMessage: "Action completed successfully!",
+  breakHours: "Enter Break in hours",
 };
 
 const labels = {
@@ -40,6 +41,10 @@ const labels = {
   hospitalNameLabel: "Hospital Name",
   hospitalAddressLabel: "Hospital Address",
   hospitalContactLabel: "Hospital Contact",
+  checkin: "Check-in Time",
+  checkout: "Check-out Time",
+  break: "Break in hours",
+  attendanceDate: "Attendance Date",
 };
 
 const usersRole = {
@@ -52,6 +57,7 @@ const collectionName = {
   buisness: "Buisness",
   employee: "Employees",
   user: "Users",
+  attendance: "Attendance",
 };
 
 const lazyLoadLimit = 10;
