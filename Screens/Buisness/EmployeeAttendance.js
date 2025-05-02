@@ -7,7 +7,6 @@ const EmployeeAttendance = () => {
   const [searchText, setSearchText] = useState("");
   return (
     <View style={styles.commonmarginHorizontol10}>
-      <Text>EmployeeAttendance</Text>
       <SearchFieldComponent
         value={searchText}
         onChangeText={setSearchText}
