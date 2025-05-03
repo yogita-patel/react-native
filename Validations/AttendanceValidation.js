@@ -2,8 +2,9 @@ import * as Yup from "yup";
 
 export const AttendanceEmployeeValidation = () => {
   return Yup.object().shape({
-    checkin: Yup.string().required("Please select check-in time"),
+    checkin: Yup.date().required("Please select check-in time"),
     checkout: Yup.date().required("Please select check-out time"),
+    status: Yup.string().required("Please select status"),
     //   .test(
     //     "is-after-check-in",
     //     "Check-out must be after check-in",

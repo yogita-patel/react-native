@@ -17,6 +17,7 @@ import TextInputComponent from "../../Components/TextInputComponent";
 import { markAttendance } from "../../Controller/Employees/AttendanceController";
 import { useFormikContext } from "formik";
 import LoaderComponent from "../../Components/LoaderComponent";
+import DropDownComponent from "../../Components/DropDownComponent";
 const MarkEmployeeAttendance = ({ navigation, route }) => {
   const { employee } = route.params;
   const validation = AttendanceEmployeeValidation();
@@ -32,10 +33,20 @@ const MarkEmployeeAttendance = ({ navigation, route }) => {
   const initialValues = {
     checkin: "",
     checkout: "",
-    // city: "",
+    status: "",
     break: "",
     // email: "",
     attendanceDate: "",
+  };
+  const [status, setStatus] = useState();
+
+  const handelStatus = (item, setFieldValue) => {
+    try {
+      setStatus(item.value);
+      setFieldValue("status", item.value);
+    } catch (e) {
+      console.log("Error: markEmployeeAttendance.js handelStatus:", e);
+    }
   };
   return (
     <SafeAreaView>
@@ -60,6 +71,7 @@ const MarkEmployeeAttendance = ({ navigation, route }) => {
                 values: values,
                 employeeID: employee.employeeID,
                 buisnessID: employee.businessID,
+                employeeUSerID: employee.userID,
               });
               setIsLoadind(false);
               navigation.goBack();
@@ -102,6 +114,18 @@ const MarkEmployeeAttendance = ({ navigation, route }) => {
                   onConfirm={(date) => setFieldValue("attendanceDate", date)}
                   error={errors.attendanceDate}
                   touched={touched.attendanceDate}
+                />
+                <DropDownComponent
+                  collectionName={Constants.collectionName.attendanceStatus}
+                  labelField="statusName"
+                  valueField="statusID"
+                  label="Status"
+                  placeholder="Select Status"
+                  onSelectItem={(item) => handelStatus(item, setFieldValue)}
+                  error={errors.status}
+                  touched={touched.status}
+                  selectedValue={values.status}
+                  setSelectedValue={(val) => setFieldValue("status", val)}
                 />
                 <ButtonComponent
                   onButtonPress={handleSubmit}

@@ -7,8 +7,16 @@ import { db } from "../../Firebase/Firebase";
 import { AttendanceModel } from "../../Model/AttendanceModel";
 import { getLocalUser } from "../global";
 import { checkAttendance } from "../UncommonAPIs/CheckDateEmployeeAttendanceExists";
+import { fetchByCondition, fetchList } from "../FetchAPIs/coomonFetch";
+import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
+import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
 
-export const markAttendance = async ({ values, employeeID, buisnessID }) => {
+export const markAttendance = async ({
+  values,
+  employeeID,
+  buisnessID,
+  employeeUSerID,
+}) => {
   try {
     console.log("onCreateBuisness:", values);
     const exist = await checkAttendance({
@@ -33,15 +41,21 @@ export const markAttendance = async ({ values, employeeID, buisnessID }) => {
       console.log("hours worked---------", hours);
       const totalHours = hours - values.break;
       //   con;
+      // const onlyDate = values.attendanceDate.setHours(0, 0, 0, 0);
+      const onlyDate = new Date(values.attendanceDate);
+      onlyDate.setHours(0, 0, 0, 0); // 00:00:00
+
       var attendance = new AttendanceModel({
         employeeID: employeeID,
         buisnessID: buisnessID,
         checkIn: values.checkin,
+        status: values.status,
         checkOut: values.checkout,
         breakTime: values.break,
-        attendanceDate: values.attendanceDate,
+        attendanceDate: onlyDate,
         createdBy: userID,
         hoursWorked: totalHours,
+        userID: employeeUSerID,
       });
       console.log("attendance data------------", attendance);
       const EdocRef = await AddData({
@@ -81,5 +95,96 @@ export const markAttendance = async ({ values, employeeID, buisnessID }) => {
   } catch (e) {
     console.log("Error: AttendanceController.js markAttendance:", e);
     return false;
+  }
+};
+
+export const getAttendanceList = async ({
+  lastDoc = null,
+  searchText = null,
+  startDate = null,
+  endDate = null,
+}) => {
+  try {
+    const user = await getLocalUser();
+    console.log("buissnessID-----", user.businessID);
+    var searchFName;
+    var attendanceList;
+    const filterData = [
+      { field: "attendanceDate", operator: ">=", value: startDate },
+      { field: "attendanceDate", operator: "<=", value: endDate },
+    ];
+    if (searchText) {
+      searchFName = await SearchUserIDs({
+        collectionName: Constants.collectionName.user,
+        condition: "fullName",
+        value: searchText,
+      });
+      console.log("Search-userName-------------", searchFName[0]);
+      filterData.push({
+        field: "userID",
+        operator: "in",
+        value: [searchFName[0].userID],
+      });
+    }
+    console.log("FilterData-------------------------", filterData);
+    attendanceList = await fetchList({
+      lastDoc: lastDoc,
+      collectionName: Constants.collectionName.attendance,
+      filters: filterData,
+    });
+    // if (searchFName) {
+    //   attendanceList = await fetchList({
+    //     lastDoc: lastDoc,
+    //     collectionName: Constants.collectionName.attendance,
+    //     filters: [
+    //       { field: "businessID", operator: "==", value: user.businessID },
+    //       { field: "userID", operator: "==", value: searchFName[0].userID },
+    //     ],
+    //   });
+    // } else {
+    //   attendanceList = await fetchList({
+    //     lastDoc: lastDoc,
+    //     collectionName: Constants.collectionName.employee,
+    //     filters: [
+    //       { field: "businessID", operator: "==", value: user.businessID },
+    //       //  searchFName? { field: "userID", operator: "in", value: user.businessID }:null,
+    //     ],
+    //   });
+    // }
+
+    if (attendanceList) {
+      console.log("attendanceList:-----", attendanceList);
+      const userIDs = attendanceList.list.map((e) => e.userID);
+      console.log("userIDs:-----", userIDs);
+
+      var userData;
+      if (userIDs.length > 0) {
+        userData = await fetchDataByDoc({
+          collectionName: Constants.collectionName.user,
+          IDs: userIDs,
+        });
+      }
+      // console.log("UserData", userData);
+      var attendanceList2;
+      attendanceList2 = attendanceList.list.map((attendance) => ({
+        ...attendance,
+        name: userData[attendance.userID]?.fullName || "Unknown",
+        email: userData[attendance.userID]?.email || "Unknown",
+      }));
+
+      console.log(
+        "attendanceList2:-------------------------------- ",
+        attendanceList2
+      );
+      return {
+        list: attendanceList2,
+        lastDoc: attendanceList.lastDoc,
+        hasMore: attendanceList.hasMore,
+      };
+    }
+    return null;
+  } catch (e) {
+    console.log("Error: AttendanceController.js getAttendanceList:", e);
+    return null;
   }
 };

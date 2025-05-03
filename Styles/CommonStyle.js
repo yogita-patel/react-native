@@ -69,6 +69,13 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 12,
   },
+  smallInput: {
+    borderColor: Colors.primary,
+    borderWidth: 0.5,
+    borderRadius: 8,
+    padding: 8,
+    fontSize: 10,
+  },
   errorText: {
     color: "red",
     marginTop: 4,
@@ -253,7 +260,7 @@ const styles = StyleSheet.create({
   //divider
 
   divider: {
-    borderWidth: 0.5,
+    borderWidth: 0.4,
     borderColor: Colors.primary,
     marginVertical: 15,
   },
@@ -314,6 +321,25 @@ const styles = StyleSheet.create({
     color: Colors.commonwhite,
     fontSize: 12,
     fontWeight: "600",
+  },
+
+  //small date/time picker
+  smalldatePickerContainer: {
+    flexDirection: "row",
+    // flex: 1,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 44,
+    // width: "50%",
+  },
+  searchDateContriner: {
+    flexDirection: "row",
+    alignItems: "center",
+    // padding: 10,
+    justifyContent: "space-between",
   },
 });
 export default styles;

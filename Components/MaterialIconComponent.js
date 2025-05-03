@@ -7,8 +7,11 @@ const MaterialIconComponent = ({
   iconName,
   size = 22,
   color = Colors.commonblack,
+  style = null,
 }) => {
-  return <MaterialIcons name={iconName} size={size} color={color} />;
+  return (
+    <MaterialIcons name={iconName} size={size} color={color} style={style} />
+  );
 };
 
 export default MaterialIconComponent;

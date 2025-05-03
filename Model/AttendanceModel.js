@@ -11,10 +11,13 @@ export class AttendanceModel {
     createdBy,
     hoursWorked,
     buisnessID,
+    status,
+    userID,
     // isDelete = 0,
   }) {
     this.attendanceID = attendanceID;
     this.employeeID = employeeID;
+    this.userID = userID;
     this.checkIn = checkIn;
     this.checkOut = checkOut;
     this.breakIn = breakIn;
@@ -24,7 +27,7 @@ export class AttendanceModel {
     this.attendanceDate = attendanceDate;
     this.hoursWorked = hoursWorked;
     this.createdBy = createdBy;
-    this.createdAt = new Date();
+    (this.status = status), (this.createdAt = new Date());
     this.updatedAt = new Date();
     this.isDelete = 0;
   }
@@ -32,8 +35,9 @@ export class AttendanceModel {
   toJson() {
     return {
       attendanceID: this.attendanceID,
-
+      status: this.status,
       employeeID: this.employeeID,
+      userID: this.userID,
       checkIn: this.checkIn,
       checkOut: this.checkOut,
       breakIn: this.breakIn,

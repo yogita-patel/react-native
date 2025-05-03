@@ -58,7 +58,20 @@ const collectionName = {
   employee: "Employees",
   user: "Users",
   attendance: "Attendance",
+  attendanceStatus: "AttendanceStatus",
 };
 
+const attendanceStatus = {
+  present: "SucJ6B691QyRhkTmTmB0",
+  absent: "nAa5ACDkdmIFKd88ljFp",
+  late: "JuVcVBoJhPBgrl7OhMet",
+};
 const lazyLoadLimit = 10;
-export default { strings, labels, usersRole, collectionName, lazyLoadLimit };
+export default {
+  strings,
+  labels,
+  usersRole,
+  collectionName,
+  lazyLoadLimit,
+  attendanceStatus,
+};

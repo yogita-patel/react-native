@@ -8,12 +8,19 @@ const ButtonComponent = ({
   onButtonPress,
   bgColor = Colors.primary,
   align = "center",
+  width = null,
   margin = styles.commonMarging10,
 }) => {
   return (
     <View style={margin}>
       <TouchableOpacity style={{ alignSelf: "center" }} onPress={onButtonPress}>
-        <View style={[styles.smallButton, { backgroundColor: bgColor }]}>
+        <View
+          style={[
+            styles.smallButton,
+            { backgroundColor: bgColor },
+            { width: width },
+          ]}
+        >
           <Text style={styles.buttonText}>{label}</Text>
         </View>
       </TouchableOpacity>

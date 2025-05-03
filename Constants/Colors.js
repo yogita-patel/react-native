@@ -10,4 +10,6 @@ export default {
   commonRed: "red",
   commonGreen: "green",
   lightGrey: "#e6e8e6",
+  commonGrey: "grey",
+  commonOrange: "orange",
 };
