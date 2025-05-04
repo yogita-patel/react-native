@@ -46,7 +46,7 @@ export const fetchByCondition = async ({
     querySnapshot.forEach((doc) => {
       items.push({ id: doc.id, ...doc.data() });
     });
-    // console.log("querySnapshot items", items);
+    console.log("querySnapshot items", items);
     return items;
   } catch (error) {
     console.error("Error: coomonFetch.js fetchByCondition:", error);

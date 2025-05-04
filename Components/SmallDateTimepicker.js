@@ -16,17 +16,30 @@ const SmallDateTimepicker = ({
   const [isPickerVisible, setPickerVisible] = useState(false);
   // const [selectedTime, setSelectedTime] = useState(null);
 
-  // const handleConfirm = (date) => {
+  // const handleVisibility = (date) => {
   //   setSelectedTime(date);
   //   onConfirm && onConfirm(date);
   //   setPickerVisible(false);
   // };
+  const hidePicker = () => {
+    setPickerVisible(false);
+  };
+  const handleConfirm = (date) => {
+    hidePicker();
+    onConfirm && onConfirm(date);
+  };
+
+  const handleVisibility = (date) => {
+    console.log("tap on picker---------");
+    setPickerVisible(true);
+    console.log("Picker visibility---------", isPickerVisible);
+  };
 
   return (
     <View>
       <TouchableOpacity
         style={styles.smalldatePickerContainer}
-        onPress={() => setPickerVisible(true)}
+        onPress={handleVisibility}
       >
         <Text style={{ fontSize: 12 }}>
           {selectedTime
@@ -46,9 +59,10 @@ const SmallDateTimepicker = ({
         isVisible={isPickerVisible}
         mode={mode}
         is24Hour={true}
+        date={selectedTime || new Date()}
         accentColor={Colors.primary}
-        onConfirm={onConfirm}
-        onCancel={() => setPickerVisible(false)}
+        onConfirm={handleConfirm}
+        onCancel={() => hidePicker}
       />
     </View>
   );

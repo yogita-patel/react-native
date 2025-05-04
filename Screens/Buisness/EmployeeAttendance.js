@@ -19,6 +19,8 @@ import AttendanceCardComponent from "../../Components/AttendanceCardComponent";
 import { Alert } from "react-native";
 import { getAttendanceList } from "../../Controller/Employees/AttendanceController";
 import { formatDate, formatTime } from "../../Controller/global";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 const EmployeeAttendance = () => {
   const [searchText, setSearchText] = useState("");
@@ -59,6 +61,17 @@ const EmployeeAttendance = () => {
     getAttendance();
   }, [attendanceList]);
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log("callback--------------");
+      setAttendanceList([]); // optional: reset list before fetch
+      setLastDoc(null);
+      setHasMore(true);
+      getAttendance();
+      return () => {};
+    }, [])
+  );
+
   const applySearch = async () => {
     try {
       console.log("Search============");
@@ -71,6 +84,9 @@ const EmployeeAttendance = () => {
         );
         return;
       } else {
+        setAttendanceList([]);
+        setLastDoc(null);
+        setHasMore(true);
         setLoading(true);
         setIsSearch(true);
         const {
@@ -95,19 +111,19 @@ const EmployeeAttendance = () => {
     }
   };
 
-  const reserSearch = async () => {
+  const restSearch = async () => {
     try {
-      console.log("reserSearch============");
+      console.log("research============");
       setAttendanceList([]);
-      getAttendance();
       setLastDoc(null);
       setHasMore(true);
       setIsSearch(false);
-      setEndDate("");
-      setStartDate("");
+      setEndDate(null);
+      setStartDate(null);
       setSearchText("");
+      getAttendance();
     } catch (e) {
-      console.log("Error: EmployeeAttendace.js reserSearch: ", e);
+      console.log("Error: EmployeeAttendace.js restSearch: ", e);
     } finally {
       setLoading(false);
     }
@@ -121,16 +137,15 @@ const EmployeeAttendance = () => {
   const resetSearchField = async () => {
     try {
       console.log("resetSearchField============");
-
       setSearchText("");
     } catch (e) {
-      console.log("Error: EmployeeAttendace.js reserSearch: ", e);
+      console.log("Error: EmployeeAttendace.js restSearch: ", e);
     } finally {
       // setLoading(false);
     }
   };
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={[styles.commonmarginHorizontol10, styles.card]}>
         <SearchFieldComponent
           value={searchText}
@@ -155,7 +170,7 @@ const EmployeeAttendance = () => {
         </View>
         {isSearch ? (
           <ButtonComponent
-            onButtonPress={reserSearch}
+            onButtonPress={restSearch}
             label="Reset"
             margin={0}
             width={"300"}

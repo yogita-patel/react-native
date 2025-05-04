@@ -54,6 +54,7 @@ const BuisnessDashboard = () => {
         options={({ navigation, route }) => ({
           tabBarLabel: "Employee",
           headerTitle: "Employee List",
+          unmountOnBlur: true,
           headerRight: () => (
             <IconButtonComponent
               iconName={"add"}

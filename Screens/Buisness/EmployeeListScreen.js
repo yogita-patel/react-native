@@ -16,6 +16,8 @@ import { getLocalUser } from "../../Controller/global";
 import { fetchDataByDoc } from "../../Controller/FetchAPIs/coomonFetch";
 import { getEmployeeList } from "../../Controller/Employees/EmployeeController";
 import SearchFieldComponent from "../../Components/SearchFieldComponent";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 const EmployeeListScreen = ({ navigation }) => {
   const [employeeList, setEmployeeList] = useState([]);
@@ -45,10 +47,20 @@ const EmployeeListScreen = ({ navigation }) => {
     }
     setLoading(false);
   };
-  useEffect(() => {
-    getEmployee();
-  }, [employeeList]);
+  // useEffect(() => {
+  //   getEmployee();
+  // }, [employeeList]);
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log("callback--------------");
+      setEmployeeList([]); // optional: reset list before fetch
+      setLastDoc(null);
+      setHasMore(true);
+      getEmployee();
+      return () => {};
+    }, [])
+  );
   const onSearch = async () => {
     // setSearchText(text);
     // console.log("Changed text---------", text);
@@ -110,6 +122,13 @@ const EmployeeListScreen = ({ navigation }) => {
                 title: "Mark Attendance",
               })
             }
+            onCalculatePay={() => {
+              navigation.navigate("CalculatePayrollScreen", {
+                employee: item,
+                title: "Calculate PayRoll",
+              });
+            }}
+            onSchedule={() => console.log("View Schedule")}
           />
         )}
         keyExtractor={(item) => item.id}

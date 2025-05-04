@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   smallButtonShadow: {
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: Colors.commonGreen, // green shade
+    // backgroundColor: Colors.commonGreen, // green shade
     borderRadius: 6,
     alignSelf: "flex-start",
     shadowColor: "#000",
@@ -341,5 +341,45 @@ const styles = StyleSheet.create({
     // padding: 10,
     justifyContent: "space-between",
   },
+
+  //Month year picker style
+  monthModalBackground: {
+    flex: 1,
+    backgroundColor: "#00000088",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  monthPickerContainer: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 16,
+    width: "90%",
+  },
+  monthPickerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  pickerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    maxHeight: 200,
+  },
+  pickerItem: {
+    padding: 12,
+    alignItems: "center",
+  },
+  selectedItem: {
+    backgroundColor: "#dceeff",
+    borderRadius: 10,
+  },
+  pickerAction: {
+    marginTop: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  pickerCancel: { color: Colors.commonRed, fontWeight: "500" },
+  pickerConfrim: { color: Colors.commonGreen, fontWeight: "500" },
 });
 export default styles;

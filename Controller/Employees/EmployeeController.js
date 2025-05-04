@@ -34,17 +34,18 @@ export const addEmployee = async ({ values, buisnessID }) => {
       collectionName: Constants.collectionName.employee,
       modelName: employee.toJson(),
     });
-    var doc;
+    var docc;
     if (EdocRef) {
       //add document id to the document itself
-      doc = await addUserID({
+      docc = await addUserID({
         docRef: EdocRef,
         EditData: { employeeID: EdocRef.id },
       });
     }
     var userDoc;
-    if (doc) {
-      const DocRef = doc(db, Constants.collectionName.user, EdocRef.id);
+    if (docc) {
+      const DocRef = doc(db, Constants.collectionName.user, values.user);
+      console.log("DocRef--------------", DocRef);
       userDoc = await addUserID({
         docRef: DocRef,
         EditData: {

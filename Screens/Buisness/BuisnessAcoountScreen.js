@@ -37,6 +37,8 @@ const BuisnessAcoountScreen = ({ navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setParams({ openLogoutDialog: () => setShowLogoutDialog(true) });
+    setCategory(null);
+    getBuisnessInfo();
   }, [navigation]);
 
   const onLogout = async () => {
@@ -54,26 +56,25 @@ const BuisnessAcoountScreen = ({ navigation }) => {
     }
   };
 
+  const getBuisnessInfo = async () => {
+    try {
+      setIsLoading(true);
+      const b = await getBuisness();
+      setBuisnessData(b);
+      setBuisnessImage(b.buisnessProfile);
+      const cat = await getBuisnessCategory({ catID: b.buisnessCategory });
+      setCategory(cat);
+      console.log("buisnesscat :", cat);
+      const c = await getBuisnessCity({ cityID: b.cityId });
+      setCity(c);
+      console.log("buisness = ", b);
+    } catch (e) {
+      console.error("Failed to  getBuisnessInfo:", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const getBuisnessInfo = async () => {
-      try {
-        setIsLoading(true);
-        const b = await getBuisness();
-        setBuisnessData(b);
-        setBuisnessImage(b.buisnessProfile);
-        const cat = await getBuisnessCategory({ catID: b.buisnessCategory });
-        setCategory(cat);
-        console.log("buisnesscat :", cat);
-        const c = await getBuisnessCity({ cityID: b.cityId });
-        setCity(c);
-        console.log("buisness = ", b);
-      } catch (e) {
-        console.error("Failed to  getBuisnessInfo:", e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     getBuisnessInfo();
   }, []);
 

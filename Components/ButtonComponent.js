@@ -8,7 +8,7 @@ const ButtonComponent = ({
   onButtonPress,
   bgColor = Colors.primary,
   align = "center",
-  width = null,
+  width = 120,
   margin = styles.commonMarging10,
 }) => {
   return (
