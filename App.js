@@ -19,6 +19,7 @@ import { getLocalUser } from "./Controller/global";
 import CreateEmployee from "./Screens/Buisness/CreateEmployee";
 import MarkEmployeeAttendance from "./Screens/Buisness/MarkEmployeeAttendance";
 import CalculatePayrollScreen from "./Screens/Buisness/CalculatePayrollScreen";
+import EmployeeSchedule from "./Screens/Buisness/EmployeeSchedule";
 
 const Stack = createNativeStackNavigator();
 
@@ -122,6 +123,11 @@ export default function App() {
           name="CalculatePayrollScreen"
           component={CalculatePayrollScreen}
           options={{ headerTitle: "Calculate Payroll" }}
+        />
+        <Stack.Screen
+          name="EmployeeSchedule"
+          component={EmployeeSchedule}
+          options={{ headerTitle: "Employee Schedule" }}
         />
         <Stack.Screen
           name="MakeAppointment"

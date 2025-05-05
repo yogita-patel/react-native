@@ -381,5 +381,7 @@ const styles = StyleSheet.create({
   },
   pickerCancel: { color: Colors.commonRed, fontWeight: "500" },
   pickerConfrim: { color: Colors.commonGreen, fontWeight: "500" },
+
+  //DashBoard
 });
 export default styles;

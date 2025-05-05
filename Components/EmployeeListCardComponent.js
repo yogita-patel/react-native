@@ -59,12 +59,12 @@ const EmployeeListCardComponent = ({
           bgColor={Colors.commonGreen}
         />
         <View style={{ marginLeft: 4 }}></View>
-        <SmallBUttonComponent
+        {/* <SmallBUttonComponent
           onPress={onCalculatePay}
           label="Calculate Payroll"
           bgColor={Colors.commonRed}
         />
-        <View style={{ marginLeft: 4 }}></View>
+        <View style={{ marginLeft: 4 }}></View> */}
         <SmallBUttonComponent onPress={onSchedule} label="Schedule" />
       </View>
       <View style={[styles.actions, styles.content]}>
@@ -74,12 +74,12 @@ const EmployeeListCardComponent = ({
         <TouchableOpacity onPress={onDelete} style={{ marginLeft: 12 }}>
           <MaterialIconComponent iconName={"delete"} color={Colors.commonRed} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onView} style={{ marginLeft: 12 }}>
+        {/* <TouchableOpacity onPress={onView} style={{ marginLeft: 12 }}>
           <MaterialIconComponent
             iconName={"visibility"}
             color={Colors.commonGreen}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

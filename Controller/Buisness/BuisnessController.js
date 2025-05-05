@@ -131,6 +131,7 @@ export const updateBuisness = async ({ values, businessId }) => {
       buisnessCategory: values.bcat,
       cityId: values.bcity,
       ownerId: userID,
+      buisnessID: businessId,
     });
     // console.log("buisness", buisness);
     const businessRef = doc(db, "Buisness", businessId);

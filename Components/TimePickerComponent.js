@@ -1,19 +1,26 @@
-// components/TimePickerComponent.js
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Colors from "../Constants/Colors";
 import styles from "../Styles/CommonStyle";
 import { formatDate, formatTime } from "../Controller/global";
+
 const TimePickerComponent = ({
   label,
   onConfirm,
   mode = "time",
   error,
   touched,
+  externalTime = null,
 }) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
+
+  // Sync with parent when externalTime changes
+  useEffect(() => {
+    console.log("External time", externalTime);
+    setSelectedTime(externalTime || null);
+  }, []);
 
   const handleConfirm = (date) => {
     setSelectedTime(date);

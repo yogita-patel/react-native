@@ -8,7 +8,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-// common function for fetch data
+// common function for edit data
 export const addUserID = async ({ docRef, EditData }) => {
   try {
     // add ref-id to field

@@ -59,6 +59,7 @@ const collectionName = {
   user: "Users",
   attendance: "Attendance",
   attendanceStatus: "AttendanceStatus",
+  buisnessAlert: "BuisnessAlert",
 };
 
 const attendanceStatus = {

@@ -34,12 +34,22 @@ export const fetchByCondition = async ({
   collectionName,
   condition,
   value,
+  isDeleteCondition = false,
 }) => {
   try {
-    const que = query(
-      collection(db, collectionName),
-      where(condition, "==", value)
-    );
+    var que;
+    if (isDeleteCondition) {
+      que = query(
+        collection(db, collectionName),
+        where(condition, "==", value),
+        where("isDelete", "==", 0)
+      );
+    } else {
+      que = query(
+        collection(db, collectionName),
+        where(condition, "==", value)
+      );
+    }
     const querySnapshot = await getDocs(que);
     // console.log("querysnap", querySnapshot);
     const items = [];
@@ -110,5 +120,52 @@ export const fetchDataByDoc = async ({ collectionName, IDs }) => {
   } catch (error) {
     console.error("Error: coomonFetch.js fetchDataByDoc:", error);
     throw error;
+  }
+};
+
+export const getRecordCount = async ({ collectionName, fieldName, value }) => {
+  try {
+    console.log("getRecordCount", value);
+    const q = query(
+      collection(db, collectionName),
+      where(fieldName, "==", value),
+      where("isDelete", "==", 0)
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.size;
+  } catch (error) {
+    console.error("Error: coomonFetch.js getRecordCount:", error);
+    return 0;
+  }
+};
+
+export const fetchUsingMultipleCondition = async ({
+  collectionName,
+  conditions = [],
+}) => {
+  try {
+    const colRef = collection(db, collectionName);
+
+    let q = colRef;
+
+    if (conditions.length > 0) {
+      const whereClauses = conditions.map(([field, op, value]) =>
+        where(field, op, value)
+      );
+      q = query(colRef, ...whereClauses);
+    }
+
+    const snapshot = await getDocs(q);
+
+    const result = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return result;
+  } catch (error) {
+    console.error("Error coomonFetch fetchUsingMultipleCondition:", error);
+    return [];
   }
 };

@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import IntroButtonComponent from "../../Components/IntroButtonComponent";
 import styles from "../../Styles/CommonStyle";
 import { Formik } from "formik";
@@ -19,31 +19,61 @@ import TimePickerComponent from "../../Components/TimePickerComponent";
 import LabelComponent from "../../Components/LabelComponent";
 import { getBuisness } from "../../Controller/Buisness/BuisnessController";
 import LoaderComponent from "../../Components/LoaderComponent";
-import { addEmployee } from "../../Controller/Employees/EmployeeController";
+import {
+  addEmployee,
+  updateEmployeeData,
+} from "../../Controller/Employees/EmployeeController";
 const CreateEmployee = ({ navigation, route }) => {
   const [isExistingUSer, setIsExistingUser] = useState(false);
   const [employee, setEmployee] = useState(null);
   const [roleId, setRoleId] = useState();
   const validation = EmployeeValidation();
   const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [joiningDate, set] = useState(null);
   const [cityID, setCityID] = useState();
   const [isLoading, setLoading] = useState(false);
   const [buisnessID, setBuisnessId] = useState();
+  const employeeData = useState(route.params);
+  const [isForEdit, setIsForEdit] = useState(false);
 
+  const getBuisnessCity = async () => {
+    try {
+      const b = await getBuisness();
+      setCityID(b.citId);
+      setBuisnessId(b.buisnessID);
+      // console.log("businesssssssssssssId", b);
+    } catch (e) {
+      console.error("Failed to  getBuisnessCity:", e);
+    } finally {
+    }
+  };
   useEffect(() => {
-    const getBuisnessCity = async () => {
-      try {
-        const b = await getBuisness();
-        setCityID(b.citId);
-        setBuisnessId(b.buisnessID);
-      } catch (e) {
-        console.error("Failed to  getBuisnessCity:", e);
-      } finally {
-      }
-    };
-
     getBuisnessCity();
   }, []);
+
+  //change header title while  screen calls for edit
+  useLayoutEffect(() => {
+    getBuisnessCity();
+    if (employeeData && employeeData.length > 0 && employeeData[0]) {
+      // console.log(
+      //   "change navcigation title----",
+      //   employeeData[0].employeeData.joiningDate.toDate()
+      // );
+      // console.log(
+      //   "change navcigation title----",
+      //   employeeData[0].employeeData.name
+      // );
+      const title = employeeData[0].title;
+      navigation.setOptions({ title: title });
+      setIsForEdit(true);
+    } else {
+      navigation.setOptions({ title: "Add Employee" });
+      setIsForEdit(false);
+    }
+    console.log("EmployeeData-------", employeeData);
+  }, [navigation, employeeData]);
+
   const selectExistingUser = async () => {
     try {
       setIsExistingUser(true);
@@ -116,7 +146,7 @@ const CreateEmployee = ({ navigation, route }) => {
     <SafeAreaView>
       <KeyboardAvoidingView>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {!isExistingUSer && (
+          {isForEdit ? null : !isExistingUSer ? (
             <View>
               <IntroButtonComponent
                 iconName={"add"}
@@ -130,29 +160,51 @@ const CreateEmployee = ({ navigation, route }) => {
                 title={"Invite as a User"}
               ></IntroButtonComponent>
             </View>
-          )}
-          {isExistingUSer && (
+          ) : null}
+          {(isForEdit || isExistingUSer) && (
             <View>
               <Formik
                 initialValues={{
-                  user: "",
-                  contact: "",
+                  user: employeeData[0]?.employeeData.userID || "",
+                  contact: employeeData[0]?.employeeData.contact || "",
                   // city: "",
-                  address: "",
+                  address: employeeData[0]?.employeeData.address || "",
                   // email: "",
-                  employeeRole: "",
-                  payRate: "",
-                  duration: "",
-                  startTime: "",
-                  endTime: "",
-                  joiningDate: "",
-                  workingDays: "",
+                  employeeRole: employeeData[0]?.employeeData.roleID || "",
+                  payRate: employeeData[0]?.employeeData.payRate || "",
+                  duration:
+                    employeeData[0]?.employeeData.paymentDurationID || "",
+                  startTime:
+                    employeeData[0]?.employeeData.startTime?.toDate?.() ||
+                    employeeData[0]?.employeeData.startTime ||
+                    "",
+                  endTime:
+                    employeeData[0]?.employeeData.endTime.toDate() ||
+                    employeeData[0]?.employeeData.endTime ||
+                    "",
+                  joiningDate:
+                    employeeData[0]?.employeeData.joiningDate.toDate() ||
+                    employeeData[0]?.employeeData.joiningDate ||
+                    "",
+                  workingDays: employeeData[0]?.employeeData.workingDays || "",
                 }}
                 validationSchema={validation}
                 enableReinitialize
                 onSubmit={async (values) => {
                   console.log("values ;", values);
-                  await onAddEmployee({ Values: values });
+                  if (isForEdit) {
+                    // console.log("businesssssssssssssId", buisnessID);
+                    const isEdited = await updateEmployeeData({
+                      employeeData: values,
+                      buisnessID: buisnessID,
+                      employeeID: employeeData[0]?.employeeData.employeeID,
+                    });
+                    if (isEdited) {
+                      navigation.goBack();
+                    }
+                  } else {
+                    await onAddEmployee({ Values: values });
+                  }
                 }}
               >
                 {({
@@ -165,23 +217,31 @@ const CreateEmployee = ({ navigation, route }) => {
                   touched,
                 }) => (
                   <>
-                    <DropDownComponent
-                      collectionName={"Users"}
-                      label="Users"
-                      placeholder="Select Employee by email"
-                      labelField="email"
-                      valueField="userID"
-                      maxHeight={1000}
-                      onSelectItem={(item) =>
-                        handleEmployeeSelection(item, setFieldValue)
-                      }
-                      error={errors.user}
-                      touched={errors.user}
-                      selectedValue={values.user}
-                      setSelectedValue={(val) => setFieldValue("user", val)}
-                      conditionLabel={"roleID"}
-                      conditionValue={Constants.usersRole.citizen}
-                    />
+                    {isForEdit ? (
+                      <Text style={[styles.welcomeText, { fontSize: 20 }]}>
+                        {"Edit " +
+                          employeeData[0].employeeData.name +
+                          " Details"}
+                      </Text>
+                    ) : (
+                      <DropDownComponent
+                        collectionName={"Users"}
+                        label="Users"
+                        placeholder="Select Employee by email"
+                        labelField="email"
+                        valueField="userID"
+                        maxHeight={1000}
+                        onSelectItem={(item) =>
+                          handleEmployeeSelection(item, setFieldValue)
+                        }
+                        error={errors.user}
+                        touched={errors.user}
+                        selectedValue={values.user}
+                        setSelectedValue={(val) => setFieldValue("user", val)}
+                        conditionLabel={"roleID"}
+                        conditionValue={Constants.usersRole.citizen}
+                      />
+                    )}
                     <View style={styles.commonMarging20}></View>
                     <Text style={[styles.welcomeText, { fontSize: 20 }]}>
                       Personal-Info
@@ -272,6 +332,11 @@ const CreateEmployee = ({ navigation, route }) => {
                       onConfirm={(time) => setFieldValue("startTime", time)}
                       error={errors.startTime}
                       touched={touched.startTime}
+                      externalTime={
+                        isForEdit
+                          ? employeeData[0].employeeData.startTime.toDate()
+                          : null
+                      }
                     />
 
                     <TimePickerComponent
@@ -279,23 +344,40 @@ const CreateEmployee = ({ navigation, route }) => {
                       onConfirm={(time) => setFieldValue("endTime", time)}
                       error={errors.endTime}
                       touched={touched.endTime}
+                      externalTime={
+                        isForEdit
+                          ? employeeData[0].employeeData.endTime.toDate()
+                          : null
+                      }
                     />
-
                     <TimePickerComponent
                       label="Joining date"
                       mode="date"
                       onConfirm={(date) => setFieldValue("joiningDate", date)}
                       error={errors.joiningDate}
                       touched={touched.joiningDate}
+                      externalTime={
+                        isForEdit
+                          ? employeeData[0].employeeData.joiningDate.toDate()
+                          : null
+                      }
                     />
                     <LabelComponent label={Constants.labels.weekdays} />
                     <WorkingDayComponent
                       onChange={(val) => setFieldValue("workingDays", val)}
                       error={errors.workingDays}
                       touched={touched.workingDays}
+                      checked={
+                        isForEdit
+                          ? employeeData[0].employeeData.workingDays
+                          : []
+                      }
                     />
                     {/* <Text>Selected: {JSON.stringify(workdays)}</Text> */}
-                    <ButtonComponent onButtonPress={handleSubmit} label="Add" />
+                    <ButtonComponent
+                      onButtonPress={handleSubmit}
+                      label={isForEdit ? "Edit" : "Add"}
+                    />
                     <LoaderComponent show={isLoading} />
                   </>
                 )}

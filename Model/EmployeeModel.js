@@ -43,7 +43,7 @@ export class EmployeeModel {
       paymentDurationID: this.paymentDurationID,
       startTime: this.startTime,
       endTime: this.endTime,
-      joiningDate: this.joiningDate.toISOString(),
+      joiningDate: this.joiningDate,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
       isDelete: this.isDelete,

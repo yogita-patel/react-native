@@ -18,6 +18,10 @@ import { getEmployeeList } from "../../Controller/Employees/EmployeeController";
 import SearchFieldComponent from "../../Components/SearchFieldComponent";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import NoDataComponent from "../../Components/NoDataComponent";
+import ConfrimationDialog from "../../Components/ConfrimationDialog";
+import LoaderComponent from "../../Components/LoaderComponent";
+import { deleteEmployeeData } from "../../Controller/Employees/EmployeeController";
 
 const EmployeeListScreen = ({ navigation }) => {
   const [employeeList, setEmployeeList] = useState([]);
@@ -26,6 +30,9 @@ const EmployeeListScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [showConfDialog, setShowConDialog] = useState(false);
+  const [deleteRecord, setDeleteRecord] = useState({});
+  const [isLoadinDialog, setIsLoadingDialog] = useState(false);
 
   const getEmployee = async () => {
     if (loading || !hasMore) return;
@@ -88,11 +95,35 @@ const EmployeeListScreen = ({ navigation }) => {
     setSearchText("");
   };
 
-  const NoDataComponent = () => (
-    <View style={{ padding: 20, alignItems: "center" }}>
-      <Text style={{ fontSize: 16, color: "gray" }}>No data found.</Text>
-    </View>
-  );
+  const setDeletRecord = async ({ emp }) => {
+    setShowConDialog(true);
+    setDeleteRecord(emp);
+    console.log("delete employee---------", deleteRecord);
+  };
+  const deleteEmployee = async () => {
+    try {
+      setIsLoadingDialog(true);
+      const isDeleted = await deleteEmployeeData({ employee: deleteRecord });
+      if (isDeleted) {
+        setEmployeeList([]);
+        setLastDoc(null);
+        setHasMore(true);
+        getEmployee();
+      }
+    } catch (e) {
+      console.log("Error: EmployeeListScreen.js deleteEmployee:", e);
+    } finally {
+      setIsLoadingDialog(false);
+    }
+  };
+
+  const editEmployee = async () => {
+    try {
+    } catch (e) {
+      console.log("Error: EmployeeListScreen.js editEmployee:", e);
+    } finally {
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -100,11 +131,12 @@ const EmployeeListScreen = ({ navigation }) => {
         <SearchFieldComponent
           value={searchText}
           onChangeText={setSearchText}
-          placeholder="Search employees..."
+          placeholder="Search employees by email"
           onSearch={onSearch}
           onclose={onReset}
         />
       </View>
+
       <FlatList
         data={employeeList}
         renderItem={({ item }) => (
@@ -113,12 +145,17 @@ const EmployeeListScreen = ({ navigation }) => {
             email={item.email || "N/A"}
             contact={item.contact || "N/A"}
             role={item.address || "N/A"}
-            onDelete={() => console.log("delete")}
-            onEdit={() => console.log("edit")}
+            onDelete={() => setDeletRecord({ emp: item })}
+            onEdit={() =>
+              navigation.navigate("CreateEmployee", {
+                employeeData: item,
+                title: "Edit Employee",
+              })
+            }
             onView={() => console.log("View")}
             onMarkAttendace={() =>
               navigation.navigate("MarkEmployeeAttendance", {
-                employee: item,
+                employeeData: item,
                 title: "Mark Attendance",
               })
             }
@@ -128,7 +165,12 @@ const EmployeeListScreen = ({ navigation }) => {
                 title: "Calculate PayRoll",
               });
             }}
-            onSchedule={() => console.log("View Schedule")}
+            onSchedule={() =>
+              navigation.navigate("EmployeeSchedule", {
+                Scheduledata: item,
+                title: "Schedule",
+              })
+            }
           />
         )}
         keyExtractor={(item) => item.id}
@@ -138,6 +180,14 @@ const EmployeeListScreen = ({ navigation }) => {
         ListFooterComponent={
           loading ? <ActivityIndicator size="small" /> : null
         }
+      />
+      <LoaderComponent show={isLoadinDialog} />
+      <ConfrimationDialog
+        visible={showConfDialog}
+        title="Delete"
+        message="Are you sure do you want to delete the Employee?"
+        onConfirm={() => deleteEmployee()}
+        onCancel={() => setShowConDialog(false)}
       />
     </View>
   );

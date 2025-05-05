@@ -46,7 +46,7 @@ const BuisnessDashboard = () => {
       <Tab.Screen
         name="BuisnessHomeScreen"
         component={BuisnessHomeScreen}
-        options={{ tabBarLabel: "Home" }}
+        options={{ tabBarLabel: "Home", headerTitle: "Dashboard" }}
       />
       <Tab.Screen
         name="EmployeeListScreen"

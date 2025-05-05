@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Checkbox } from "react-native-paper";
 import Colors from "../Constants/Colors";
 import styles from "../Styles/CommonStyle";
+
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const WorkingDayComponent = ({ onChange, error = null, touched = null }) => {
-  const [checkedDays, setCheckedDays] = useState([]);
+const WorkingDayComponent = ({
+  onChange,
+  error = null,
+  touched = null,
+  checked = [],
+}) => {
+  const [checkedDays, setCheckedDays] = useState(checked);
+
+  // Sync local state when 'checked' prop changes
+  useEffect(() => {
+    setCheckedDays(checked || []);
+  }, [checked]);
 
   const toggleDay = (day) => {
     const updated = checkedDays.includes(day)

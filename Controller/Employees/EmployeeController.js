@@ -145,3 +145,108 @@ export const getEmployeeList = async ({ lastDoc, searchText = null }) => {
     return null;
   }
 };
+
+export const deleteEmployeeData = async ({ employee }) => {
+  try {
+    const empDocRef = doc(
+      db,
+      Constants.collectionName.employee,
+      employee.employeeID
+    );
+    // console.log("DocRef--------------", DocRef);
+    const isEdit = await addUserID({
+      docRef: empDocRef,
+      EditData: {
+        employeeID: employee.employeeID,
+        isDelete: 1,
+      },
+    });
+    if (isEdit) {
+      const DocRef = doc(db, Constants.collectionName.user, employee.userID);
+      console.log("DocRef--------------", DocRef);
+      const userDoc = await addUserID({
+        docRef: DocRef,
+        EditData: {
+          employeeID: null,
+          roleID: Constants.usersRole.citizen,
+        },
+      });
+      if (userDoc) {
+        showToast({
+          description: "Employee Deleted!",
+          message: "Success",
+          type: "success",
+        });
+        return true;
+      } else {
+        showToast({
+          description: "Employee Delete fail please try again later!",
+          message: "Error",
+          type: "Error",
+        });
+        return false;
+      }
+    } else {
+      showToast({
+        description: "Employee delete fail please try again later!",
+        message: "Error",
+        type: "Error",
+      });
+      return false;
+    }
+  } catch (e) {
+    console.log("Error: EmployeeController.js deleteEmployee:", e);
+    return null;
+  }
+};
+
+export const updateEmployeeData = async ({
+  employeeData,
+  buisnessID,
+  employeeID,
+}) => {
+  try {
+    console.log("updateEmployeeData:", employeeData);
+    // const user = await getLocalUser();
+    // const userID = user.userID;
+
+    console.log("userId", buisnessID);
+    var employee = new EmployeeModel({
+      userID: employeeData.user,
+      employeeID: employeeID,
+      businessID: buisnessID,
+      roleID: employeeData.employeeRole,
+      payRate: employeeData.payRate,
+      address: employeeData.address,
+      contact: employeeData.contact,
+      workingDays: employeeData.workingDays,
+      paymentDurationID: employeeData.duration,
+      startTime: employeeData.startTime,
+      endTime: employeeData.endTime,
+      joiningDate: employeeData.joiningDate,
+    });
+    console.log("emplyee", employee.toJson());
+    const employeeRef = doc(db, Constants.collectionName.employee, employeeID);
+    const updated = addUserID({
+      docRef: employeeRef,
+      EditData: employee.toJson(),
+    });
+    if (updated) {
+      showToast({
+        description: "Employee Edited successfully!",
+        message: "Success",
+      });
+      return true;
+    } else {
+      showToast({
+        description: "Employee update fail please try gain later!",
+        message: "Error",
+        type: "error",
+      });
+      return false;
+    }
+  } catch (e) {
+    console.log("Error: EmployeeController.js updateEmployeeData:", e);
+    return null;
+  }
+};
