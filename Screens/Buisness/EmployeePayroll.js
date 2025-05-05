@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import SmallDateTimepicker from "../../Components/SmallDateTimepicker";
 import styles from "../../Styles/CommonStyle";
@@ -6,6 +12,8 @@ import MonthYearPickerModal from "../../Components/MonthYearPicker";
 import ButtonComponent from "../../Components/ButtonComponent";
 import PayrollCardComponent from "../../Components/PayrollCardComponent";
 import { GeneratePayroll } from "../../Controller/Buisness/PayrollController";
+import NoDataComponent from "../../Components/NoDataComponent";
+import { getMonth } from "../../Controller/global";
 const EmployeePayroll = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -15,23 +23,24 @@ const EmployeePayroll = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [payrollList, setPayrollList] = useState([]);
 
   const generatAdminPayroll = async ({ month, year }) => {
-    // if (loading || !hasMore) return;
+    if (loading || !hasMore) return;
 
     // const user = await getLocalUser();
     // console.log("buissnessID-----", user.businessID);
     setLoading(true);
     try {
-      await GeneratePayroll({ lastDoc: lastDoc, month: month, year: year });
-      // const {
-      //   list: employee,
-      //   hasMore: more,
-      //   lastDoc: newLastDoc,
-      // } = await getEmployeeList({ lastDoc: lastDoc });
-      // setEmployeeList(employee);
-      // setLastDoc(newLastDoc);
-      // setHasMore(more);
+      // await GeneratePayroll({ lastDoc: lastDoc, month: month, year: year });
+      const {
+        list: payroll,
+        hasMore: more,
+        lastDoc: newLastDoc,
+      } = await GeneratePayroll({ lastDoc: lastDoc, month: month, year: year });
+      setPayrollList(payroll);
+      setLastDoc(newLastDoc);
+      setHasMore(more);
     } catch (e) {
       console.log("Error in EmployeePayroll.js generatAdminPayroll:", e);
     } finally {
@@ -61,10 +70,38 @@ const EmployeePayroll = () => {
           margin={0}
           width={330}
         />
-
+        <Text>
+          {" "}
+          {selectedDate
+            ? "Selected time period : " + getMonth(selectedDate.month)
+            : "Please select time period"}
+        </Text>
         {/* </View> */}
       </View>
-      <PayrollCardComponent />
+
+      <FlatList
+        data={payrollList}
+        renderItem={({ item }) => (
+          <PayrollCardComponent
+            employeeName={item.name}
+            deducation="0"
+            payRate={item.payRate}
+            totalPay={item.payrollAmount}
+            workingHours={item.totalHours}
+          />
+        )}
+        keyExtractor={(item) => item.employeeID}
+        // onEndReached={() => {
+        //   if (hasMore && !loading) {
+        //     fetchAttendance(startDate, endDate, searchName, lastDoc);
+        //   }
+        // }}
+        onEndReachedThreshold={0.5}
+        ListEmptyComponent={!loading ? <NoDataComponent /> : null}
+        ListFooterComponent={
+          loading ? <ActivityIndicator size="small" /> : null
+        }
+      />
     </View>
   );
 };

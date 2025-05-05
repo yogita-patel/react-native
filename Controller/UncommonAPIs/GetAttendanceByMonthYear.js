@@ -20,15 +20,21 @@ export const GetAttendanceByEmployee = async ({
   endOfMonth,
 }) => {
   try {
-    const q = query(
-      collection(db, Constants.collectionName.attendance)
-      //   where("employeeID", "==", employeeID),
-      //   where("attendanceDate", ">=", startOfMonth),
-      //   where("attendanceDate", "<=", endOfMonth)
+    console.log(
+      "GetAttendanceByEmployee----------------",
+      startOfMonth,
+      endOfMonth
     );
+    const q = query(
+      collection(db, Constants.collectionName.attendance),
+      where("employeeID", "==", employeeID),
+      where("attendanceDate", ">=", startOfMonth),
+      where("attendanceDate", "<=", endOfMonth)
+    );
+    console.log("Query-------------", q);
 
     const attendanceSnapshot = await getDocs(q);
-    console.log("Attendace snap---------------", attendanceSnapshot);
+    // console.log("Attendace snap---------------", attendanceSnapshot);
     const dataMap = {};
     attendanceSnapshot.forEach((doc) => {
       dataMap[doc.id] = doc.data();

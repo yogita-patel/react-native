@@ -53,12 +53,15 @@ const PayrollCardComponent = ({
         <View style={styles.searchDateContriner}>
           <InfoComponent
             iconName={"money"}
-            label={"Deduction: " + deducation}
+            label={"Deduction: " + deducation + "$"}
           />
           <InfoComponent iconName={"money"} label={"bonus: 0 $"} />
         </View>
         <View style={styles.searchDateContriner}>
-          <InfoComponent iconName={"money"} label={"Payable: " + totalPay} />
+          <InfoComponent
+            iconName={"money"}
+            label={"Payable: " + totalPay + "$"}
+          />
         </View>
       </View>
     </View>

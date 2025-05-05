@@ -28,3 +28,10 @@ export const formatTime = (date) => {
     minute: "2-digit",
   });
 };
+
+export const getMonth = (monthNumber) => {
+  // const monthNumber = selectedDate.month;
+  const date = new Date(2023, monthNumber - 1);
+  const monthName = date.toLocaleString("default", { month: "long" });
+  return monthName;
+};
