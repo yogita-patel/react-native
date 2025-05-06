@@ -23,6 +23,7 @@ const DropDownComponent = ({
   setSelectedValue,
   conditionLabel = null,
   conditionValue = null,
+  isDisable = null,
   noData = "There's nothing to show",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,6 +85,7 @@ const DropDownComponent = ({
         placeholder={placeholder}
         listMode="SCROLLVIEW"
         searchable={true}
+        disabled={isDisable}
         searchPlaceholder="Search..."
         style={[styles.input, error && { borderColor: "red" }]}
         arrowIconStyle={{

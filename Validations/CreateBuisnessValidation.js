@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const CreateBuisnessValidation = () => {
+export const CreateBuisnessValidation = ({ isHospital = null }) => {
   return Yup.object().shape({
     bname: Yup.string().required("Business name is require"),
 
@@ -13,5 +13,8 @@ export const CreateBuisnessValidation = () => {
       .max(15, "Contact number must be at most 15 digits"),
     bcat: Yup.string().required("Please select Category"),
     bcity: Yup.string().required("Please select City"),
+    htype: isHospital
+      ? Yup.string().required("Please select hospital type")
+      : Yup.string().nullable(),
   });
 };

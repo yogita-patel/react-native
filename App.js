@@ -38,6 +38,8 @@ export default function App() {
           setIninitalRoute("Login");
         } else if (currentUser.businessID) {
           setIninitalRoute("BuisnessDashboard");
+        } else if (currentUser.hospitalID) {
+          setIninitalRoute("HospitalDashboard");
         } else if (currentUser.userID) {
           console.log("userId login route", currentUser.businessID);
           setIninitalRoute("InitialScreen");
@@ -97,9 +99,9 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="HosptalDashboard"
+          name="HospitalDashboard"
           component={HospitalDashboard}
-          // options={{ headerShown: false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Create Buisness"
@@ -147,7 +149,6 @@ export default function App() {
           // options={{ headerShown: false }}
         />
       </Stack.Navigator>
-
       <Toast />
     </NavigationContainer>
   );

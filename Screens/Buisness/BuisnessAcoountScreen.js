@@ -189,6 +189,7 @@ const BuisnessAcoountScreen = ({ navigation }) => {
                 navigation.navigate("Create Buisness", {
                   buisnessData: buisnessData,
                   title: "Edit Business",
+                  isForEdit: true,
                 })
               }
               label="Edit"

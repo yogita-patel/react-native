@@ -7,7 +7,10 @@ import { fetchByCondition } from "../FetchAPIs/coomonFetch";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
 import Constants from "../../Constants/Strings";
-export const onCreateBuisness = async (values) => {
+import { removeData } from "../../LocalStorage/RemoveLocalData";
+import { UserModel } from "../../Model/UserModel";
+import { storeData } from "../../LocalStorage/SaveDataLocally";
+export const onCreateBuisness = async ({ values, isHospital = false }) => {
   try {
     console.log("onCreateBuisness:", values);
     const user = await getLocalUser();
@@ -21,40 +24,66 @@ export const onCreateBuisness = async (values) => {
       buisnessCategory: values.bcat,
       cityId: values.bcity,
       ownerId: userID,
+      hospitalType: isHospital ? values.htype : null,
     });
     console.log("buisness", buisness);
     const bdocRef = await AddData({
-      collectionName: "Buisness",
+      collectionName: Constants.collectionName.buisness,
       modelName: buisness.toJson(),
     });
-    var doc;
+    var docc;
     if (bdocRef) {
       //add document id to the document itself
-      doc = await addUserID({
+      docc = await addUserID({
         docRef: bdocRef,
         EditData: { buisnessID: bdocRef.id },
       });
     }
     var userDoc;
-    if (doc) {
-      const businessDocRef = doc(db, "Users", bdocRef.id);
+    if (docc) {
+      const businessDocRef = doc(db, "Users", user.userID);
       userDoc = await addUserID({
         docRef: businessDocRef,
-        EditData: {
-          buisnessID: bdocRef.id,
-          roleID: Constants.usersRole.buisnessOwner,
-        },
+        EditData: isHospital
+          ? {
+              hospitalID: bdocRef.id,
+              roleID: Constants.usersRole.hospitalAdmin,
+            }
+          : {
+              buisnessID: bdocRef.id,
+              roleID: Constants.usersRole.buisnessOwner,
+            },
       });
+      const currentUser = await getLocalUser();
+      const newUser = new UserModel({
+        fullName: currentUser.fullname,
+        authID: currentUser.authId,
+        cityID: currentUser.city,
+        email: currentUser.email,
+        countryID: currentUser.countryID,
+        roleID: isHospital
+          ? Constants.usersRole.hospitalAdmin
+          : Constants.usersRole.buisnessOwner,
+        hospitalID: isHospital ? bdocRef.id : null,
+        businessID: isHospital ? null : bdocRef.id,
+        userID: currentUser.userID,
+      });
+      await removeData("user");
+      await storeData({ key: "user", value: newUser.toJson() });
     }
     if (userDoc) {
       showToast({
-        description: "Buisness Registred successfully!",
+        description: isHospital
+          ? "Hospital Registred successfully!"
+          : "Buisness Registred successfully!",
         message: "Success",
       });
       return true;
     } else {
       showToast({
-        description: "Buisness Registration fail please try again later!",
+        description: isHospital
+          ? "Hospital Registration fail please try again later!"
+          : "Buisness Registration fail please try again later!",
         message: "Error",
         type: "error",
       });

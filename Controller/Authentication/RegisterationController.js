@@ -60,6 +60,7 @@ const Registration = async ({ values }) => {
         EditData: { userID: userDocRef.id },
       });
     }
+    user.setUserID(userDocRef.id); //set userID to add into local user
     // if (values.role == 1) {
     //   // for business
     //   var business = BusinessModel({

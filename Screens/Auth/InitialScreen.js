@@ -17,8 +17,8 @@ const InitialScreen = ({ navigation }) => {
       try {
         LoaderComponent({ show: true });
         const user = await getLocalUser();
+        console.log("isLogin = ", user);
         setFname(user.fullName);
-        // console.log("isLogin = ", user);
       } catch (e) {
         console.error("Failed to  getUser:", e);
       } finally {
@@ -44,15 +44,24 @@ const InitialScreen = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>{"Welcome " + userFname}</Text>
+      <Text style={styles.welcomeText}>
+        {userFname ? "Welcome " + userFname : "Welcome "}
+      </Text>
       <IntroButtonComponent
         iconName={"business"}
-        onPress={() => navigation.navigate("Create Buisness")}
+        onPress={() =>
+          navigation.navigate("Create Buisness", { title: "Create Buisness" })
+        }
         title={"Create a business"}
       />
       <IntroButtonComponent
         iconName={"local-hospital"}
-        onPress={() => navigation.navigate("CreateHospital")}
+        onPress={() =>
+          navigation.navigate("Create Buisness", {
+            isHospital: true,
+            title: "Create Hospital",
+          })
+        }
         title={"Create a hospital"}
       />
       <IntroButtonComponent

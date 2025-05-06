@@ -21,11 +21,14 @@ import LoaderComponent from "../../Components/LoaderComponent";
 import { getLocalUser } from "../../Controller/global";
 
 const CreateBuisness = ({ route, navigation }) => {
-  const validation = CreateBuisnessValidation();
   const [categoryID, setcategoryID] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [countryId, setContryId] = useState();
   const businessData = useState(route.params);
+  const [isForHospital, setIsForHospital] = useState(false);
+  const validation = CreateBuisnessValidation({ isHospital: isForHospital });
+  const [isForEdit, setIsForEdit] = useState(false);
+  // const data = useState(route.params); //used for hospital data if i use buisnessdata it'll create confusion
 
   const handelCategorySelection = (item, setFieldValue) => {
     try {
@@ -45,26 +48,35 @@ const CreateBuisness = ({ route, navigation }) => {
   };
   //change header title while  screen calls for edit
   useLayoutEffect(() => {
-    if (businessData[0].title) {
-      console.log("change navigation title", businessData[0].title);
-      const title = businessData[0].title;
-      navigation.setOptions({ title: title });
+    if (businessData) {
+      console.log("buisnessData=================", businessData);
+      if (businessData[0].title) {
+        console.log("change navigation title", businessData[0].title);
+        const title = businessData[0].title;
+        navigation.setOptions({ title: title });
+      }
+      if (businessData[0].isHospital) {
+        setIsForHospital(true);
+      }
+      if (businessData[0].isForEdit) {
+        setIsForEdit(true);
+      }
     }
   }, [navigation, businessData]);
-  useEffect(() => {
-    const getCountryID = async () => {
-      try {
-        console.log("buisnessdata for id", businessData[0].title);
-        setIsLoading(true);
-        const user = await getLocalUser();
-        setContryId(user.countryID);
-      } catch (error) {
-        console.error("Error: createBuisness.js getCountryID", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const getCountryID = async () => {
+    try {
+      // console.log("buisnessdata for id", businessData[0].title);
+      setIsLoading(true);
+      const user = await getLocalUser();
+      setContryId(user.countryID);
+    } catch (error) {
+      console.error("Error: createBuisness.js getCountryID", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     getCountryID();
   }, []);
   return (
@@ -74,19 +86,36 @@ const CreateBuisness = ({ route, navigation }) => {
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <Formik
               initialValues={{
-                bname: businessData[0].buisnessData.buisnessName || "",
-                email: businessData[0].buisnessData.buisnessEmail || "",
-                baddress: businessData[0].buisnessData.buisnessAddress || "",
-                bcontact: businessData[0].buisnessData.buisnessContact || "",
-                bcat: businessData[0].buisnessData.buisnessCategory || "",
-                bcity: businessData[0].buisnessData.cityId || "",
+                bname: isForEdit
+                  ? businessData[0].buisnessData.buisnessName || ""
+                  : "",
+                email: isForEdit
+                  ? businessData[0].buisnessData.buisnessEmail || ""
+                  : "",
+                baddress: isForEdit
+                  ? businessData[0].buisnessData.buisnessAddress || ""
+                  : "",
+                bcontact: isForEdit
+                  ? businessData[0].buisnessData.buisnessContact || ""
+                  : "",
+                bcat: isForEdit
+                  ? businessData[0].buisnessData.buisnessCategory || ""
+                  : isForHospital
+                  ? Constants.buisnessCategoryId.hospital
+                  : "",
+                bcity: isForEdit
+                  ? businessData[0].buisnessData.cityId || ""
+                  : "",
+                htype: isForEdit
+                  ? businessData[0].buisnessData.hospitalType || ""
+                  : "",
               }}
               validationSchema={validation}
               enableReinitialize
               onSubmit={async (values) => {
                 console.log("register clicked:", values);
                 setIsLoading(true);
-                if (businessData) {
+                if (isForEdit && !isForHospital) {
                   const updated = await updateBuisness({
                     businessId: businessData[0].buisnessData.buisnessID,
                     values: values,
@@ -95,9 +124,23 @@ const CreateBuisness = ({ route, navigation }) => {
                     navigation.goBack();
                   }
                 } else {
-                  const istrue = await onCreateBuisness(values);
-
-                  if (istrue) {
+                  const istrue = await onCreateBuisness({
+                    values: values,
+                    isHospital: isForHospital,
+                  });
+                  console.log(
+                    "Register Done===========",
+                    istrue,
+                    isForHospital
+                  );
+                  if (istrue && isForHospital) {
+                    console.log(
+                      "if Register Done===========",
+                      istrue,
+                      isForHospital
+                    );
+                    navigation.navigate("HospitalDashboard");
+                  } else if (istrue) {
                     navigation.navigate("BuisnessDashboard");
                   }
                 }
@@ -116,9 +159,17 @@ const CreateBuisness = ({ route, navigation }) => {
                 <>
                   <View>
                     <TextInputComponent
-                      placeholder={Constants.strings.businessNamePlaceholder}
+                      placeholder={
+                        isForHospital
+                          ? Constants.strings.hospitalNamePlaceholder
+                          : Constants.strings.businessNamePlaceholder
+                      }
                       // onChangeText={setText}
-                      label={Constants.labels.businessNameLabel}
+                      label={
+                        isForHospital
+                          ? Constants.labels.hospitalNameLabel
+                          : Constants.labels.businessNameLabel
+                      }
                       onChangeText={handleChange("bname")}
                       value={values.bname}
                       onBlur={handleBlur("bname")}
@@ -155,22 +206,56 @@ const CreateBuisness = ({ route, navigation }) => {
                       conditionValue={countryId}
                     />
                     <TextInputComponent
-                      placeholder={Constants.strings.businessAddressPlaceholder}
-                      label={Constants.labels.businessAddressLabel}
+                      placeholder={
+                        isForHospital
+                          ? Constants.strings.hospitalAddressPlaceholder
+                          : Constants.strings.businessAddressPlaceholder
+                      }
+                      label={
+                        isForHospital
+                          ? Constants.labels.hospitalAddressLabel
+                          : Constants.labels.businessAddressLabel
+                      }
                       onChangeText={handleChange("baddress")}
                       value={values.baddress}
                       onBlur={handleBlur("baddress")}
                       error={touched.baddress && errors.baddress}
                     />
                     <TextInputComponent
-                      placeholder={Constants.strings.businessContactPlaceholder}
-                      label={Constants.labels.businessContactLabel}
+                      placeholder={
+                        isForHospital
+                          ? Constants.strings.businessContactPlaceholder
+                          : Constants.strings.businessContactPlaceholder
+                      }
+                      label={
+                        isForHospital
+                          ? Constants.labels.hospitalContactLabel
+                          : Constants.labels.businessContactLabel
+                      }
                       onChangeText={handleChange("bcontact")}
                       value={values.bcontact}
                       onBlur={handleBlur("bcontact")}
                       error={touched.bcontact && errors.bcontact}
                       keyboardType="numeric"
                     />
+                    {isForHospital && (
+                      <DropDownComponent
+                        collectionName={Constants.collectionName.hospitalType}
+                        label="Hospital Type"
+                        placeholder="Select hospital type"
+                        labelField="hospitalTypeName"
+                        valueField="hospitalTypeID"
+                        maxHeight={1000}
+                        // isDisable={isForHospital}
+                        onSelectItem={(item) =>
+                          setFieldValue("htype", item.value)
+                        }
+                        error={errors.htype}
+                        touched={errors.htype}
+                        selectedValue={values.htype}
+                        setSelectedValue={(val) => setFieldValue("htype", val)}
+                      />
+                    )}
                     <DropDownComponent
                       collectionName={"BuisnessCategory"}
                       label="Category"
@@ -178,6 +263,7 @@ const CreateBuisness = ({ route, navigation }) => {
                       labelField="catName"
                       valueField="catID"
                       maxHeight={1000}
+                      isDisable={isForHospital}
                       onSelectItem={(item) =>
                         handelCategorySelection(item, setFieldValue)
                       }
@@ -190,7 +276,7 @@ const CreateBuisness = ({ route, navigation }) => {
                   <LoaderComponent show={isLoading} />
                   <ButtonComponent
                     onButtonPress={handleSubmit}
-                    label={businessData ? "Edit Buisness" : "Create"}
+                    label={isForEdit ? "Edit" : "Create"}
                   />
                 </>
               )}

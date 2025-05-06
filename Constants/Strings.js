@@ -49,6 +49,7 @@ const labels = {
 
 const usersRole = {
   buisnessOwner: "Buisness-Owner",
+  hospitalAdmin: "Hospital-Admin",
   citizen: "Citizen",
   employee: "Employee",
   manager: "Manager",
@@ -69,6 +70,7 @@ const collectionName = {
   attendance: "Attendance",
   attendanceStatus: "AttendanceStatus",
   buisnessAlert: "BuisnessAlert",
+  hospitalType: "HospitalType",
 };
 
 const attendanceStatus = {
@@ -79,6 +81,9 @@ const attendanceStatus = {
 
 const alertType = {
   buisnessAlert: "BuisnessAlert",
+};
+const buisnessCategoryId = {
+  hospital: "fDYmbIMl0E5Jh8ls7OjG",
 };
 
 const lazyLoadLimit = 10;
@@ -93,4 +98,5 @@ export default {
   alertType,
   employeesRoleID,
   dayNameMap,
+  buisnessCategoryId,
 };
