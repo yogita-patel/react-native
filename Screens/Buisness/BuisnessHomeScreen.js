@@ -10,6 +10,7 @@ import {
   getTotalEmployee,
 } from "../../Controller/Buisness/DashboardController";
 import { getLocalUser } from "../../Controller/global";
+import Constants from "../../Constants/Strings";
 
 const BuisnessHomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +64,11 @@ const BuisnessHomeScreen = ({ navigation }) => {
           iconName={"warning"}
           label={"Alert"}
           value={alertCount}
+          onCardPress={() => {
+            navigation.navigate("AlertScreen", {
+              type: Constants.alertType.buisnessAlert,
+            });
+          }}
         />
       </View>
       <LoaderComponent show={isLoading} />

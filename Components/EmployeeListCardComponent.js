@@ -18,7 +18,7 @@ const EmployeeListCardComponent = ({
   onDelete,
   onView,
   onMarkAttendace,
-  onCalculatePay,
+  onViewPerformance,
   onSchedule,
 }) => {
   // return (
@@ -59,12 +59,12 @@ const EmployeeListCardComponent = ({
           bgColor={Colors.commonGreen}
         />
         <View style={{ marginLeft: 4 }}></View>
-        {/* <SmallBUttonComponent
-          onPress={onCalculatePay}
-          label="Calculate Payroll"
+        <SmallBUttonComponent
+          onPress={onViewPerformance}
+          label="View Performance"
           bgColor={Colors.commonRed}
         />
-        <View style={{ marginLeft: 4 }}></View> */}
+        <View style={{ marginLeft: 4 }}></View>
         <SmallBUttonComponent onPress={onSchedule} label="Schedule" />
       </View>
       <View style={[styles.actions, styles.content]}>

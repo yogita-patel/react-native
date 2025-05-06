@@ -1,16 +1,16 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import Colors from "../Constants/Colors";
 import MaterialIconComponent from "./MaterialIconComponent";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const DashboardCard = ({ iconName, size = 30, label, value }) => {
+const DashboardCard = ({ iconName, size = 30, label, value, onCardPress }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onCardPress}>
       <MaterialIcons name={iconName} size={30} color={Colors.primary} />
       <Text style={styles.dashboardLabel}>{label}</Text>
       <Text style={styles.dashboardValue}>{value}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

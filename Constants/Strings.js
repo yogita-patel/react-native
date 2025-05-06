@@ -67,7 +67,13 @@ const attendanceStatus = {
   absent: "nAa5ACDkdmIFKd88ljFp",
   late: "JuVcVBoJhPBgrl7OhMet",
 };
+
+const alertType = {
+  buisnessAlert: "BuisnessAlert",
+};
+
 const lazyLoadLimit = 10;
+
 export default {
   strings,
   labels,
@@ -75,4 +81,5 @@ export default {
   collectionName,
   lazyLoadLimit,
   attendanceStatus,
+  alertType,
 };

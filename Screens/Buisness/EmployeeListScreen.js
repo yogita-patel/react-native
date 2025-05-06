@@ -159,12 +159,7 @@ const EmployeeListScreen = ({ navigation }) => {
                 title: "Mark Attendance",
               })
             }
-            onCalculatePay={() => {
-              navigation.navigate("CalculatePayrollScreen", {
-                employee: item,
-                title: "Calculate PayRoll",
-              });
-            }}
+            onViewPerformance={() => console.log("View")}
             onSchedule={() =>
               navigation.navigate("EmployeeSchedule", {
                 Scheduledata: item,

@@ -1,9 +1,12 @@
-import { getLocalUser } from "../global";
+import { formatDate, formatTime, getLocalUser, getMonth } from "../global";
 import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
 import { fetchList } from "../FetchAPIs/coomonFetch";
 import Constants from "../../Constants/Strings";
 import { GetAttendanceByEmployee } from "../UncommonAPIs/GetAttendanceByMonthYear";
 import { fetchByCondition } from "../FetchAPIs/coomonFetch";
+import AlertModel from "../../Model/AlertModel";
+import { AddData } from "../AddAPIs/CommonAddAPI";
+import { showToast } from "../../Components/ToastComponent";
 export const GeneratePayroll = async ({
   lastDoc,
   searchText = null,
@@ -11,6 +14,11 @@ export const GeneratePayroll = async ({
   year,
 }) => {
   try {
+    showToast({
+      message: "Information",
+      description: "Generating payroll may take time,please wait",
+      type: "info",
+    });
     const user = await getLocalUser();
     const filterData = [
       { field: "businessID", operator: "==", value: user.businessID },
@@ -38,8 +46,11 @@ export const GeneratePayroll = async ({
       filters: filterData,
     });
 
-    const startOfMonth = new Date(year, month - 1, 1, 0, 0, 0); // e.g., May -> month=5, so month-1 = 4
-    const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999); // last day of selected month
+    const startOfMonth = new Date(year, month - 1, 1, 0, 0, 0);
+    const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
+
+    console.log("start of month---------", startOfMonth);
+    console.log("end of month---------", endOfMonth);
 
     const payrolls = await Promise.all(
       employeeList.list.map(async (employee) => {
@@ -81,7 +92,24 @@ export const GeneratePayroll = async ({
         };
       })
     );
-
+    const now = new Date();
+    if (payrolls) {
+      //Add Alert to alert collection
+      const des = `Payroll Generated on ${formatDate(now)} at ${formatTime(
+        now
+      )} for ${getMonth(month)}  ${year}`;
+      var alertData = new AlertModel({
+        title: "Payroll Alert",
+        description: des,
+        buisnessID: user.businessID,
+        alertType: Constants.alertType.buisnessAlert,
+      });
+      console.log("alert data--------------", alertData.toJson());
+      const bdocRef = await AddData({
+        collectionName: Constants.collectionName.buisnessAlert,
+        modelName: alertData.toJson(),
+      });
+    }
     return {
       list: payrolls,
       lastDoc: employeeList.lastDoc,
