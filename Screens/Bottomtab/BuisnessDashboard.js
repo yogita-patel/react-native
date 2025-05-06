@@ -11,7 +11,7 @@ import IconButtonComponent from "../../Components/IconButtonComponent";
 import EmployeeAttendance from "../Buisness/EmployeeAttendance";
 import EmployeePayroll from "../Buisness/EmployeePayroll";
 const Tab = createBottomTabNavigator();
-const BuisnessDashboard = () => {
+const BuisnessDashboard = ({ navigation, route }) => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

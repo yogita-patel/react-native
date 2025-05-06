@@ -146,13 +146,13 @@ const EmployeeListScreen = ({ navigation }) => {
             contact={item.contact || "N/A"}
             role={item.address || "N/A"}
             onDelete={() => setDeletRecord({ emp: item })}
-            isShowPerformance={
-              item.roleID === Constants.employeesRoleID.manager ||
-              item.roleID === Constants.employeesRoleID.buisnessAdmin ||
-              item.roleID === Constants.employeesRoleID.buisnessOwner
-                ? false
-                : true
-            }
+            // isShowPerformance={
+            //   item.roleID === Constants.employeesRoleID.manager ||
+            //   item.roleID === Constants.employeesRoleID.buisnessAdmin ||
+            //   item.roleID === Constants.employeesRoleID.buisnessOwner
+            //     ? false
+            //     : true
+            // }
             onEdit={() =>
               navigation.navigate("CreateEmployee", {
                 employeeData: item,
@@ -166,7 +166,12 @@ const EmployeeListScreen = ({ navigation }) => {
                 title: "Mark Attendance",
               })
             }
-            onViewPerformance={() => console.log("View")}
+            onViewPerformance={() =>
+              navigation.navigate("ViewEmployeePerformace", {
+                employeeData: item,
+                title: "View Performance",
+              })
+            }
             onSchedule={() =>
               navigation.navigate("EmployeeSchedule", {
                 Scheduledata: item,

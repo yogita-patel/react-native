@@ -53,6 +53,7 @@ const usersRole = {
   employee: "Employee",
   manager: "Manager",
 };
+const dayNameMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const employeesRoleID = {
   manager: "b9Fwrf4hXDHBLGG6WWmf",
@@ -91,4 +92,5 @@ export default {
   attendanceStatus,
   alertType,
   employeesRoleID,
+  dayNameMap,
 };

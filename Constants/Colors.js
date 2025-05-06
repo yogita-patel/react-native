@@ -12,4 +12,6 @@ export default {
   lightGrey: "#e6e8e6",
   commonGrey: "grey",
   commonOrange: "orange",
+  gredient1: "#01b2b2",
+  gredient2: "#019898",
 };

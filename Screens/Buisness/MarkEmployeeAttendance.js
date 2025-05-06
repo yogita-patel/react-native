@@ -19,7 +19,7 @@ import { useFormikContext } from "formik";
 import LoaderComponent from "../../Components/LoaderComponent";
 import DropDownComponent from "../../Components/DropDownComponent";
 const MarkEmployeeAttendance = ({ navigation, route }) => {
-  const { employee } = route.params;
+  const employee = useState(route.params);
   const validation = AttendanceEmployeeValidation();
   const [isLoading, setIsLoadind] = useState(false);
   //   const resetForm = useFormikContext();
@@ -53,7 +53,7 @@ const MarkEmployeeAttendance = ({ navigation, route }) => {
       <KeyboardAvoidingView>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Text style={[styles.welcomeText, { fontSize: 20 }]}>
-            Mark Attendance of {employee.name}
+            Mark Attendance of {employee ? employee[0].employeeData.name : ""}
           </Text>
           <Formik
             initialValues={initialValues}
@@ -65,13 +65,13 @@ const MarkEmployeeAttendance = ({ navigation, route }) => {
               console.log("Emplyee data---------------------", employee);
               console.log(
                 "check buisness id before markAttendance:-",
-                employee.businessID
+                employee[0].employeeData.businessID
               );
               await markAttendance({
                 values: values,
-                employeeID: employee.employeeID,
-                buisnessID: employee.businessID,
-                employeeUSerID: employee.userID,
+                employeeID: employee[0].employeeData.employeeID,
+                buisnessID: employee[0].employeeData.businessID,
+                employeeUSerID: employee[0].employeeData.userID,
               });
               setIsLoadind(false);
               navigation.goBack();

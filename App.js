@@ -21,6 +21,7 @@ import MarkEmployeeAttendance from "./Screens/Buisness/MarkEmployeeAttendance";
 import CalculatePayrollScreen from "./Screens/Buisness/CalculatePayrollScreen";
 import EmployeeSchedule from "./Screens/Buisness/EmployeeSchedule";
 import AlertScreen from "./Screens/Alert/AlertScreen";
+import ViewEmployeePerformace from "./Screens/Buisness/ViewEmployeePerformace";
 
 const Stack = createNativeStackNavigator();
 
@@ -130,7 +131,11 @@ export default function App() {
           component={EmployeeSchedule}
           options={{ headerTitle: "Employee Schedule" }}
         />
-
+        <Stack.Screen
+          name="ViewEmployeePerformace"
+          component={ViewEmployeePerformace}
+          options={{ headerTitle: "Employee Performance" }}
+        />
         <Stack.Screen
           name="AlertScreen"
           component={AlertScreen}

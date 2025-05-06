@@ -35,3 +35,7 @@ export const getMonth = (monthNumber) => {
   const monthName = date.toLocaleString("default", { month: "long" });
   return monthName;
 };
+
+function iosDateToFirestoreTimestamp(iosDateString) {
+  return firestore.Timestamp.fromDate(new Date(iosDateString));
+}

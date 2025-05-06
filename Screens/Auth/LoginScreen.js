@@ -34,7 +34,11 @@ const LoginScreen = ({ navigation }) => {
               setIsLoading(true);
               const user = await loginUser(values);
               setIsLoading(false);
-              if (user.businessID) {
+              if (
+                user.businessID &&
+                user.roleID === Constants.usersRole.manager
+              ) {
+              } else if (user.businessID) {
                 //if current user have buisness then it redirect to buisness dashboard
                 navigation.navigate("BuisnessDashboard");
               } else {
