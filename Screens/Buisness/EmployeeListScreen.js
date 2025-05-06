@@ -146,6 +146,13 @@ const EmployeeListScreen = ({ navigation }) => {
             contact={item.contact || "N/A"}
             role={item.address || "N/A"}
             onDelete={() => setDeletRecord({ emp: item })}
+            isShowPerformance={
+              item.roleID === Constants.employeesRoleID.manager ||
+              item.roleID === Constants.employeesRoleID.buisnessAdmin ||
+              item.roleID === Constants.employeesRoleID.buisnessOwner
+                ? false
+                : true
+            }
             onEdit={() =>
               navigation.navigate("CreateEmployee", {
                 employeeData: item,

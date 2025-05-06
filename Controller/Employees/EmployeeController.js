@@ -43,14 +43,30 @@ export const addEmployee = async ({ values, buisnessID }) => {
       });
     }
     var userDoc;
+
     if (docc) {
       const DocRef = doc(db, Constants.collectionName.user, values.user);
       console.log("DocRef--------------", DocRef);
+      var roleofEmployeeInuserTable;
+      var bID;
+      // Add role for all employee and buisness ID for admin or manager role
+      if (values.employeeRole == Constants.employeesRoleID.manager) {
+        roleofEmployeeInuserTable = Constants.usersRole.manager;
+        bID = buisnessID;
+      } else if (
+        values.employeeRole == Constants.employeesRoleID.buisnessAdmin
+      ) {
+        roleofEmployeeInuserTable = Constants.usersRole.buisnessOwner;
+        bID = buisnessID;
+      } else {
+        roleofEmployeeInuserTable = Constants.usersRole.employee;
+      }
       userDoc = await addUserID({
         docRef: DocRef,
         EditData: {
           employeeID: EdocRef.id,
-          roleID: Constants.usersRole.employee,
+          roleID: roleofEmployeeInuserTable,
+          businessID: bID,
         },
       });
     }
@@ -74,7 +90,11 @@ export const addEmployee = async ({ values, buisnessID }) => {
   }
 };
 
-export const getEmployeeList = async ({ lastDoc, searchText = null }) => {
+export const getEmployeeList = async ({
+  lastDoc,
+  searchText = null,
+  isManager = false,
+}) => {
   try {
     const user = await getLocalUser();
     console.log("buissnessID-----", user.businessID);

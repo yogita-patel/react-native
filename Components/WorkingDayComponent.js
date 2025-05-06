@@ -12,12 +12,14 @@ const WorkingDayComponent = ({
   touched = null,
   checked = [],
 }) => {
-  const [checkedDays, setCheckedDays] = useState(checked);
+  const [checkedDays, setCheckedDays] = useState([]);
 
   // Sync local state when 'checked' prop changes
   useEffect(() => {
-    setCheckedDays(checked || []);
-  }, [checked]);
+    if (checked.length > 0) {
+      setCheckedDays(checked || []);
+    }
+  }, []);
 
   const toggleDay = (day) => {
     const updated = checkedDays.includes(day)

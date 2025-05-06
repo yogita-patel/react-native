@@ -51,6 +51,14 @@ const usersRole = {
   buisnessOwner: "Buisness-Owner",
   citizen: "Citizen",
   employee: "Employee",
+  manager: "Manager",
+};
+
+const employeesRoleID = {
+  manager: "b9Fwrf4hXDHBLGG6WWmf",
+  hospitalAdmin: "ebi6hVgOW5gesatZ3rY8",
+  buisnessAdmin: "DyQJvGoJ5qTXM2slPAuc",
+  buisnessOwner: "AzxXDrXZ9gwqbseGt6rA",
 };
 
 const collectionName = {
@@ -82,4 +90,5 @@ export default {
   lazyLoadLimit,
   attendanceStatus,
   alertType,
+  employeesRoleID,
 };

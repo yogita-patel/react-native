@@ -20,6 +20,7 @@ const EmployeeListCardComponent = ({
   onMarkAttendace,
   onViewPerformance,
   onSchedule,
+  isShowPerformance = true,
 }) => {
   // return (
   //   <View style={styles.card}>
@@ -59,11 +60,13 @@ const EmployeeListCardComponent = ({
           bgColor={Colors.commonGreen}
         />
         <View style={{ marginLeft: 4 }}></View>
-        <SmallBUttonComponent
-          onPress={onViewPerformance}
-          label="View Performance"
-          bgColor={Colors.commonRed}
-        />
+        {isShowPerformance && (
+          <SmallBUttonComponent
+            onPress={onViewPerformance}
+            label="View Performance"
+            bgColor={Colors.commonRed}
+          />
+        )}
         <View style={{ marginLeft: 4 }}></View>
         <SmallBUttonComponent onPress={onSchedule} label="Schedule" />
       </View>
