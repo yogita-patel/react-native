@@ -60,7 +60,7 @@ const HospitalDashboard = () => {
             <IconButtonComponent
               iconName={"add"}
               onIconPress={() => {
-                // navigation.navigate("CreateEmployee");
+                navigation.navigate("CreateMedicalStaff");
                 console.log("Add staff");
               }}
             />

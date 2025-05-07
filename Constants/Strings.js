@@ -53,6 +53,7 @@ const usersRole = {
   citizen: "Citizen",
   employee: "Employee",
   manager: "Manager",
+  doctor: "Doctor",
 };
 const dayNameMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -71,6 +72,8 @@ const collectionName = {
   attendanceStatus: "AttendanceStatus",
   buisnessAlert: "BuisnessAlert",
   hospitalType: "HospitalType",
+  medicalStaff: "MedicalStaff",
+  medicalStaffRole: "MedicalStaffRole",
 };
 
 const attendanceStatus = {
@@ -82,6 +85,7 @@ const attendanceStatus = {
 const alertType = {
   buisnessAlert: "BuisnessAlert",
 };
+
 const buisnessCategoryId = {
   hospital: "fDYmbIMl0E5Jh8ls7OjG",
 };
