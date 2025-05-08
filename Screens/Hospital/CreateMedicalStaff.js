@@ -14,11 +14,15 @@ import Constants from "../../Constants/Strings";
 import TextInputComponent from "../../Components/TextInputComponent";
 import ButtonComponent from "../../Components/ButtonComponent";
 import LoaderComponent from "../../Components/LoaderComponent";
-import { addMedicalStaff } from "../../Controller/Hospital/MedicalStaffController";
-const CreateMedicalStaff = ({ navigation }) => {
+import {
+  addMedicalStaff,
+  updateMedicalStaffData,
+} from "../../Controller/Hospital/MedicalStaffController";
+const CreateMedicalStaff = ({ navigation, route }) => {
   const validation = MedicalStaffValidation();
   const [isForEdit, setIsForEdit] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const medicalStaffData = useState(route.params);
 
   const onAddMedicalStaff = async ({ values }) => {
     try {
@@ -34,36 +38,68 @@ const CreateMedicalStaff = ({ navigation }) => {
     }
   };
 
+  useLayoutEffect(() => {
+    try {
+      if (
+        medicalStaffData &&
+        medicalStaffData.length > 0 &&
+        medicalStaffData[0]
+      ) {
+        const title = medicalStaffData[0].title;
+        console.log("Setting title to:", title);
+        navigation.setOptions({ title: title });
+        setIsForEdit(true);
+      } else {
+        navigation.setOptions({ title: "Medical Staff" });
+        setIsForEdit(false);
+      }
+      // console.log("medicalStaffData-------", medicalStaffData[0]);
+    } catch (e) {
+      console.log("Error in CreateMEdicalStaff.js useLayoutEffect");
+    } finally {
+    }
+  }, [navigation, medicalStaffData]);
+
   return (
     <SafeAreaView>
       <KeyboardAvoidingView>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Formik
             initialValues={{
-              user: "",
-              contact: "",
-              address: "",
-              staffRole: "",
-              docSpeciality: "",
+              user: isForEdit
+                ? medicalStaffData[0].medicalStaffData.userID
+                : "",
+              contact: isForEdit
+                ? medicalStaffData[0].medicalStaffData.contact
+                : "",
+              address: isForEdit
+                ? medicalStaffData[0].medicalStaffData.address
+                : "",
+              staffRole: isForEdit
+                ? medicalStaffData[0].medicalStaffData.role
+                : "",
+              docSpeciality: isForEdit
+                ? medicalStaffData[0].medicalStaffData.specialty
+                : "",
             }}
             validationSchema={validation}
             enableReinitialize
             onSubmit={async (values) => {
               console.log("values ;", values);
-              onAddMedicalStaff({ values: values });
-              //   if (isForEdit) {
-              //     // console.log("businesssssssssssssId", buisnessID);
-              //     const isEdited = await updateEmployeeData({
-              //       employeeData: values,
-              //       buisnessID: buisnessID,
-              //       employeeID: employeeData[0]?.employeeData.employeeID,
-              //     });
-              //     if (isEdited) {
-              //       navigation.goBack();
-              //     }
-              //   } else {
-              //     await onAddEmployee({ Values: values });
-              //   }
+
+              if (isForEdit) {
+                // console.log("businesssssssssssssId", buisnessID);
+                const isEdited = await updateMedicalStaffData({
+                  medicalStaffData: values,
+
+                  medicalStaffID: medicalStaffData[0]?.medicalStaffData.staffID,
+                });
+                if (isEdited) {
+                  navigation.goBack();
+                }
+              } else {
+                await onAddMedicalStaff({ values: values });
+              }
             }}
           >
             {({
@@ -76,21 +112,23 @@ const CreateMedicalStaff = ({ navigation }) => {
               touched,
             }) => (
               <>
-                <DropDownComponent
-                  collectionName={"Users"}
-                  label="Users"
-                  placeholder="Select Doctor by email"
-                  labelField="email"
-                  valueField="userID"
-                  maxHeight={1000}
-                  onSelectItem={(item) => setFieldValue("user", item.value)}
-                  error={errors.user}
-                  touched={errors.user}
-                  selectedValue={values.user}
-                  setSelectedValue={(val) => setFieldValue("user", val)}
-                  conditionLabel={"roleID"}
-                  conditionValue={Constants.usersRole.citizen}
-                />
+                {!isForEdit && (
+                  <DropDownComponent
+                    collectionName={"Users"}
+                    label="Users"
+                    placeholder="Select Doctor by email"
+                    labelField="email"
+                    valueField="userID"
+                    maxHeight={1000}
+                    onSelectItem={(item) => setFieldValue("user", item.value)}
+                    error={errors.user}
+                    touched={errors.user}
+                    selectedValue={values.user}
+                    setSelectedValue={(val) => setFieldValue("user", val)}
+                    conditionLabel={"roleID"}
+                    conditionValue={Constants.usersRole.citizen}
+                  />
+                )}
                 <View style={styles.commonMarging20}></View>
                 <Text style={[styles.welcomeText, { fontSize: 20 }]}>
                   Personal-Info

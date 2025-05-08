@@ -147,7 +147,9 @@ export default function App() {
         <Stack.Screen
           name="CreateMedicalStaff"
           component={CreateMedicalStaff}
-          options={{ headerTitle: "Create Medical Staff" }}
+          options={({ route }) => ({
+            title: route.params?.title || "Create Medical Staff",
+          })}
         />
         <Stack.Screen
           name="MakeAppointment"

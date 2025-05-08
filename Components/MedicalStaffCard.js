@@ -29,7 +29,7 @@ const MedicalStaffCard = ({
   };
   return (
     <View style={styles.card}>
-      <IconLabelComponent iconName={"doctor"} label={name} />
+      <IconLabelComponent iconName={"person"} label={name} />
       <IconLabelComponent iconName={"email"} label={email} />
       <IconLabelComponent iconName={"phone"} label={contact} />
       <IconLabelComponent iconName={"badge"} label={role} />
