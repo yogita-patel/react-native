@@ -74,6 +74,7 @@ const collectionName = {
   hospitalType: "HospitalType",
   medicalStaff: "MedicalStaff",
   medicalStaffRole: "MedicalStaffRole",
+  medicalStaffShift: "MedicalStaffSchedules",
 };
 
 const attendanceStatus = {

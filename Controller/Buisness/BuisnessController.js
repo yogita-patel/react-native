@@ -146,7 +146,11 @@ export const getBuisnessCity = async ({ cityID }) => {
   }
 };
 
-export const updateBuisness = async ({ values, businessId }) => {
+export const updateBuisness = async ({
+  values,
+  businessId,
+  isHospital = null,
+}) => {
   try {
     console.log("updateBuisness:", values);
     const user = await getLocalUser();
@@ -161,6 +165,7 @@ export const updateBuisness = async ({ values, businessId }) => {
       cityId: values.bcity,
       ownerId: userID,
       buisnessID: businessId,
+      hospitalType: isHospital ? values.htype : null,
     });
     // console.log("buisness", buisness);
     const businessRef = doc(db, "Buisness", businessId);
@@ -215,5 +220,21 @@ export const updateProfileImage = async ({ image }) => {
   } catch (e) {
     console.log("Error: BuisnessController.js updateProfileImage:", e);
     return null;
+  }
+};
+
+export const getHospitaltype = async ({ type }) => {
+  try {
+    console.log("getHospitaltype", type);
+    const htype = await fetchByCondition({
+      collectionName: Constants.collectionName.hospitalType,
+      condition: "hospitalTypeID",
+      value: type,
+    });
+    console.log("getHospitaltype", htype);
+    return htype[0];
+  } catch (e) {
+    console.log("Error: BuisnessController.js getHospitaltype:", e);
+    return false;
   }
 };

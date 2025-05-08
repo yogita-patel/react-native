@@ -115,14 +115,16 @@ const CreateBuisness = ({ route, navigation }) => {
               onSubmit={async (values) => {
                 console.log("register clicked:", values);
                 setIsLoading(true);
-                if (isForEdit && !isForHospital) {
+                if (isForEdit) {
                   const updated = await updateBuisness({
                     businessId: businessData[0].buisnessData.buisnessID,
                     values: values,
+                    isHospital: isForHospital,
                   });
                   if (updated) {
                     navigation.goBack();
                   }
+                } else if (isForEdit && isForHospital) {
                 } else {
                   const istrue = await onCreateBuisness({
                     values: values,

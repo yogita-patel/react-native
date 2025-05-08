@@ -156,10 +156,13 @@ const MedicalStaffListScreen = ({ navigation }) => {
               })
             }
             onView={() => console.log("View")}
+            onViewSchedule={() =>
+              navigation.navigate("MedicalStaffSchedule", { staffData: item })
+            }
             onSchedule={() =>
-              navigation.navigate("EmployeeSchedule", {
-                Scheduledata: item,
-                title: "Schedule",
+              navigation.navigate("ManageMedicalStaffShifts", {
+                staffData: item,
+                title: "Manage Shift",
               })
             }
           />

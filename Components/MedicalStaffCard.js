@@ -14,7 +14,7 @@ const MedicalStaffCard = ({
   onEdit,
   onDelete,
   //   onView,
-  //   onMarkAttendace,
+  onViewSchedule,
   //   onViewPerformance,
   onSchedule,
   //   isShowPerformance = true,
@@ -35,13 +35,13 @@ const MedicalStaffCard = ({
       <IconLabelComponent iconName={"badge"} label={role} />
       <DividerComponent />
       <View style={[styles.content]}>
-        {/* <SmallBUttonComponent
-              onPress={onMarkAttendace}
-              label="Mark Attendance"
-              bgColor={Colors.commonGreen}
-            />
-            <View style={{ marginLeft: 4 }}></View>
-            {isShowPerformance && (
+        <SmallBUttonComponent
+          onPress={onViewSchedule}
+          label="View Schedule"
+          bgColor={Colors.commonGreen}
+        />
+        <View style={{ marginLeft: 4 }}></View>
+        {/* {isShowPerformance && (
               <SmallBUttonComponent
                 onPress={onViewPerformance}
                 label="View Performance"
@@ -49,7 +49,7 @@ const MedicalStaffCard = ({
               />
             )}
             <View style={{ marginLeft: 4 }}></View> */}
-        <SmallBUttonComponent onPress={onSchedule} label="Schedule" />
+        <SmallBUttonComponent onPress={onSchedule} label="Assign Schedule" />
       </View>
       <View style={[styles.actions, styles.content]}>
         <TouchableOpacity onPress={onEdit}>

@@ -23,6 +23,8 @@ import EmployeeSchedule from "./Screens/Buisness/EmployeeSchedule";
 import AlertScreen from "./Screens/Alert/AlertScreen";
 import ViewEmployeePerformace from "./Screens/Buisness/ViewEmployeePerformace";
 import CreateMedicalStaff from "./Screens/Hospital/CreateMedicalStaff";
+import ManageMedicalStaffShifts from "./Screens/Hospital/ManageMedicalStaffShifts";
+import MedicalStaffSchedule from "./Screens/Hospital/MedicalStaffSchedule";
 
 const Stack = createNativeStackNavigator();
 
@@ -149,6 +151,20 @@ export default function App() {
           component={CreateMedicalStaff}
           options={({ route }) => ({
             title: route.params?.title || "Create Medical Staff",
+          })}
+        />
+        <Stack.Screen
+          name="ManageMedicalStaffShifts"
+          component={ManageMedicalStaffShifts}
+          options={({ route }) => ({
+            title: route.params?.title || "Manage Staff shifts",
+          })}
+        />
+        <Stack.Screen
+          name="MedicalStaffSchedule"
+          component={MedicalStaffSchedule}
+          options={({ route }) => ({
+            title: route.params?.title || "Schedule",
           })}
         />
         <Stack.Screen

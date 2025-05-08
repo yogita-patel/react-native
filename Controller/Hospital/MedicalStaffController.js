@@ -7,9 +7,14 @@ import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { db } from "../../Firebase/Firebase";
 import MedicalStaffModel from "../../Model/MedicalStaffModel";
 import { getLocalUser } from "../global";
-import { fetchList } from "../FetchAPIs/coomonFetch";
+import { Timestamp } from "firebase/firestore";
+import {
+  fetchList,
+  fetchUsingMultipleCondition,
+} from "../FetchAPIs/coomonFetch";
 import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
 import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
+import { MedicalStaffShift } from "../../Model/MedicalStaffShiftModel";
 
 export const addMedicalStaff = async ({ values }) => {
   try {
@@ -243,5 +248,96 @@ export const deleteMedicalStaffData = async ({ medicalStaff }) => {
   } catch (e) {
     console.log("Error: MedicalStaffController.js deleteMedicalStaffData:", e);
     return null;
+  }
+};
+
+export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
+  try {
+    console.log("asignMedicalStaffShift:", values, userId, staffId);
+    console.log("asignMedicalStaffShift:", userId, staffId);
+
+    const user = await getLocalUser();
+    const hospitalID = user.hospitalID;
+    var shift = new MedicalStaffShift({
+      userID: userId,
+      hospitalID: hospitalID,
+      staffID: staffId,
+      shiftDate: values.shiftDate,
+      shiftStart: values.startTime,
+      shiftEnd: values.endTime,
+      breakStart: values.breakStartTime,
+      breakEnd: values.breakEndTime,
+    });
+    console.log("medical  staff shift", shift.toJson());
+
+    const EdocRef = await AddData({
+      collectionName: Constants.collectionName.medicalStaffShift,
+      modelName: shift.toJson(),
+    });
+    var docc;
+    if (EdocRef) {
+      //add document id to the document itself
+      docc = await addUserID({
+        docRef: EdocRef,
+        EditData: { shiftID: EdocRef.id },
+      });
+    }
+
+    if (docc) {
+      showToast({
+        description: "Shift assigned successfully!",
+        message: "Success",
+      });
+      return true;
+    } else {
+      showToast({
+        description: "Asign sthift fail please try again later!",
+        message: "Error",
+        type: "info",
+      });
+      return false;
+    }
+  } catch (e) {
+    console.log("Error: MedicalStaffController.js asignMedicalStaffShift:", e);
+    return false;
+  }
+};
+
+export const fetchStaffShcedule = async ({ staffId }) => {
+  try {
+    const data = await fetchUsingMultipleCondition({
+      collectionName: Constants.collectionName.medicalStaffShift,
+      conditions: [["staffID", "==", staffId]],
+    });
+    // console.log("data of shift---------------", data);
+    return data;
+  } catch (e) {
+    console.log("Error: MedicalStaffController.js fetchStaffShcedule:", e);
+    return false;
+  }
+};
+export const fetchStaffShceduleByDate = async ({ staffId, selDate }) => {
+  try {
+    const dateObj = new Date(selDate); // JS Date
+    const startOfDay = Timestamp.fromDate(
+      new Date(dateObj.setHours(0, 0, 0, 0))
+    );
+    const endOfDay = Timestamp.fromDate(
+      new Date(dateObj.setHours(23, 59, 59, 999))
+    );
+    console.log("selectedDate--------------------------", startOfDay, endOfDay);
+    const data = await fetchUsingMultipleCondition({
+      collectionName: Constants.collectionName.medicalStaffShift,
+      conditions: [
+        ["staffID", "==", staffId],
+        ["shiftDate", ">=", startOfDay],
+        ["shiftDate", "<=", endOfDay],
+      ],
+    });
+    console.log("data of shift---------------", data);
+    return data[0];
+  } catch (e) {
+    console.log("Error: MedicalStaffController.js fetchStaffShcedule:", e);
+    return false;
   }
 };
