@@ -65,6 +65,8 @@ const employeesRoleID = {
 };
 
 const collectionName = {
+  country: "Countries",
+  city: "Cities",
   buisness: "Buisness",
   employee: "Employees",
   user: "Users",

@@ -45,7 +45,7 @@ export default function App() {
           setIninitalRoute("HospitalDashboard");
         } else if (currentUser.userID) {
           console.log("userId login route", currentUser.businessID);
-          setIninitalRoute("InitialScreen");
+          setIninitalRoute("DashboardScreen");
         } else {
           setIninitalRoute("Login");
         }

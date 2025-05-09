@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import IntroButtonComponent from "../../Components/IntroButtonComponent";
 import styles from "../../Styles/CommonStyle";
 import { getLocalUser } from "../../Controller/global";
@@ -8,10 +8,19 @@ import HyperlinkTextComponent from "../../Components/HyperlinkTextComponent";
 import ConfrimationDialog from "../../Components/ConfrimationDialog";
 import { logoutUser } from "../../Controller/Authentication/LogoutController";
 
-const InitialScreen = ({ navigation }) => {
+const InitialScreen = ({ navigation, route }) => {
   const [userFname, setFname] = useState("");
   const [showDialog, setShowDialog] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const routeData = useState(route.params);
+  const [isPersoalProfile, setIsPersonalProfile] = useState(false);
+
+  useLayoutEffect(() => {
+    if (routeData) {
+      console.log("is route data---------", routeData);
+      setIsPersonalProfile(routeData[0].isFromProfile);
+    }
+  }, [navigation]);
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -28,6 +37,7 @@ const InitialScreen = ({ navigation }) => {
 
     getUser();
   }, []);
+
   const onLogout = async () => {
     try {
       setShowDialog(false);
@@ -44,9 +54,11 @@ const InitialScreen = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>
-        {userFname ? "Welcome " + userFname : "Welcome "}
-      </Text>
+      {!isPersoalProfile && (
+        <Text style={styles.welcomeText}>
+          {userFname ? "Welcome " + userFname : "Welcome "}
+        </Text>
+      )}
       <IntroButtonComponent
         iconName={"business"}
         onPress={() =>
@@ -64,11 +76,19 @@ const InitialScreen = ({ navigation }) => {
         }
         title={"Create a hospital"}
       />
-      <IntroButtonComponent
-        iconName={"person"}
-        onPress={() => navigation.navigate("MakeAppointment")}
-        title={"Book an appointment"}
-      />
+      {isPersoalProfile ? (
+        <IntroButtonComponent
+          iconName={"arrow-back"}
+          onPress={() => navigation.goBack()}
+          title={"Back"}
+        />
+      ) : (
+        <IntroButtonComponent
+          iconName={"person"}
+          onPress={() => navigation.navigate("DashboardScreen")}
+          title={"Book an appointment"}
+        />
+      )}
       <ConfrimationDialog
         visible={showDialog}
         title="Logout"

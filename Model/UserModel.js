@@ -3,7 +3,7 @@ export class UserModel {
     fullName = "",
     email = "",
     roleID = "",
-    cityID = 0,
+    cityID = "",
     authID = "",
     userID = null,
     countryID = null,
@@ -11,6 +11,7 @@ export class UserModel {
     hospitalID = null,
     doctorID = null,
     employeeID = null,
+    userProfile = null,
   }) {
     try {
       this.fullName = fullName;
@@ -21,6 +22,7 @@ export class UserModel {
       this.createdAt = new Date();
       this.authID = authID;
       this.countryID = countryID;
+      this.userProfile = userProfile;
       (this.businessID = businessID),
         (this.hospitalID = hospitalID),
         (this.doctorID = doctorID),
@@ -33,6 +35,11 @@ export class UserModel {
   setName(name) {
     if (!name) throw new Error("Name is required");
     this.name = name.trim();
+  }
+
+  setuserProfile(image) {
+    if (!image) throw new Error("image is required");
+    this.userProfile = image.trim();
   }
 
   setEmail(email) {
@@ -75,6 +82,28 @@ export class UserModel {
     this.employeeID = employeeID.trim();
   }
 
+  static fromJson(json) {
+    if (!json || typeof json !== "object") {
+      throw new Error("Invalid JSON object");
+    }
+
+    return new UserModel({
+      fullName: json.fullName,
+      email: json.email,
+      roleID: json.roleID,
+      cityID: json.cityID,
+      authID: json.authID,
+      userID: json.userID,
+      countryID: json.countryID,
+      businessID: json.businessID,
+      hospitalID: json.hospitalID,
+      doctorID: json.doctorID,
+      employeeID: json.employeeID,
+      userProfile: json.userProfile,
+      createdAt: json.createdAt,
+    });
+  }
+
   toJson() {
     return {
       fullName: this.fullName,
@@ -89,6 +118,7 @@ export class UserModel {
       doctorID: this.doctorID,
       employeeID: this.employeeID,
       countryID: this.countryID,
+      userProfile: this.userProfile,
     };
   }
 }

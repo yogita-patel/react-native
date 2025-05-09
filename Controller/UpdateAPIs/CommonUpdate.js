@@ -11,7 +11,11 @@ import {
 } from "firebase/firestore";
 
 // common function for edit data
-export const addUserID = async ({ docRef, EditData }) => {
+export const addUserID = async ({
+  docRef,
+  EditData,
+  createIfMissing = false,
+}) => {
   try {
     // add ref-id to field
     console.log("doc ref", docRef);

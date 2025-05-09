@@ -21,12 +21,20 @@ export const pickImage = async () => {
   }
 };
 
-export const uploadImageFirebaseStorage = async ({ imageUrl }) => {
+export const uploadImageFirebaseStorage = async ({
+  imageUrl,
+  imagePath = null,
+}) => {
   try {
     console.log("Url ", imageUrl);
-    const imageName = `buisness/buisness_Profile/${Date.now()}_${imageUrl
-      .split("/")
-      .pop()}`;
+    var imageName;
+    if (imagePath) {
+      imageName = imagePath + `${Date.now()}_${imageUrl.split("/").pop()}`;
+    } else {
+      imageName = `buisness/buisness_Profile/${Date.now()}_${imageUrl
+        .split("/")
+        .pop()}`;
+    }
     const storageRef = ref(getStorage(), imageName);
 
     const blob = await (await fetch(imageUrl)).blob();
