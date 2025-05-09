@@ -16,7 +16,7 @@ const InitialScreen = ({ navigation, route }) => {
   const [isPersoalProfile, setIsPersonalProfile] = useState(false);
 
   useLayoutEffect(() => {
-    if (routeData) {
+    if (routeData && routeData[0]) {
       console.log("is route data---------", routeData);
       setIsPersonalProfile(routeData[0].isFromProfile);
     }

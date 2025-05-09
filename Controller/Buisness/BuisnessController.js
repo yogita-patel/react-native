@@ -4,12 +4,13 @@ import { BusinessModel } from "../../Model/BuinessModel";
 import { getLocalUser } from "../global";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { fetchByCondition } from "../FetchAPIs/coomonFetch";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../../Firebase/Firebase";
 import Constants from "../../Constants/Strings";
 import { removeData } from "../../LocalStorage/RemoveLocalData";
 import { UserModel } from "../../Model/UserModel";
 import { storeData } from "../../LocalStorage/SaveDataLocally";
+import { fetchList } from "../FetchAPIs/coomonFetch";
 export const onCreateBuisness = async ({ values, isHospital = false }) => {
   try {
     console.log("onCreateBuisness:", values);
@@ -235,6 +236,79 @@ export const getHospitaltype = async ({ type }) => {
     return htype[0];
   } catch (e) {
     console.log("Error: BuisnessController.js getHospitaltype:", e);
+    return false;
+  }
+};
+
+export const getAllBuisnessOrHospital = async ({
+  isHospital,
+  cityId,
+  lastDoc,
+}) => {
+  try {
+    const [citySnap, hospitalTypeSnap, businessTypeSnap] = await Promise.all([
+      getDocs(collection(db, Constants.collectionName.city)),
+      getDocs(collection(db, Constants.collectionName.hospitalType)),
+      getDocs(collection(db, Constants.collectionName.buisnessCategory)),
+    ]);
+
+    const cityMap = {};
+    citySnap.forEach((doc) => (cityMap[doc.id] = doc.data().cityName));
+
+    const hospitalTypeMap = {};
+    hospitalTypeSnap.forEach(
+      (doc) => (hospitalTypeMap[doc.id] = doc.data().hospitalTypeName)
+    );
+
+    const businessTypeMap = {};
+    businessTypeSnap.forEach(
+      (doc) => (businessTypeMap[doc.id] = doc.data().catName)
+    );
+    var cityID;
+    var filterList = [];
+    var buisnessList;
+    if (cityId) {
+      filterList.push({
+        field: "cityId",
+        operator: "==",
+        value: user.cityId,
+      });
+    }
+    if (isHospital) {
+      filterList.push({
+        field: "buisnessCategory",
+        operator: "==",
+        value: Constants.buisnessCategoryId.hospital,
+      });
+    } else {
+      filterList.push({
+        field: "buisnessCategory",
+        operator: "!=",
+        value: Constants.buisnessCategoryId.hospital,
+      });
+    }
+    buisnessList = await fetchList({
+      lastDoc: lastDoc,
+      collectionName: Constants.collectionName.buisness,
+      filters: filterList,
+    });
+
+    console.log("buisnessList:-------------------------------- ", buisnessList);
+    const enrichedList = buisnessList.list.map((item) => ({
+      ...item,
+      cityName: cityMap[item.cityId] || "Unknown City",
+      hospitalTypeName: hospitalTypeMap[item.hospitalType] || "Unknown Tyrpe",
+      businessTypeName:
+        businessTypeMap[item.buisnessCategory] || "Unknown Type",
+    }));
+    // console.log("enrichedList:-------------------------------- ", enrichedList);
+    return {
+      list: enrichedList,
+      lastDoc: buisnessList.lastDoc,
+      hasMore: buisnessList.hasMore,
+    };
+  } catch (e) {
+    console.log("Error: BuisnessController.js getAllBuisnessOrHospital:", e);
     return false;
   }
 };

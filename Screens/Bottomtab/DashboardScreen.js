@@ -10,6 +10,9 @@ import CitizenAccountScreen from "../Citizen/CitizenAccountScreen";
 import Colors from "../../Constants/Colors";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import IconButtonComponent from "../../Components/IconButtonComponent";
+import HospitalListScreen from "../Citizen/HospitalListScreen";
+import BuisnessListScreen from "../Citizen/BuisnessListScreen";
+import AppointmenList from "../Hospital/AppointmenList";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,12 +29,12 @@ const DashboardScreen = () => {
           let iconName;
           if (route.name === "CitizenHomeScreen") {
             iconName = "home";
-          } else if (route.name === "BookAppointmentScreen") {
+          } else if (route.name === "HospitalListScreen") {
             iconName = "hospital";
-          } else if (route.name === "EmployeeAttendance") {
-            iconName = "check-circle";
-          } else if (route.name === "EmployeePayroll") {
-            iconName = "wallet";
+          } else if (route.name === "BuisnessListScreen") {
+            iconName = "domain";
+          } else if (route.name === "AppointmenList") {
+            iconName = "calendar-clock";
           } else if (route.name === "CitizenAccountScreen") {
             iconName = "account-circle";
           } else {
@@ -51,9 +54,23 @@ const DashboardScreen = () => {
         options={{ tabBarLabel: "Home", headerTitle: "Dashboard" }}
       />
       <Tab.Screen
-        name="BookAppointmentScreen"
-        component={BookAppointmentScreen}
+        name="HospitalListScreen"
+        component={HospitalListScreen}
         options={{ tabBarLabel: "Hospital", headerTitle: "Hospital" }}
+      />
+
+      <Tab.Screen
+        name="AppointmenList"
+        component={AppointmenList}
+        options={{
+          tabBarLabel: "Appointment",
+          headerTitle: "Your Appointments",
+        }}
+      />
+      <Tab.Screen
+        name="BuisnessListScreen"
+        component={BuisnessListScreen}
+        options={{ tabBarLabel: "Buisness", headerTitle: "Buisness" }}
       />
       <Tab.Screen
         name="CitizenAccountScreen"

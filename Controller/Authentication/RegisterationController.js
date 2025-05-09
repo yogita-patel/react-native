@@ -11,6 +11,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../Firebase/Firebase";
+import { getLocalUser } from "../global";
 
 const registerEmailPassword = async ({ email, password }) => {
   try {
@@ -59,8 +60,9 @@ const Registration = async ({ values }) => {
         docRef: userDocRef,
         EditData: { userID: userDocRef.id },
       });
+      user.setUserID(userDocRef.id); //set userID to add into local user
     }
-    user.setUserID(userDocRef.id); //set userID to add into local user
+
     // if (values.role == 1) {
     //   // for business
     //   var business = BusinessModel({
@@ -89,6 +91,8 @@ const Registration = async ({ values }) => {
 
     //stored user object in local storage
     await storeData({ key: "user", value: user.toJson() });
+    const user2 = await getLocalUser();
+    console.log("isLogin = ", user2);
     return true;
   } catch (e) {
     console.log("error: Registration", e);

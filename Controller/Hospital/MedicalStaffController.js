@@ -2,7 +2,7 @@ import { EmployeeModel } from "../../Model/EmployeeModel";
 import Constants from "../../Constants/Strings";
 import { AddData } from "../AddAPIs/CommonAddAPI";
 import { showToast } from "../../Components/ToastComponent";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { db } from "../../Firebase/Firebase";
 import MedicalStaffModel from "../../Model/MedicalStaffModel";
@@ -82,14 +82,23 @@ export const addMedicalStaff = async ({ values }) => {
 export const getMedicalStaffList = async ({
   lastDoc = null,
   searchText = null,
+  hospitalId,
 }) => {
   try {
-    const user = await getLocalUser();
-    console.log("hospitalID-----", user.hospitalID);
+    const specialitySnapshot = await getDocs(
+      collection(db, Constants.collectionName.doctorSpeciality)
+    );
+    const specialityMap = {};
+    specialitySnapshot.forEach((doc) => {
+      specialityMap[doc.id] = doc.data().SpecialityType;
+    });
+
+    // const user = await getLocalUser();
+    console.log("getMedicalSTaff in controller-----", hospitalId);
     var searchFName;
     var medicalStaffList;
     const filterData = [
-      // { field: "attendanceDate", operator: ">=", value: startDate },
+      { field: "hospitalId", operator: "==", value: hospitalId },
       // { field: "attendanceDate", operator: "<=", value: endDate },
     ];
     if (searchText) {
@@ -128,6 +137,8 @@ export const getMedicalStaffList = async ({
         ...medicalStaff,
         name: userData[medicalStaff.userID]?.fullName || "Unknown",
         email: userData[medicalStaff.userID]?.email || "Unknown",
+        profile: userData[medicalStaff.userID]?.userProfile || "",
+        docSpeciality: specialityMap[medicalStaff.specialty] || "",
       }));
 
       console.log(

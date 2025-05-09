@@ -25,6 +25,8 @@ import ViewEmployeePerformace from "./Screens/Buisness/ViewEmployeePerformace";
 import CreateMedicalStaff from "./Screens/Hospital/CreateMedicalStaff";
 import ManageMedicalStaffShifts from "./Screens/Hospital/ManageMedicalStaffShifts";
 import MedicalStaffSchedule from "./Screens/Hospital/MedicalStaffSchedule";
+import DoctorListScreen from "./Screens/Citizen/DoctorListScreen";
+import BookAppointmentScreen from "./Screens/Citizen/BookAppointmentScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -168,8 +170,19 @@ export default function App() {
           })}
         />
         <Stack.Screen
-          name="MakeAppointment"
-          component={CreateAppointment}
+          name="DoctorListScreen"
+          component={DoctorListScreen}
+          options={({ route }) => ({
+            title: route.params?.title || "Available Doctors",
+          })}
+          // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BookAppointmentScreen"
+          component={BookAppointmentScreen}
+          options={({ route }) => ({
+            title: route.params?.title || "Doctor Availability",
+          })}
           // options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
               if (user.businessID) {
                 //if current user have buisness then it redirect to buisness dashboard
                 navigation.navigate("BuisnessDashboard");
-              } else if (user.hospitalID) {
+              } else if (user.hospitalID && !user.doctorID) {
                 navigation.navigate("HospitalDashboard");
               } else {
                 navigation.navigate("InitialScreen");

@@ -71,12 +71,14 @@ const collectionName = {
   employee: "Employees",
   user: "Users",
   attendance: "Attendance",
+  buisnessCategory: "BuisnessCategory",
   attendanceStatus: "AttendanceStatus",
   buisnessAlert: "BuisnessAlert",
   hospitalType: "HospitalType",
   medicalStaff: "MedicalStaff",
   medicalStaffRole: "MedicalStaffRole",
   medicalStaffShift: "MedicalStaffSchedules",
+  doctorSpeciality: "DoctorSpecialties",
 };
 
 const attendanceStatus = {

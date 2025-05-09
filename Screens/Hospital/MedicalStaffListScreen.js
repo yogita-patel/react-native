@@ -15,20 +15,22 @@ import {
   deleteMedicalStaffData,
   getMedicalStaffList,
 } from "../../Controller/Hospital/MedicalStaffController";
+import { getLocalUser } from "../../Controller/global";
 import { useFocusEffect } from "@react-navigation/native";
 const MedicalStaffListScreen = ({ navigation }) => {
   const [medicalStaffList, setMedicalStaffList] = useState([]);
   const [deleteRecord, setDeleteRecord] = useState({});
-  const [lastDoc, setLastDoc] = useState(null);
+  const [lastDoc, setLastDoc] = useState(true);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadinDialog, setIsLoadingDialog] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [showConfDialog, setShowConDialog] = useState(false);
+  const [hospitalID, setHospitalID] = useState(null);
 
   useEffect(() => {
     getMedicalStaff();
-  }, []);
+  }, [hospitalID]);
 
   useFocusEffect(
     useCallback(() => {
@@ -42,19 +44,24 @@ const MedicalStaffListScreen = ({ navigation }) => {
   );
   const getMedicalStaff = async () => {
     if (loading || !hasMore) return;
-
     setLoading(true);
     try {
-      const {
-        list: medicalStaff,
-        hasMore: more,
-        lastDoc: newLastDoc,
-      } = await getMedicalStaffList({
-        lastDoc: lastDoc,
-      });
-      setMedicalStaffList(medicalStaff);
-      setLastDoc(newLastDoc);
-      setHasMore(more);
+      const user = await getLocalUser();
+      console.log("hospitalID-----", user.hospitalID);
+      setHospitalID(user.hospitalID);
+      if (hospitalID) {
+        const {
+          list: medicalStaff,
+          hasMore: more,
+          lastDoc: newLastDoc,
+        } = await getMedicalStaffList({
+          lastDoc: lastDoc,
+          hospitalId: hospitalID,
+        });
+        setMedicalStaffList(medicalStaff);
+        setLastDoc(newLastDoc);
+        setHasMore(more);
+      }
     } catch (e) {
       console.log("Error: MedicalStaffListSCreen.js getMedicalStaff:", e);
     } finally {
@@ -73,6 +80,7 @@ const MedicalStaffListScreen = ({ navigation }) => {
         } = await getMedicalStaffList({
           lastDoc: null,
           searchText: searchText,
+          hospitalId: hospitalID,
         });
         setMedicalStaffList(searchList);
         setLastDoc(doc);
