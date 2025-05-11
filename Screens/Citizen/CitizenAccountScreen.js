@@ -172,8 +172,8 @@ const CitizenAccountScreen = ({ navigation }) => {
                     label="Edit"
                   /> */}
                   <ButtonComponent
-                    onButtonPress={() => console.log("deleteAccount")}
-                    label="Delete Account"
+                    onButtonPress={() => setShowLogoutDialog(true)}
+                    label="Logout"
                     bgColor={Colors.commonRed}
                   />
                 </View>

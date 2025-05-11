@@ -15,10 +15,16 @@ const HospitalListScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const getHospital = async () => {
+  const getHospital = async ({ cityID = null }) => {
     if (loading || !hasMore) return;
-    // const user = await getLocalUser();
-    // console.log("buissnessID-----", user.businessID);
+    let cId;
+    if (!cityID) {
+      const user = await getLocalUser();
+      console.log("buissnessID-----", user.cityID);
+      cId = user.cityID;
+    } else {
+      cId = cityID;
+    }
     setLoading(true);
     try {
       const {
@@ -27,7 +33,7 @@ const HospitalListScreen = ({ navigation }) => {
         lastDoc: newLastDoc,
       } = await getAllBuisnessOrHospital({
         lastDoc: lastDoc,
-        cityId: null,
+        cityId: cId,
         isHospital: true,
       });
       setHospitalList(hospital);
@@ -48,8 +54,15 @@ const HospitalListScreen = ({ navigation }) => {
       setHasMore(true);
       getHospital();
       return () => {};
-    }, [])
+    }, [cityId])
   );
+
+  const handleCityValue = (item) => {
+    setCityId(item.value);
+    console.log("city");
+    console.log(item.value);
+    getHospital({ cityID: cityId });
+  };
   return (
     <View>
       <View
@@ -62,7 +75,7 @@ const HospitalListScreen = ({ navigation }) => {
           labelField="cityName"
           valueField="ID"
           maxHeight={1000}
-          onSelectItem={(item) => setCityId(item.value)}
+          onSelectItem={(item) => handleCityValue(item)}
           noData={
             !countryId
               ? "Please select country"

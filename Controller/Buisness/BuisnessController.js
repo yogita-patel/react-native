@@ -271,7 +271,7 @@ export const getAllBuisnessOrHospital = async ({
       filterList.push({
         field: "cityId",
         operator: "==",
-        value: user.cityId,
+        value: cityId,
       });
     }
     if (isHospital) {
