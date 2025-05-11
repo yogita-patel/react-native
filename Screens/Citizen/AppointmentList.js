@@ -17,8 +17,8 @@ import {
   dateStringFormat,
   getLocalUser,
   isTodayOrFuture,
+  getStatusColor,
 } from "../../Controller/global";
-
 const AppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
   const [lastDoc, setLastDoc] = useState(false);
@@ -27,6 +27,7 @@ const AppointmentList = () => {
   const [isLoader, setIsLoader] = useState(false);
   const [showConfDialog, setShowConDialog] = useState(false);
   const [cancelAppointmentID, setCancelAppointmentId] = useState(null);
+  const [slotID, setSlotID] = useState(null);
 
   // useEffect(() => {
 
@@ -68,12 +69,16 @@ const AppointmentList = () => {
         cancelAppointmentID
       );
       if (cancelAppointmentID)
-        await cancelAppointment({ appointmentId: cancelAppointmentID });
+        await cancelAppointment({
+          appointmentId: cancelAppointmentID,
+          slotId: slotID,
+        });
       setShowConDialog(false);
       setAppointments([]); // optional: reset list before fetch
       setLastDoc(false);
       setHasMore(true);
       setCancelAppointmentId(null);
+      setSlotID(null);
       getAppointment();
     } catch (e) {
       console.log("Failed to cancelAppointmentBooking:", e);
@@ -81,9 +86,10 @@ const AppointmentList = () => {
       setIsLoader(false);
     }
   };
-  const onCancel = ({ ID }) => {
-    console.log("cancelID..................", ID);
+  const onCancel = ({ ID, slot }) => {
+    console.log("cancelID..................", ID, slot);
     setCancelAppointmentId(ID);
+    setSlotID(slot);
     setShowConDialog(true);
   };
   useFocusEffect(
@@ -97,19 +103,6 @@ const AppointmentList = () => {
       return () => {};
     }, [])
   );
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Booked":
-        return Colors.commonGreen;
-      case "Completed":
-        return Colors.commonblue;
-      case "Cancelled":
-        return Colors.commonRed;
-      default:
-        return "#000";
-    }
-  };
 
   const renderItem = ({ item }) => {
     const canCancel =
@@ -131,7 +124,9 @@ const AppointmentList = () => {
         <DividerComponent />
         {canCancel && (
           <SmallBUttonComponent
-            onPress={() => onCancel({ ID: item.appointmentID })}
+            onPress={() =>
+              onCancel({ ID: item.appointmentID, slot: item.slotId })
+            }
             label="Cancel"
             bgColor={Colors.commonRed}
           />

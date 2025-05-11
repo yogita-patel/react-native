@@ -178,7 +178,7 @@ export const getUsersAppointment = async ({ userID, lastDoc }) => {
   }
 };
 
-export const cancelAppointment = async ({ appointmentId }) => {
+export const cancelAppointment = async ({ appointmentId, slotId }) => {
   try {
     const appointmentRef = doc(
       db,
@@ -195,6 +195,15 @@ export const cancelAppointment = async ({ appointmentId }) => {
         cancelledAt: new Date(),
       },
     });
+    if (upadated) {
+      const slotRef = doc(db, Constants.collectionName.slots, slotId);
+      const up = addUserID({
+        docRef: slotRef,
+        EditData: {
+          isBooked: false,
+        },
+      });
+    }
     console.log("Appointment marked as cancelled.");
     showToast({
       description: "Appointment cancelled!",
@@ -205,6 +214,147 @@ export const cancelAppointment = async ({ appointmentId }) => {
     console.error("Error updating appointment status:", error);
     showToast({
       description: "Appointment cancelation fail!",
+      message: "Error",
+      type: "error",
+    });
+    return false;
+  }
+};
+
+export const getAllAppointment = async ({
+  hospitalID,
+  lastDoc,
+  date,
+  status,
+}) => {
+  try {
+    console.log("userID---------", hospitalID, lastDoc);
+
+    let filterList = [];
+
+    if (hospitalID) {
+      filterList.push({
+        field: "hospitalID",
+        operator: "==",
+        value: hospitalID,
+      });
+    }
+
+    if (date) {
+      filterList.push({
+        field: "date",
+        operator: "==",
+        value: date,
+      });
+    }
+
+    if (status) {
+      filterList.push({
+        field: "status",
+        operator: "in",
+        value: status,
+      });
+    }
+
+    const appointmentLit = await fetchList({
+      lastDoc,
+      collectionName: Constants.collectionName.appointment,
+      isDeleteFalse: true,
+      filters: filterList,
+    });
+
+    console.log("appointmentList--------------------", appointmentLit);
+
+    const enhancedAppointments = await Promise.all(
+      appointmentLit.list.map(async (appointment) => {
+        let doctorName = "";
+        let patientName = "";
+
+        // Get doctor name
+        if (appointment.doctorId) {
+          const staffRef = doc(
+            db,
+            Constants.collectionName.medicalStaff,
+            appointment.doctorId
+          );
+          const staffSnap = await getDoc(staffRef);
+
+          if (staffSnap.exists()) {
+            const staffData = staffSnap.data();
+            const userId = staffData.userID;
+
+            if (userId) {
+              const userRef = doc(db, Constants.collectionName.user, userId);
+              const userSnap = await getDoc(userRef);
+
+              if (userSnap.exists()) {
+                doctorName = userSnap.data().fullName || "";
+              }
+            }
+          }
+        }
+
+        // Get patient name directly from user collection
+        if (appointment.patientId) {
+          const patientRef = doc(
+            db,
+            Constants.collectionName.user,
+            appointment.patientId
+          );
+          const patientSnap = await getDoc(patientRef);
+
+          if (patientSnap.exists()) {
+            patientName = patientSnap.data().fullName || "";
+          }
+        }
+
+        return {
+          ...appointment,
+          doctorName,
+          patientName,
+        };
+      })
+    );
+
+    console.log("enhancedAppointments...............", enhancedAppointments);
+
+    return {
+      list: enhancedAppointments,
+      lastDoc: appointmentLit.lastDoc,
+      hasMore: appointmentLit.hasMore,
+    };
+  } catch (e) {
+    console.log("Error: AppointmentController.js getAllAppointment:", e);
+    return null;
+  }
+};
+
+export const completeAppointment = async ({ appointmentId }) => {
+  try {
+    const appointmentRef = doc(
+      db,
+      Constants.collectionName.appointment,
+      appointmentId
+    );
+
+    const upadated = addUserID({
+      docRef: appointmentRef,
+      EditData: {
+        status: Constants.appointmentStatus.completed,
+        cancelledAt: new Date(),
+      },
+    });
+
+    console.log("Appointment marked as completed.");
+    showToast({
+      description: "Appointment Completed!",
+      message: "Success",
+    });
+    return upadated;
+  } catch (error) {
+    console.error("Error updating appointment status:", error);
+    showToast({
+      description: "Appointment complete fail!",
       message: "Error",
       type: "error",
     });

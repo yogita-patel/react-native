@@ -8,7 +8,7 @@ import Colors from "../../Constants/Colors";
 import HospitalAccountScreen from "../Hospital/HospitalAccountScreen";
 import IconButtonComponent from "../../Components/IconButtonComponent";
 import MedicalStaffListScreen from "../Hospital/MedicalStaffListScreen";
-import AppointmenList from "../Hospital/AppointmenList";
+import AllAppointmenList from "../Hospital/AllAppointmenList";
 import PatientsList from "../Hospital/PatientsList";
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +27,7 @@ const HospitalDashboard = () => {
             iconName = "home";
           } else if (route.name === "MedicalStaffListScreen") {
             iconName = "doctor";
-          } else if (route.name === "AppointmenList") {
+          } else if (route.name === "AllAppointmenList") {
             iconName = "calendar-clock";
           } else if (route.name === "PatientsList") {
             iconName = "account-heart";
@@ -68,8 +68,8 @@ const HospitalDashboard = () => {
         })}
       />
       <Tab.Screen
-        name="AppointmenList"
-        component={AppointmenList}
+        name="AllAppointmenList"
+        component={AllAppointmenList}
         options={{ tabBarLabel: "Appointments", headerTitle: "Appointments" }}
       />
       <Tab.Screen

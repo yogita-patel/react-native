@@ -1,4 +1,5 @@
 import { getData } from "../LocalStorage/GetLocalData";
+import Colors from "../Constants/Colors";
 
 export const getLocalUser = async () => {
   try {
@@ -65,4 +66,38 @@ export const isTodayOrFuture = (dateString) => {
   date.setHours(0, 0, 0, 0);
 
   return date > today;
+};
+
+export const isToday = (dateString) => {
+  if (!dateString) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const [year, month, day] = dateString.split("-");
+  const date = new Date(year, month - 1, day);
+  date.setHours(0, 0, 0, 0);
+
+  return date == today;
+};
+
+export const getTodayDateString = ({ today }) => {
+  // const today = date?: new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+export const getStatusColor = (status) => {
+  switch (status) {
+    case "Booked":
+      return Colors.commonGreen;
+    case "Completed":
+      return Colors.commonblue;
+    case "Cancelled":
+      return Colors.commonRed;
+    default:
+      return "#000";
+  }
 };
