@@ -64,14 +64,24 @@ export const fetchByCondition = async ({
   }
 };
 
-export const fetchList = async ({ collectionName, lastDoc, filters = [] }) => {
+export const fetchList = async ({
+  collectionName,
+  lastDoc,
+  filters = [],
+  isDeleteFalse = false,
+}) => {
   try {
     const baseRef = collection(db, collectionName);
     // Basic filters (always apply)
-    let constraints = [
-      where("isDelete", "==", 0),
-      limit(Constants.lazyLoadLimit),
-    ];
+    let constraints;
+    if (isDeleteFalse) {
+      constraints = [limit(Constants.lazyLoadLimit)];
+    } else {
+      constraints = [
+        where("isDelete", "==", 0),
+        limit(Constants.lazyLoadLimit),
+      ];
+    }
 
     // Add custom filters dynamically
     filters.forEach((filter) => {

@@ -39,3 +39,30 @@ export const getMonth = (monthNumber) => {
 function iosDateToFirestoreTimestamp(iosDateString) {
   return firestore.Timestamp.fromDate(new Date(iosDateString));
 }
+
+export const dateStringFormat = (dateString) => {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  if (isNaN(date)) return "";
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+export const isTodayOrFuture = (dateString) => {
+  if (!dateString) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const [year, month, day] = dateString.split("-");
+  const date = new Date(year, month - 1, day);
+  date.setHours(0, 0, 0, 0);
+
+  return date > today;
+};

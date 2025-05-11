@@ -91,7 +91,7 @@ const attendanceStatus = {
 
 const appointmentStatus = {
   booked: "Booked",
-  cancel: "Canceled",
+  cancel: "Cancelled",
   // late: "JuVcVBoJhPBgrl7OhMet",
 };
 

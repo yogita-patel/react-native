@@ -12,7 +12,9 @@ import AppointmentModel from "../../Model/AppointmentModel";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { AddData } from "../AddAPIs/CommonAddAPI";
 import { showToast } from "../../Components/ToastComponent";
-import { doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { fetchList } from "../FetchAPIs/coomonFetch";
+import { useReducer } from "react";
 
 export const getTimeSlotsByDoc = async ({ doctorId, selectedDate }) => {
   try {
@@ -108,6 +110,101 @@ export const bookAnAppointment = async ({
     console.error("Error booking appointment:", error);
     showToast({
       description: "Appointment book fail!",
+      message: "Error",
+      type: "error",
+    });
+    return false;
+  }
+};
+
+export const getUsersAppointment = async ({ userID, lastDoc }) => {
+  try {
+    console.log("userID---------", userID, lastDoc);
+
+    const appointmentLit = await fetchList({
+      lastDoc,
+      collectionName: Constants.collectionName.appointment,
+      isDeleteFalse: true,
+      filters: [{ field: "patientId", operator: "==", value: userID }],
+    });
+
+    console.log("appointmentList--------------------", appointmentLit);
+
+    const enhancedAppointments = await Promise.all(
+      appointmentLit.list.map(async (appointment) => {
+        if (!appointment.doctorId) return appointment;
+
+        // Get doctor from medicalStaff collection
+        const staffRef = doc(
+          db,
+          Constants.collectionName.medicalStaff,
+          appointment.doctorId
+        );
+        const staffSnap = await getDoc(staffRef);
+
+        if (staffSnap.exists()) {
+          const staffData = staffSnap.data();
+          const userId = staffData.userID;
+
+          // Get user name from users collection using userId
+          if (userId) {
+            const userRef = doc(db, Constants.collectionName.user, userId);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+              const userData = userSnap.data();
+              return {
+                ...appointment,
+                doctorName: userData.fullName || "",
+              };
+            }
+          }
+        }
+
+        return appointment;
+      })
+    );
+
+    console.log("enhancedAppointments...............", enhancedAppointments);
+
+    return {
+      list: enhancedAppointments,
+      lastDoc: appointmentLit.lastDoc,
+      hasMore: appointmentLit.hasMore,
+    };
+  } catch (e) {
+    console.log("Error: AppointmentController.js getUsersAppointment:", e);
+    return null;
+  }
+};
+
+export const cancelAppointment = async ({ appointmentId }) => {
+  try {
+    const appointmentRef = doc(
+      db,
+      Constants.collectionName.appointment,
+      appointmentId
+    );
+    // await updateDoc(appointmentRef, {
+    //   // Optional: for tracking
+    // });
+    const upadated = addUserID({
+      docRef: appointmentRef,
+      EditData: {
+        status: Constants.appointmentStatus.cancel,
+        cancelledAt: new Date(),
+      },
+    });
+    console.log("Appointment marked as cancelled.");
+    showToast({
+      description: "Appointment cancelled!",
+      message: "Success",
+    });
+    return upadated;
+  } catch (error) {
+    console.error("Error updating appointment status:", error);
+    showToast({
+      description: "Appointment cancelation fail!",
       message: "Error",
       type: "error",
     });
