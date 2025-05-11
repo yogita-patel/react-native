@@ -16,21 +16,46 @@ import { getLocalUser } from "../global";
 const registerEmailPassword = async ({ email, password }) => {
   try {
     var userAuthId;
-    await createUserWithEmailAndPassword(auth, email, password).then(
-      async (userCredential) => {
-        console.log(userCredential.user.uid);
-        userAuthId = userCredential.user.uid;
-      }
-    );
+    const justRegistred = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then(async (userCredential) => {
+      console.log(userCredential.user.uid);
+      userAuthId = userCredential.user.uid;
+    });
     console.log("authId", userAuthId);
     return userAuthId;
   } catch (e) {
-    console.log("error: registerEmailPassword", e);
-    showToast({
-      description: "Registration fail please try again later!",
-      message: e,
-      type: "error",
-    });
+    if (error.code === "auth/email-already-in-use") {
+      console.log("That email address is already in use!");
+      showToast({
+        description: "This email address is already in use!",
+        message: e,
+        type: "error",
+      });
+    } else if (error.code === "auth/invalid-email") {
+      console.log("That email address is invalid!");
+      showToast({
+        description: "That email address is invalid!",
+        message: e,
+        type: "error",
+      });
+    } else if (error.code === "auth/weak-password") {
+      console.log("Password should be at least 6 characters!");
+      showToast({
+        description: "Password should be at least 6 characters!",
+        message: e,
+        type: "error",
+      });
+    } else {
+      console.log("error: registerEmailPassword", e);
+      showToast({
+        description: "Registration fail please try again later!",
+        message: e,
+        type: "error",
+      });
+    }
     return null;
   }
 };

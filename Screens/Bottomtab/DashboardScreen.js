@@ -12,7 +12,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import IconButtonComponent from "../../Components/IconButtonComponent";
 import HospitalListScreen from "../Citizen/HospitalListScreen";
 import BuisnessListScreen from "../Citizen/BuisnessListScreen";
-import AppointmenList from "../Hospital/AppointmenList";
+// import AppointmenList from "../Hospital/AppointmenList";
+import AppointmentList from "../Citizen/AppointmentList";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ const DashboardScreen = () => {
             iconName = "hospital";
           } else if (route.name === "BuisnessListScreen") {
             iconName = "domain";
-          } else if (route.name === "AppointmenList") {
+          } else if (route.name === "AppointmentList") {
             iconName = "calendar-clock";
           } else if (route.name === "CitizenAccountScreen") {
             iconName = "account-circle";
@@ -60,8 +61,8 @@ const DashboardScreen = () => {
       />
 
       <Tab.Screen
-        name="AppointmenList"
-        component={AppointmenList}
+        name="AppointmentList"
+        component={AppointmentList}
         options={{
           tabBarLabel: "Appointment",
           headerTitle: "Your Appointments",

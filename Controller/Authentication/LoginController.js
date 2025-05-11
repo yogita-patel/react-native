@@ -3,6 +3,8 @@ import { auth } from "../../Firebase/Firebase";
 import { fetchByCondition } from "../FetchAPIs/coomonFetch";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { storeData } from "../../LocalStorage/SaveDataLocally";
+import { showToast } from "../../Components/ToastComponent";
+
 export const isUserLoggedIn = async () => {
   try {
     console.log("checklogin:");
@@ -36,8 +38,37 @@ export const loginUser = async (values) => {
     // return !user ? false : true;
     await storeData({ key: "user", value: user[0] });
     return user[0];
-  } catch (e) {
-    console.log("Error: LoginController.js loginUser:", e);
+  } catch (error) {
+    console.log("Error: LoginController.js loginUser:", error);
+    if (error.code === "auth/user-not-found") {
+      showToast({
+        description: "This email is not registered. Please sign up",
+        message: "Error",
+        type: "error",
+      });
+    } else if (error.code === "auth/wrong-password") {
+      // Alert.alert('Wrong Password', 'Please enter the correct password.');
+      showToast({
+        description: "Please enter the correct password.",
+        message: "Error",
+        type: "error",
+      });
+    } else if (error.code === "auth/invalid-credential") {
+      // Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      showToast({
+        description: "Please enter a valid credential.",
+        message: "Error",
+        type: "error",
+      });
+    } else {
+      // Alert.alert('Login Error', 'Something went wrong. Please try again.');
+      showToast({
+        description: "Something went wrong. Please try again.",
+        message: "Error",
+        type: "error",
+      });
+      console.error(error);
+    }
     return null;
   }
 };

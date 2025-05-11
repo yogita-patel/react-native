@@ -79,12 +79,20 @@ const collectionName = {
   medicalStaffRole: "MedicalStaffRole",
   medicalStaffShift: "MedicalStaffSchedules",
   doctorSpeciality: "DoctorSpecialties",
+  appointment: "AppointmentBooking",
+  slots: "Slots",
 };
 
 const attendanceStatus = {
   present: "SucJ6B691QyRhkTmTmB0",
   absent: "nAa5ACDkdmIFKd88ljFp",
   late: "JuVcVBoJhPBgrl7OhMet",
+};
+
+const appointmentStatus = {
+  booked: "Booked",
+  cancel: "Canceled",
+  // late: "JuVcVBoJhPBgrl7OhMet",
 };
 
 const alertType = {
@@ -108,4 +116,5 @@ export default {
   employeesRoleID,
   dayNameMap,
   buisnessCategoryId,
+  appointmentStatus,
 };

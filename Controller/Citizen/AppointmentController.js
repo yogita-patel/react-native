@@ -1,84 +1,116 @@
-import { EmployeeModel } from "../../Model/EmployeeModel";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../Firebase/Firebase";
 import Constants from "../../Constants/Strings";
+import AppointmentModel from "../../Model/AppointmentModel";
+import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { AddData } from "../AddAPIs/CommonAddAPI";
 import { showToast } from "../../Components/ToastComponent";
-import { doc, updateDoc } from "firebase/firestore";
-import { addUserID } from "../UpdateAPIs/CommonUpdate";
-import { db } from "../../Firebase/Firebase";
-import MedicalStaffModel from "../../Model/MedicalStaffModel";
-import { getLocalUser } from "../global";
-import { Timestamp } from "firebase/firestore";
-import {
-  fetchList,
-  fetchUsingMultipleCondition,
-} from "../FetchAPIs/coomonFetch";
-import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
-import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
-// export const getMedicalStaffList = async ({
-//   lastDoc = null,
-//   searchText = null,
-//   hospitalID,
-// }) => {
-//   try {
-//     // const user = await getLocalUser();
-//     // console.log("hospitalID-----", user.hospitalID);
-//     var searchFName;
-//     var medicalStaffList;
-//     const filterData = [
-//       // { field: "attendanceDate", operator: ">=", value: startDate },
-//       // { field: "attendanceDate", operator: "<=", value: endDate },
-//     ];
-//     if (searchText) {
-//       searchFName = await SearchUserIDs({
-//         collectionName: Constants.collectionName.user,
-//         condition: "fullName",
-//         value: searchText,
-//       });
-//       console.log("Search-userName-------------", searchFName);
-//       filterData.push({
-//         field: "userID",
-//         operator: "in",
-//         value: [searchFName[0].userID],
-//       });
-//     }
-//     console.log("FilterData-------------------------", filterData);
-//     medicalStaffList = await fetchList({
-//       lastDoc: lastDoc,
-//       collectionName: Constants.collectionName.medicalStaff,
-//       filters: filterData,
-//     });
-//     if (medicalStaffList) {
-//       console.log("medicalStaffList:-----", medicalStaffList);
-//       const userIDs = medicalStaffList.list.map((e) => e.userID);
-//       console.log("userIDs:-----", userIDs);
-//       var userData;
-//       if (userIDs.length > 0) {
-//         userData = await fetchDataByDoc({
-//           collectionName: Constants.collectionName.user,
-//           IDs: userIDs,
-//         });
-//       }
-//       // console.log("UserData", userData);
-//       var medicalStaffList2;
-//       medicalStaffList2 = medicalStaffList.list.map((medicalStaff) => ({
-//         ...medicalStaff,
-//         name: userData[medicalStaff.userID]?.fullName || "Unknown",
-//         email: userData[medicalStaff.userID]?.email || "Unknown",
-//       }));
+import { doc } from "firebase/firestore";
 
-//       console.log(
-//         "medicalStaffList2:-------------------------------- ",
-//         medicalStaffList2
-//       );
-//       return {
-//         list: medicalStaffList2,
-//         lastDoc: medicalStaffList.lastDoc,
-//         hasMore: medicalStaffList.hasMore,
-//       };
-//     }
-//     return null;
-//   } catch (e) {
-//     console.log("Error: MedicalStaffController.js getMedicalStaffList:", e);
-//     return null;
-//   }
-// };
+export const getTimeSlotsByDoc = async ({ doctorId, selectedDate }) => {
+  try {
+    // const filterData = [
+    //   ["doctorId", "==", doctorId],
+    //   ["shiftDate", "==", selectedDate],
+    //   ["isBooked", "==", false],
+    // ];
+
+    // console.log("FilterData-------------------------", filterData);
+    // const slotsList = await fetchUsingMultipleCondition({
+    //   collectionName: Constants.collectionName.slots,
+    //   condition: filterData,
+    // });
+    // if (slotsList) {
+    //   return slotsList;
+    // }
+    // return null;
+    const slotsRef = collection(db, Constants.collectionName.slots);
+    const q = query(
+      slotsRef,
+      where("doctorId", "==", doctorId),
+      where("shiftDate", "==", selectedDate),
+      where("isBooked", "==", false)
+    );
+
+    const querySnapshot = await getDocs(q);
+    const slotsList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log("Filtered slots:", slotsList);
+    const sortedSlots = slotsList.sort((a, b) => {
+      const [aHours, aMinutes] = a.startTime.split(":").map(Number);
+      const [bHours, bMinutes] = b.startTime.split(":").map(Number);
+
+      const aTotalMinutes = aHours * 60 + aMinutes;
+      const bTotalMinutes = bHours * 60 + bMinutes;
+
+      return aTotalMinutes - bTotalMinutes;
+    });
+    return sortedSlots;
+  } catch (e) {
+    console.log("Error: AppointmentController.js getTimeSlots:", e);
+    return null;
+  }
+};
+
+export const bookAnAppointment = async ({
+  slotId,
+  doctorId,
+  date,
+  startTime,
+  patientId,
+  hospitalID,
+}) => {
+  try {
+    // console.log("userId", buisnessID);
+    var appointment = new AppointmentModel({
+      slotId: slotId,
+      doctorId: doctorId,
+      patientId: patientId,
+      date: date,
+      startTime: startTime,
+      status: Constants.appointmentStatus.booked,
+      hospitalID: hospitalID,
+    });
+    console.log("appointment", appointment);
+    const EdocRef = await AddData({
+      collectionName: Constants.collectionName.appointment,
+      modelName: appointment.toJson(),
+    });
+    var docc;
+    if (EdocRef) {
+      //add document id to the document itself
+      docc = await addUserID({
+        docRef: EdocRef,
+        EditData: { appointmentID: EdocRef.id },
+      });
+    }
+    console.log("Slot ID for update:", slotId);
+    // update the slot to mark it booked
+    await updateDoc(doc(db, Constants.collectionName.slots, slotId), {
+      isBooked: true,
+    });
+    showToast({
+      description: "Appointment booked successfully!",
+      message: "Success",
+    });
+    console.log("Appointment created successfully.");
+    return true;
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    showToast({
+      description: "Appointment book fail!",
+      message: "Error",
+      type: "error",
+    });
+    return false;
+  }
+};

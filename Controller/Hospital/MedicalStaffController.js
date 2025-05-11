@@ -2,7 +2,13 @@ import { EmployeeModel } from "../../Model/EmployeeModel";
 import Constants from "../../Constants/Strings";
 import { AddData } from "../AddAPIs/CommonAddAPI";
 import { showToast } from "../../Components/ToastComponent";
-import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDocs,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { db } from "../../Firebase/Firebase";
 import MedicalStaffModel from "../../Model/MedicalStaffModel";
@@ -262,14 +268,64 @@ export const deleteMedicalStaffData = async ({ medicalStaff }) => {
   }
 };
 
+function generateSlots(shift, shiftID) {
+  const {
+    staffID: doctorId,
+    hospitalID,
+    shiftDate,
+    shiftStart,
+    shiftEnd,
+    breakStart,
+    breakEnd,
+  } = shift;
+
+  const slotDuration = 30; // in minutes
+  const slots = [];
+
+  let current = new Date(shiftStart);
+  const end = new Date(shiftEnd);
+
+  while (current < end) {
+    const next = new Date(current.getTime() + slotDuration * 60000);
+
+    if (breakStart && current >= breakStart && current < breakEnd) {
+      current = next;
+      continue;
+    }
+
+    if (next > end) break;
+
+    slots.push({
+      shiftId: shiftID,
+      doctorId,
+      hospitalId: hospitalID,
+      shiftDate: shiftDate.toISOString().split("T")[0], // "YYYY-MM-DD"
+      startTime: current.toTimeString().slice(0, 5), // "HH:mm"
+      endTime: next.toTimeString().slice(0, 5),
+      isBooked: false,
+      appointmentId: null,
+      createdAt: new Date(),
+    });
+
+    current = next;
+  }
+
+  return slots;
+}
+
+async function saveSlotsToFirestore(slots) {
+  const batchPromises = slots.map((slot) =>
+    addDoc(collection(db, Constants.collectionName.slots), slot)
+  );
+  await Promise.all(batchPromises);
+}
+
 export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
   try {
-    console.log("asignMedicalStaffShift:", values, userId, staffId);
-    console.log("asignMedicalStaffShift:", userId, staffId);
-
     const user = await getLocalUser();
     const hospitalID = user.hospitalID;
-    var shift = new MedicalStaffShift({
+
+    const shift = new MedicalStaffShift({
       userID: userId,
       hospitalID: hospitalID,
       staffID: staffId,
@@ -279,40 +335,93 @@ export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
       breakStart: values.breakStartTime,
       breakEnd: values.breakEndTime,
     });
-    console.log("medical  staff shift", shift.toJson());
 
     const EdocRef = await AddData({
       collectionName: Constants.collectionName.medicalStaffShift,
       modelName: shift.toJson(),
     });
-    var docc;
+
     if (EdocRef) {
-      //add document id to the document itself
-      docc = await addUserID({
+      await addUserID({
         docRef: EdocRef,
         EditData: { shiftID: EdocRef.id },
       });
-    }
 
-    if (docc) {
+      //  Auto-generate and store slots
+      const slots = generateSlots(shift, EdocRef.id);
+      await saveSlotsToFirestore(slots);
+
       showToast({
-        description: "Shift assigned successfully!",
+        description: "Shift and slots created successfully!",
         message: "Success",
       });
+
       return true;
     } else {
       showToast({
-        description: "Asign sthift fail please try again later!",
+        description: "Shift assignment failed. Please try again.",
         message: "Error",
         type: "info",
       });
       return false;
     }
   } catch (e) {
-    console.log("Error: MedicalStaffController.js asignMedicalStaffShift:", e);
+    console.error("Error in asignMedicalStaffShift:", e);
     return false;
   }
 };
+
+// export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
+//   try {
+//     console.log("asignMedicalStaffShift:", values, userId, staffId);
+//     console.log("asignMedicalStaffShift:", userId, staffId);
+
+//     const user = await getLocalUser();
+//     const hospitalID = user.hospitalID;
+//     var shift = new MedicalStaffShift({
+//       userID: userId,
+//       hospitalID: hospitalID,
+//       staffID: staffId,
+//       shiftDate: values.shiftDate,
+//       shiftStart: values.startTime,
+//       shiftEnd: values.endTime,
+//       breakStart: values.breakStartTime,
+//       breakEnd: values.breakEndTime,
+//     });
+//     console.log("medical  staff shift", shift.toJson());
+
+//     const EdocRef = await AddData({
+//       collectionName: Constants.collectionName.medicalStaffShift,
+//       modelName: shift.toJson(),
+//     });
+//     var docc;
+//     if (EdocRef) {
+//       //add document id to the document itself
+//       docc = await addUserID({
+//         docRef: EdocRef,
+//         EditData: { shiftID: EdocRef.id },
+//       });
+//     }
+
+//     if (docc) {
+//       showToast({
+//         description: "Shift assigned successfully!",
+//         message: "Success",
+//       });
+//       return true;
+//     } else {
+//       showToast({
+//         description: "Asign sthift fail please try again later!",
+//         message: "Error",
+//         type: "info",
+//       });
+//       return false;
+//     }
+//   } catch (e) {
+//     console.log("Error: MedicalStaffController.js asignMedicalStaffShift:", e);
+//     return false;
+//   }
+// };
 
 export const fetchStaffShcedule = async ({ staffId }) => {
   try {
