@@ -382,6 +382,18 @@ const styles = StyleSheet.create({
   pickerCancel: { color: Colors.commonRed, fontWeight: "500" },
   pickerConfrim: { color: Colors.commonGreen, fontWeight: "500" },
 
-  //DashBoard
+  //DashBoard citizen
+  tipCard: {
+    padding: 12,
+    margin: 4,
+    borderRadius: 10,
+  },
+  tipTitle: {
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  tipText: {
+    fontSize: 14,
+  },
 });
 export default styles;

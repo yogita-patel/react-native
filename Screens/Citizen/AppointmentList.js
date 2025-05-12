@@ -39,25 +39,32 @@ const AppointmentList = ({ navigation, route }) => {
     try {
       console.log("routeData-------------------", routeData);
       if (routeData && routeData[0].isHistory) {
-        setHisHistory(true);
-        console.log("-------------------------isHistory", isHistory);
         setPatient(routeData[0].patient);
-        getAppointment();
+        setHisHistory(true);
       }
     } catch (e) {
-      console.log("Error in AppointmentList.js useEffect");
-    } finally {
+      console.log("Error in AppointmentList.js useEffect", e);
     }
-  }, [routeData, isHistory]);
+  }, [routeData]);
+
+  useEffect(() => {
+    if (isHistory && patient?.userID) {
+      getAppointment();
+    }
+  }, [isHistory, patient]);
+
   const getAppointment = async () => {
     if (loading || !hasMore) return;
 
     try {
       setLoading(true);
       let userId;
+      var localHist = false;
       console.log("-------------------------isHistory2", isHistory);
-      if (isHistory) {
-        userId = patient.userID;
+      if (routeData && routeData[0] && routeData[0].isHistory) {
+        userId = routeData[0].patient.userID;
+        localHist = true;
+        console.log("user history---------------------", userId);
       } else {
         const user = await getLocalUser();
         userId = user.userID;
@@ -72,7 +79,7 @@ const AppointmentList = ({ navigation, route }) => {
         } = await getUsersAppointment({
           lastDoc: lastDoc,
           userID: userId,
-          isHistory: isHistory,
+          isHistory: localHist,
         });
         setAppointments(appointment);
         setLastDoc(newLastDoc);
@@ -129,8 +136,13 @@ const AppointmentList = ({ navigation, route }) => {
     }, [])
   );
 
-  const openModal = ({ patient }) => {
+  const openModal = () => {
     // setSelectedPatient(patient);
+    console.log(
+      "patient.email...........................",
+      patient.email,
+      patient
+    );
     setSelectedEmail(patient.email);
     setIsModalVisible(true);
   };
@@ -172,7 +184,7 @@ const AppointmentList = ({ navigation, route }) => {
         )}
         {isHistory && (
           <SmallBUttonComponent
-            onPress={() => openModal({ patient: item })}
+            onPress={() => openModal()}
             label="Follow up"
             bgColor={Colors.commonRed}
           />

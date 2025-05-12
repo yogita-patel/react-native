@@ -81,6 +81,7 @@ const collectionName = {
   doctorSpeciality: "DoctorSpecialties",
   appointment: "AppointmentBooking",
   slots: "Slots",
+  healthTips: "HealthTips",
 };
 
 const attendanceStatus = {
@@ -106,6 +107,14 @@ const buisnessCategoryId = {
 
 const lazyLoadLimit = 10;
 
+const healthTips = [
+  "Drink at least 8 glasses of water a day.",
+  "Walk for 30 minutes daily to improve heart health.",
+  "Eat more fruits and vegetables for better immunity.",
+  "Get 7–8 hours of quality sleep every night.",
+  "Wash your hands regularly to prevent infections.",
+];
+
 export default {
   strings,
   labels,
@@ -118,4 +127,5 @@ export default {
   dayNameMap,
   buisnessCategoryId,
   appointmentStatus,
+  healthTips,
 };

@@ -25,6 +25,7 @@ import {
   pickImage,
   uploadImageFirebaseStorage,
 } from "../../Controller/Image/UploadImage";
+import HyperlinkTextComponent from "../../Components/HyperlinkTextComponent";
 
 const BuisnessAcoountScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -165,6 +166,14 @@ const BuisnessAcoountScreen = ({ navigation }) => {
                   label={"Buisness city: "}
                   value={city.cityName}
                 ></DisplayInfoField>
+                <HyperlinkTextComponent
+                  onTextPress={() =>
+                    navigation.navigate("InitialScreen", {
+                      // isFromProfile: true,
+                    })
+                  }
+                  text="Login as Citizen"
+                />
               </View>
             )}
             <LoaderComponent show={isLoading} />
@@ -195,8 +204,8 @@ const BuisnessAcoountScreen = ({ navigation }) => {
               label="Edit"
             />
             <ButtonComponent
-              onButtonPress={deletAccount}
-              label="Delete Account"
+              onButtonPress={() => setShowLogoutDialog(true)}
+              label="Logout"
               bgColor={Colors.commonRed}
             />
           </View>

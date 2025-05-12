@@ -173,8 +173,8 @@ const HospitalAccountScreen = ({ navigation }) => {
                 label="Edit"
               />
               <ButtonComponent
-                onButtonPress={() => console.log("log")}
-                label="Delete Account"
+                onButtonPress={() => setShowLogoutDialog(true)}
+                label="Logout"
                 bgColor={Colors.commonRed}
               />
             </View>
