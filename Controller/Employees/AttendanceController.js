@@ -110,6 +110,7 @@ export const getAttendanceList = async ({
     var searchFName;
     var attendanceList;
     const filterData = [
+      { field: "buisnessID", operator: "==", value: user.businessID },
       { field: "attendanceDate", operator: ">=", value: startDate },
       { field: "attendanceDate", operator: "<=", value: endDate },
     ];

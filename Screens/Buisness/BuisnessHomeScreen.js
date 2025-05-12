@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
 import MaterialIconComponent from "../../Components/MaterialIconComponent";
 import DashboardCard from "../../Components/DashboardCard";
 import LoaderComponent from "../../Components/LoaderComponent";
@@ -11,6 +11,7 @@ import {
 } from "../../Controller/Buisness/DashboardController";
 import { getLocalUser } from "../../Controller/global";
 import Constants from "../../Constants/Strings";
+import { useFocusEffect } from "@react-navigation/native";
 
 const BuisnessHomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,13 @@ const BuisnessHomeScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     fetchData();
   }, [navigation, employeeCount, alertCount]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      return () => {};
+    }, [])
+  );
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Overview</Text>

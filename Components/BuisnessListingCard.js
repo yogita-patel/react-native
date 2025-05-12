@@ -9,6 +9,7 @@ const BuisnessListingCard = ({ item, onCardPress, type = null }) => {
       <Text style={styles.label}>
         {type ? item.businessTypeName : item.hospitalTypeName}
       </Text>
+      <Text style={styles.label}>{item.buisnessAddress}</Text>
       <Text style={styles.label}>{item.cityName}</Text>
       <Text style={styles.label}>{item.buisnessContact}</Text>
       {/* <Text style={styles.specialities}>

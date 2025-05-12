@@ -114,6 +114,7 @@ const EmployeeListScreen = ({ navigation }) => {
       console.log("Error: EmployeeListScreen.js deleteEmployee:", e);
     } finally {
       setIsLoadingDialog(false);
+      setShowConDialog(false);
     }
   };
 

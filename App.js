@@ -42,7 +42,7 @@ export default function App() {
         const currentUser = await getLocalUser();
         if (!currentUser) {
           setIninitalRoute("Login");
-        } else if (currentUser.businessID) {
+        } else if (currentUser.businessID || currentUser.buisnessID) {
           setIninitalRoute("BuisnessDashboard");
         } else if (currentUser.hospitalID) {
           setIninitalRoute("HospitalDashboard");

@@ -5,7 +5,12 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import ImageContainerComponenet from "../../Components/ImageContainerComponenet";
 import styles from "../../Styles/CommonStyle";
 import DisplayInfoField from "../../Components/DisplayInfoField";
@@ -26,6 +31,7 @@ import {
   uploadImageFirebaseStorage,
 } from "../../Controller/Image/UploadImage";
 import HyperlinkTextComponent from "../../Components/HyperlinkTextComponent";
+import { useFocusEffect } from "@react-navigation/native";
 
 const BuisnessAcoountScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,6 +84,13 @@ const BuisnessAcoountScreen = ({ navigation }) => {
   useEffect(() => {
     getBuisnessInfo();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getBuisnessInfo();
+      return () => {};
+    }, [])
+  );
 
   const deletAccount = async () => {
     try {

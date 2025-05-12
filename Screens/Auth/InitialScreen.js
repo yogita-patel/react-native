@@ -30,7 +30,9 @@ const InitialScreen = ({ navigation, route }) => {
         LoaderComponent({ show: true });
         const user = await getLocalUser();
         console.log("isLogin = ", user);
-        setFname(user.fullName);
+        if (user) {
+          setFname(user.fullName);
+        }
       } catch (e) {
         console.error("Failed to  getUser:", e);
       } finally {

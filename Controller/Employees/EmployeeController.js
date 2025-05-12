@@ -60,6 +60,7 @@ export const addEmployee = async ({ values, buisnessID }) => {
         bID = buisnessID;
       } else {
         roleofEmployeeInuserTable = Constants.usersRole.employee;
+        bID = null;
       }
       userDoc = await addUserID({
         docRef: DocRef,

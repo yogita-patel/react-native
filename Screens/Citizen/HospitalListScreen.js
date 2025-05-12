@@ -20,10 +20,12 @@ const HospitalListScreen = ({ navigation }) => {
     let cId;
     if (!cityID) {
       const user = await getLocalUser();
-      console.log("buissnessID-----", user.cityID);
+      console.log("cityID-----", user.cityID);
       cId = user.cityID;
+      setCityId(user.cityID);
     } else {
       cId = cityID;
+      console.log("cityID-----", cityID);
     }
     setLoading(true);
     try {
@@ -59,9 +61,9 @@ const HospitalListScreen = ({ navigation }) => {
 
   const handleCityValue = (item) => {
     setCityId(item.value);
-    console.log("city");
+    console.log("city----------", item.value);
     console.log(item.value);
-    getHospital({ cityID: cityId });
+    getHospital({ cityID: item.value });
   };
   return (
     <View>
@@ -76,15 +78,10 @@ const HospitalListScreen = ({ navigation }) => {
           valueField="ID"
           maxHeight={1000}
           onSelectItem={(item) => handleCityValue(item)}
-          noData={
-            !countryId
-              ? "Please select country"
-              : "No city found for this country"
-          }
           selectedValue={cityId}
-          setSelectedValue={() => setCityId()}
-          //   conditionLabel={"countryID"}
-          //   conditionValue={countryId}
+          setSelectedValue={(val) => setCityId(val)}
+          // conditionLabel={"countryID"}
+          // conditionValue={countryId}
         />
       </View>
       <FlatList
@@ -108,6 +105,7 @@ const HospitalListScreen = ({ navigation }) => {
           loading ? <ActivityIndicator size="small" /> : null
         }
       />
+      {/* <View></View> */}
     </View>
   );
 };
