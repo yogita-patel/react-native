@@ -19,7 +19,9 @@ import {
   isTodayOrFuture,
   getStatusColor,
 } from "../../Controller/global";
-const AppointmentList = () => {
+import EmailModel from "../../Components/EmailModel";
+import { sendEmail } from "../../Controller/Hospital/FollowupCOntroller";
+const AppointmentList = ({ navigation, route }) => {
   const [appointments, setAppointments] = useState([]);
   const [lastDoc, setLastDoc] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,26 +30,49 @@ const AppointmentList = () => {
   const [showConfDialog, setShowConDialog] = useState(false);
   const [cancelAppointmentID, setCancelAppointmentId] = useState(null);
   const [slotID, setSlotID] = useState(null);
-
-  // useEffect(() => {
-
-  //   getAppointment();
-  // }, []);
+  const routeData = useState(route.params);
+  const [isHistory, setHisHistory] = useState(false);
+  const [patient, setPatient] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedEmail, setSelectedEmail] = useState("");
+  useEffect(() => {
+    try {
+      console.log("routeData-------------------", routeData);
+      if (routeData && routeData[0].isHistory) {
+        setHisHistory(true);
+        console.log("-------------------------isHistory", isHistory);
+        setPatient(routeData[0].patient);
+        getAppointment();
+      }
+    } catch (e) {
+      console.log("Error in AppointmentList.js useEffect");
+    } finally {
+    }
+  }, [routeData, isHistory]);
   const getAppointment = async () => {
     if (loading || !hasMore) return;
 
     try {
       setLoading(true);
-      const user = await getLocalUser();
+      let userId;
+      console.log("-------------------------isHistory2", isHistory);
+      if (isHistory) {
+        userId = patient.userID;
+      } else {
+        const user = await getLocalUser();
+        userId = user.userID;
+      }
+
       // console.log("buissnessID-----", user.userID);
-      if (user.userID) {
+      if (userId) {
         const {
           list: appointment,
           hasMore: more,
           lastDoc: newLastDoc,
         } = await getUsersAppointment({
           lastDoc: lastDoc,
-          userID: user.userID,
+          userID: userId,
+          isHistory: isHistory,
         });
         setAppointments(appointment);
         setLastDoc(newLastDoc);
@@ -104,6 +129,20 @@ const AppointmentList = () => {
     }, [])
   );
 
+  const openModal = ({ patient }) => {
+    // setSelectedPatient(patient);
+    setSelectedEmail(patient.email);
+    setIsModalVisible(true);
+  };
+  // const closeModel = () => {
+  //   // setSelectedPatient(patient);
+  //   setModalVisible(false);
+  // };
+  const handleSendEmail = async ({ to, subject, message }) => {
+    setIsModalVisible(false);
+    sendEmail({ message: message, subject: subject, to: to });
+    console.log("Sending email to", to, subject, message);
+  };
   const renderItem = ({ item }) => {
     const canCancel =
       isTodayOrFuture(item.date) &&
@@ -131,6 +170,13 @@ const AppointmentList = () => {
             bgColor={Colors.commonRed}
           />
         )}
+        {isHistory && (
+          <SmallBUttonComponent
+            onPress={() => openModal({ patient: item })}
+            label="Follow up"
+            bgColor={Colors.commonRed}
+          />
+        )}
       </View>
     );
   };
@@ -148,7 +194,13 @@ const AppointmentList = () => {
           loading ? <ActivityIndicator size="small" /> : null
         }
       />
-      <LoaderComponent show={isLoader} />
+      <EmailModel
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onSend={handleSendEmail}
+        defaultEmail={selectedEmail}
+      />
+      {/* <LoaderComponent show={isLoader} /> */}
       <ConfrimationDialog
         visible={showConfDialog}
         title="Cancel"

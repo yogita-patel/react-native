@@ -27,6 +27,7 @@ import ManageMedicalStaffShifts from "./Screens/Hospital/ManageMedicalStaffShift
 import MedicalStaffSchedule from "./Screens/Hospital/MedicalStaffSchedule";
 import DoctorListScreen from "./Screens/Citizen/DoctorListScreen";
 import BookAppointmentScreen from "./Screens/Citizen/BookAppointmentScreen";
+import AppointmentList from "./Screens/Citizen/AppointmentList";
 
 const Stack = createNativeStackNavigator();
 
@@ -108,6 +109,7 @@ export default function App() {
           component={HospitalDashboard}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="Create Buisness"
           component={CreateBuisness}
@@ -184,6 +186,11 @@ export default function App() {
             title: route.params?.title || "Doctor Availability",
           })}
           // options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AppointmentList"
+          component={AppointmentList}
+          options={{ headerShown: true, title: "History" }}
         />
       </Stack.Navigator>
       <Toast />

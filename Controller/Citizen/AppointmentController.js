@@ -117,15 +117,26 @@ export const bookAnAppointment = async ({
   }
 };
 
-export const getUsersAppointment = async ({ userID, lastDoc }) => {
+export const getUsersAppointment = async ({
+  userID,
+  lastDoc,
+  isHistory = false,
+}) => {
   try {
     console.log("userID---------", userID, lastDoc);
-
+    let filterData = [{ field: "patientId", operator: "==", value: userID }];
+    if (isHistory) {
+      filterData.push({
+        field: "status",
+        operator: "==",
+        value: Constants.appointmentStatus.completed,
+      });
+    }
     const appointmentLit = await fetchList({
       lastDoc,
       collectionName: Constants.collectionName.appointment,
       isDeleteFalse: true,
-      filters: [{ field: "patientId", operator: "==", value: userID }],
+      filters: filterData,
     });
 
     console.log("appointmentList--------------------", appointmentLit);
