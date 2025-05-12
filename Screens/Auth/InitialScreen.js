@@ -14,11 +14,14 @@ const InitialScreen = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(false);
   const routeData = useState(route.params);
   const [isPersoalProfile, setIsPersonalProfile] = useState(false);
+  const [isFromBuisness, setIsFromBuisness] = useState(false);
 
   useLayoutEffect(() => {
     if (routeData && routeData[0]) {
       console.log("is route data---------", routeData);
-      setIsPersonalProfile(routeData[0].isFromProfile);
+      if (routeData && routeData[0].isFromProfile)
+        setIsPersonalProfile(routeData[0].isFromProfile);
+      if (routeData && routeData[0].isFromBuisness) setIsFromBuisness(true);
     }
   }, [navigation]);
   useEffect(() => {
@@ -59,23 +62,27 @@ const InitialScreen = ({ navigation, route }) => {
           {userFname ? "Welcome " + userFname : "Welcome "}
         </Text>
       )}
-      <IntroButtonComponent
-        iconName={"business"}
-        onPress={() =>
-          navigation.navigate("Create Buisness", { title: "Create Buisness" })
-        }
-        title={"Create a business"}
-      />
-      <IntroButtonComponent
-        iconName={"local-hospital"}
-        onPress={() =>
-          navigation.navigate("Create Buisness", {
-            isHospital: true,
-            title: "Create Hospital",
-          })
-        }
-        title={"Create a hospital"}
-      />
+      {!isFromBuisness && (
+        <IntroButtonComponent
+          iconName={"business"}
+          onPress={() =>
+            navigation.navigate("Create Buisness", { title: "Create Buisness" })
+          }
+          title={"Create a business"}
+        />
+      )}
+      {!isFromBuisness && (
+        <IntroButtonComponent
+          iconName={"local-hospital"}
+          onPress={() =>
+            navigation.navigate("Create Buisness", {
+              isHospital: true,
+              title: "Create Hospital",
+            })
+          }
+          title={"Create a hospital"}
+        />
+      )}
       {isPersoalProfile ? (
         <IntroButtonComponent
           iconName={"arrow-back"}
@@ -89,6 +96,13 @@ const InitialScreen = ({ navigation, route }) => {
           title={"Book an appointment"}
         />
       )}
+      {isFromBuisness ? (
+        <IntroButtonComponent
+          iconName={"arrow-back"}
+          onPress={() => navigation.goBack()}
+          title={"Back"}
+        />
+      ) : null}
       <ConfrimationDialog
         visible={showDialog}
         title="Logout"

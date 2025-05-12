@@ -169,7 +169,7 @@ const BuisnessAcoountScreen = ({ navigation }) => {
                 <HyperlinkTextComponent
                   onTextPress={() =>
                     navigation.navigate("InitialScreen", {
-                      // isFromProfile: true,
+                      isFromBuisness: true,
                     })
                   }
                   text="Login as Citizen"
