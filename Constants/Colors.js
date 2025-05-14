@@ -1,3 +1,5 @@
+//commonly used colors in app
+
 export default {
   primary: "#01a3a4",
   secondary: "#ff5733",

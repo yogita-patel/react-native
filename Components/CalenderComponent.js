@@ -3,6 +3,7 @@ import React from "react";
 import { Calendar } from "react-native-calendars";
 import Colors from "../Constants/Colors";
 
+//common calender
 const CalenderComponent = ({
   markedDates = {},
   selectedDate = "",

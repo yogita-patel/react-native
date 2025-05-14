@@ -5,6 +5,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+//---------------------- pick image from gallery ---------------------------
 export const pickImage = async () => {
   try {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -21,6 +22,7 @@ export const pickImage = async () => {
   }
 };
 
+//------------------------ upload image to firebase storage----------------
 export const uploadImageFirebaseStorage = async ({
   imageUrl,
   imagePath = null,

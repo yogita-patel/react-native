@@ -4,6 +4,7 @@ import Colors from "../Constants/Colors";
 import MaterialIconComponent from "./MaterialIconComponent";
 import { MaterialIcons } from "@expo/vector-icons";
 
+//common dashboard card
 const DashboardCard = ({ iconName, size = 30, label, value, onCardPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onCardPress}>

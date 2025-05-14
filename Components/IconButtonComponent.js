@@ -3,6 +3,7 @@ import React from "react";
 import Colors from "../Constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 
+//icon button
 const IconButtonComponent = ({ onIconPress, iconName }) => {
   return (
     <TouchableOpacity style={{ marginRight: 15 }} onPress={onIconPress}>

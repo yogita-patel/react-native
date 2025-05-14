@@ -169,7 +169,7 @@ const CreateMedicalStaff = ({ navigation, route }) => {
                     setSelectedValue={(val) => setFieldValue("staffRole", val)}
                   />
                 </View>
-                <View style={{ zIndex: 2000, position: "relative" }}>
+                <View style={{ zIndex: 3000, position: "relative" }}>
                   <DropDownComponent
                     collectionName={"DoctorSpecialties"}
                     labelField="SpecialityType"

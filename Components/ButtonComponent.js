@@ -3,6 +3,7 @@ import React from "react";
 import styles from "../Styles/CommonStyle";
 import Colors from "../Constants/Colors";
 
+//common button
 const ButtonComponent = ({
   label = "",
   onButtonPress,

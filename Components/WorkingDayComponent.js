@@ -6,6 +6,7 @@ import styles from "../Styles/CommonStyle";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+//working day check box component
 const WorkingDayComponent = ({
   onChange,
   error = null,

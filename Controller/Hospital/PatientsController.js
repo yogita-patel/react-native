@@ -8,6 +8,8 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
+
+//------------------- get patients-----------------------
 export const getPatients = async ({ hospitalId }) => {
   try {
     const q = query(

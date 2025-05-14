@@ -16,6 +16,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { fetchList } from "../FetchAPIs/coomonFetch";
 import { useReducer } from "react";
 
+//-------------------- get doctors available time slots -------------------------------
 export const getTimeSlotsByDoc = async ({ doctorId, selectedDate }) => {
   try {
     // const filterData = [
@@ -63,6 +64,7 @@ export const getTimeSlotsByDoc = async ({ doctorId, selectedDate }) => {
   }
 };
 
+//------------------------------ book an appointment with doctor --------------------------------
 export const bookAnAppointment = async ({
   slotId,
   doctorId,
@@ -117,6 +119,7 @@ export const bookAnAppointment = async ({
   }
 };
 
+//---------------------------- get users appointment by ID ----------------------------------
 export const getUsersAppointment = async ({
   userID,
   lastDoc,
@@ -189,6 +192,7 @@ export const getUsersAppointment = async ({
   }
 };
 
+//------------------- change appointment status to cancel------------------------
 export const cancelAppointment = async ({ appointmentId, slotId }) => {
   try {
     const appointmentRef = doc(
@@ -232,6 +236,7 @@ export const cancelAppointment = async ({ appointmentId, slotId }) => {
   }
 };
 
+//--------------------- get all appointments-------------------------
 export const getAllAppointment = async ({
   hospitalID,
   lastDoc,
@@ -340,6 +345,7 @@ export const getAllAppointment = async ({
   }
 };
 
+//---------------------- change appointment status to completed-------------------
 export const completeAppointment = async ({ appointmentId }) => {
   try {
     const appointmentRef = doc(

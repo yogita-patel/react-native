@@ -10,7 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 
-// common function for edit data
+//========================= common function for edit data ========================
 export const addUserID = async ({
   docRef,
   EditData,
@@ -28,6 +28,7 @@ export const addUserID = async ({
   }
 };
 
+//-------------------------- update by providing specific condition dynamically---------------------
 export const updateByCondition = async ({
   collectionName,
   filterData = [],

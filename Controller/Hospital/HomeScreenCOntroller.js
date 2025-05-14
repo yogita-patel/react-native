@@ -9,6 +9,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+
+//----------------------- get medical staff count--------------------
 export const getTotalMedicalStaff = async ({ hospitalID }) => {
   try {
     // const user = await getLocalUser();
@@ -28,6 +30,7 @@ export const getTotalMedicalStaff = async ({ hospitalID }) => {
   }
 };
 
+//----------------------------- get todays appointment count----------------------
 export const getTOdaysAppointmentCount = async ({ hospitalID }) => {
   try {
     const todayDate = moment().format("YYYY-MM-DD"); // or use your date format

@@ -6,6 +6,7 @@ import SmallBUttonComponent from "./SmallButtonComponent";
 import MaterialIconComponent from "./MaterialIconComponent";
 import Colors from "../Constants/Colors";
 
+//medical staff card
 const MedicalStaffCard = ({
   name,
   email,

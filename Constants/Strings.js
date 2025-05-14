@@ -1,3 +1,4 @@
+//static strings
 const strings = {
   appName: "BethelCity",
   emailPlaceholder: "Enter E-mail",

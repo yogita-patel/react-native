@@ -7,6 +7,8 @@ import { fetchByCondition } from "../FetchAPIs/coomonFetch";
 import AlertModel from "../../Model/AlertModel";
 import { AddData } from "../AddAPIs/CommonAddAPI";
 import { showToast } from "../../Components/ToastComponent";
+
+//-------------------------- gererate payroll for given time period -------------------------------
 export const GeneratePayroll = async ({
   lastDoc,
   searchText = null,
@@ -105,6 +107,7 @@ export const GeneratePayroll = async ({
         alertType: Constants.alertType.buisnessAlert,
       });
       console.log("alert data--------------", alertData.toJson());
+      //----------------gerated payroll notification stors in firebase collection ------------------------------
       const bdocRef = await AddData({
         collectionName: Constants.collectionName.buisnessAlert,
         modelName: alertData.toJson(),

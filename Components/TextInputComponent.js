@@ -1,7 +1,7 @@
 import { Text, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import styles from "../Styles/CommonStyle";
-
+//common text input
 const TextInputComponent = ({
   placeholder,
   value,

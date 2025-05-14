@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
+//Alert screen card
 const AlertCard = ({
   title = "notification",
   date = "5 may 2025",
@@ -17,13 +18,14 @@ const AlertCard = ({
   );
 };
 
+//style for alert card
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     padding: 16,
     marginBottom: 12,
     borderRadius: 8,
-    elevation: 3, // for iOS shadow
+    elevation: 3,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

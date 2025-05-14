@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../Constants/Colors";
 import styles from "../Styles/CommonStyle";
 
+//pasword text input with icon
 const PasswordInputComponent = ({
   value,
   onChangeText,

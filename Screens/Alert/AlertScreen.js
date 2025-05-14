@@ -28,6 +28,7 @@ const AlertScreen = ({ navigation, route }) => {
       } = await getAlert({ lastDoc: lastDoc, type: type });
       console.log("New Notification------", newNotification);
       setNotification(newNotification);
+      //set data for lazy loading------------
       setHasMore(moew);
       setLastDoc(newLastDoc);
       await markAsReadNotification({ type: type });

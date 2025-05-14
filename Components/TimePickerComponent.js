@@ -5,6 +5,7 @@ import Colors from "../Constants/Colors";
 import styles from "../Styles/CommonStyle";
 import { formatDate, formatTime } from "../Controller/global";
 
+//common date and time picker
 const TimePickerComponent = ({
   label,
   onConfirm,

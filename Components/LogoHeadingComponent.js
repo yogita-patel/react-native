@@ -4,6 +4,7 @@ import images from "../Constants/ImagePath";
 import styles from "../Styles/CommonStyle";
 import Constants from "../Constants/Strings";
 
+//app logo with heading
 const LogoHeadingComponent = () => {
   return (
     <View style={styles.logoContainer}>

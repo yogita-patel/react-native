@@ -30,6 +30,7 @@ const CreateBuisness = ({ route, navigation }) => {
   const [isForEdit, setIsForEdit] = useState(false);
   // const data = useState(route.params); //used for hospital data if i use buisnessdata it'll create confusion
 
+  //------------------ calls for category selection -----------------
   const handelCategorySelection = (item, setFieldValue) => {
     try {
       setcategoryID(item.value);
@@ -38,6 +39,8 @@ const CreateBuisness = ({ route, navigation }) => {
       console.log("Error: RegisterScreen.js handelCategorySelection:", e);
     }
   };
+
+  //--------------------- calls for city selection -----------------------
   const handelCitySelection = (item, setFieldValue) => {
     try {
       // setCityId(item.value);
@@ -241,39 +244,45 @@ const CreateBuisness = ({ route, navigation }) => {
                       keyboardType="numeric"
                     />
                     {isForHospital && (
-                      <DropDownComponent
-                        collectionName={Constants.collectionName.hospitalType}
-                        label="Hospital Type"
-                        placeholder="Select hospital type"
-                        labelField="hospitalTypeName"
-                        valueField="hospitalTypeID"
-                        maxHeight={1000}
-                        // isDisable={isForHospital}
-                        onSelectItem={(item) =>
-                          setFieldValue("htype", item.value)
-                        }
-                        error={errors.htype}
-                        touched={errors.htype}
-                        selectedValue={values.htype}
-                        setSelectedValue={(val) => setFieldValue("htype", val)}
-                      />
+                      <View style={{ zIndex: 3000, position: "relative" }}>
+                        <DropDownComponent
+                          collectionName={Constants.collectionName.hospitalType}
+                          label="Hospital Type"
+                          placeholder="Select hospital type"
+                          labelField="hospitalTypeName"
+                          valueField="hospitalTypeID"
+                          maxHeight={1000}
+                          // isDisable={isForHospital}
+                          onSelectItem={(item) =>
+                            setFieldValue("htype", item.value)
+                          }
+                          error={errors.htype}
+                          touched={errors.htype}
+                          selectedValue={values.htype}
+                          setSelectedValue={(val) =>
+                            setFieldValue("htype", val)
+                          }
+                        />
+                      </View>
                     )}
-                    <DropDownComponent
-                      collectionName={"BuisnessCategory"}
-                      label="Category"
-                      placeholder="Select your Category"
-                      labelField="catName"
-                      valueField="catID"
-                      maxHeight={1000}
-                      isDisable={isForHospital}
-                      onSelectItem={(item) =>
-                        handelCategorySelection(item, setFieldValue)
-                      }
-                      error={errors.bcat}
-                      touched={errors.bcat}
-                      selectedValue={values.bcat}
-                      setSelectedValue={(val) => setFieldValue("bcat", val)}
-                    />
+                    <View style={{ zIndex: 2000, position: "relative" }}>
+                      <DropDownComponent
+                        collectionName={"BuisnessCategory"}
+                        label="Category"
+                        placeholder="Select your Category"
+                        labelField="catName"
+                        valueField="catID"
+                        maxHeight={1000}
+                        isDisable={isForHospital}
+                        onSelectItem={(item) =>
+                          handelCategorySelection(item, setFieldValue)
+                        }
+                        error={errors.bcat}
+                        touched={errors.bcat}
+                        selectedValue={values.bcat}
+                        setSelectedValue={(val) => setFieldValue("bcat", val)}
+                      />
+                    </View>
                   </View>
                   <LoaderComponent show={isLoading} />
                   <ButtonComponent

@@ -3,6 +3,7 @@ import React from "react";
 import styles from "../Styles/CommonStyle";
 import DividerComponent from "./DividerComponent";
 
+//display information text display
 const DisplayInfoField = ({ label, value }) => {
   return (
     <View style={[styles.content, styles.commonMarging10]}>

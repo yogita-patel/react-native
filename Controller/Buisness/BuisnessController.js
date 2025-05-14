@@ -11,12 +11,14 @@ import { removeData } from "../../LocalStorage/RemoveLocalData";
 import { UserModel } from "../../Model/UserModel";
 import { storeData } from "../../LocalStorage/SaveDataLocally";
 import { fetchList } from "../FetchAPIs/coomonFetch";
+//-------------------------- create buisness-------------------------
 export const onCreateBuisness = async ({ values, isHospital = false }) => {
   try {
     console.log("onCreateBuisness:", values);
-    const user = await getLocalUser();
+    const user = await getLocalUser(); //get user from local
     const userID = user.userID;
     console.log("userId", userID);
+    //fill data to model
     var buisness = new BusinessModel({
       buisnessName: values.bname,
       buisnessAddress: values.baddress,
@@ -28,6 +30,7 @@ export const onCreateBuisness = async ({ values, isHospital = false }) => {
       hospitalType: isHospital ? values.htype : null,
     });
     console.log("buisness", buisness);
+    //add data to buisness collection
     const bdocRef = await AddData({
       collectionName: Constants.collectionName.buisness,
       modelName: buisness.toJson(),
@@ -43,6 +46,7 @@ export const onCreateBuisness = async ({ values, isHospital = false }) => {
     var userDoc;
     if (docc) {
       const businessDocRef = doc(db, "Users", user.userID);
+      //add ids to table by using updatedoc
       userDoc = await addUserID({
         docRef: businessDocRef,
         EditData: isHospital
@@ -96,7 +100,7 @@ export const onCreateBuisness = async ({ values, isHospital = false }) => {
   }
 };
 
-// get buisness
+//-------------------------- get buisness-----------------------------
 export const getBuisness = async () => {
   try {
     console.log("getBuisness:");
@@ -115,7 +119,7 @@ export const getBuisness = async () => {
     return false;
   }
 };
-
+//--------------------------------- get buisness category---------------------------
 export const getBuisnessCategory = async ({ catID }) => {
   try {
     console.log("categoryID", catID);
@@ -132,6 +136,7 @@ export const getBuisnessCategory = async ({ catID }) => {
   }
 };
 
+//--------------------------- get buisness city ------------------------------------
 export const getBuisnessCity = async ({ cityID }) => {
   try {
     const city = await fetchByCondition({
@@ -147,6 +152,7 @@ export const getBuisnessCity = async ({ cityID }) => {
   }
 };
 
+//------------------------ update buisness ----------------------------------------
 export const updateBuisness = async ({
   values,
   businessId,
@@ -194,6 +200,7 @@ export const updateBuisness = async ({
   }
 };
 
+//------------------------------ update profile image------------------------------
 export const updateProfileImage = async ({ image }) => {
   try {
     console.log("updateProfileImage:");
@@ -224,6 +231,7 @@ export const updateProfileImage = async ({ image }) => {
   }
 };
 
+//------------------------------------ get hospital type-------------------------------
 export const getHospitaltype = async ({ type }) => {
   try {
     console.log("getHospitaltype", type);
@@ -240,12 +248,14 @@ export const getHospitaltype = async ({ type }) => {
   }
 };
 
+//------------------------------------ get all buisness category's data--------------------------
 export const getAllBuisnessOrHospital = async ({
   isHospital,
   cityId,
   lastDoc,
 }) => {
   try {
+    //get all city hospital type and buisness type
     const [citySnap, hospitalTypeSnap, businessTypeSnap] = await Promise.all([
       getDocs(collection(db, Constants.collectionName.city)),
       getDocs(collection(db, Constants.collectionName.hospitalType)),

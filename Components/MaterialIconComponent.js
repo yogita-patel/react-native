@@ -3,6 +3,7 @@ import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import Colors from "../Constants/Colors";
 
+//icon component
 const MaterialIconComponent = ({
   iconName,
   size = 22,

@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Colors from "../Constants/Colors";
-
+//email model sheet component
 const EmailModel = ({ visible, onClose, onSend, defaultEmail = "" }) => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");

@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import styles from "../Styles/CommonStyle";
 import Colors from "../Constants/Colors";
 
+//small button
 const SmallBUttonComponent = ({
   onPress,
   label = "",

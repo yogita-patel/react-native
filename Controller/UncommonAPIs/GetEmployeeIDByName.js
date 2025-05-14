@@ -14,6 +14,7 @@ import {
   limit,
 } from "firebase/firestore";
 import Constants from "../../Constants/Strings";
+//------------------------ search user and get data------------------------------
 export const SearchUserIDs = async ({ collectionName, condition, value }) => {
   try {
     const que = query(

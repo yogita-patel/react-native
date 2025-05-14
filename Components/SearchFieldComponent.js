@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import styles from "../Styles/CommonStyle";
 
+//earch text field
 const SearchFieldComponent = ({
   value,
   onChangeText,

@@ -1,6 +1,7 @@
 import { getData } from "../LocalStorage/GetLocalData";
 import Colors from "../Constants/Colors";
 
+//------------------ get locally stored user -----------------
 export const getLocalUser = async () => {
   try {
     // console.log("getLocalUser:");
@@ -13,6 +14,7 @@ export const getLocalUser = async () => {
   }
 };
 
+//--------------------- common date formate ------------------
 export const formatDate = (date) => {
   if (!date) return "";
   return new Date(date).toLocaleDateString("en-GB", {
@@ -22,6 +24,7 @@ export const formatDate = (date) => {
   });
 };
 
+//-----------------common time formate --------------------
 export const formatTime = (date) => {
   if (!date) return "";
   return new Date(date).toLocaleTimeString("en-US", {
@@ -30,6 +33,7 @@ export const formatTime = (date) => {
   });
 };
 
+//--------------------- get month name by number --------------------------
 export const getMonth = (monthNumber) => {
   // const monthNumber = selectedDate.month;
   const date = new Date(2023, monthNumber - 1);
@@ -41,6 +45,7 @@ function iosDateToFirestoreTimestamp(iosDateString) {
   return firestore.Timestamp.fromDate(new Date(iosDateString));
 }
 
+//----------------formate date string ------------------
 export const dateStringFormat = (dateString) => {
   if (!dateString) return "";
 
@@ -55,6 +60,8 @@ export const dateStringFormat = (dateString) => {
   });
 };
 
+//------------------------ check date is greater than today ------------------------------
+
 export const isTodayOrFuture = (dateString) => {
   if (!dateString) return false;
 
@@ -68,6 +75,7 @@ export const isTodayOrFuture = (dateString) => {
   return date > today;
 };
 
+//----------------------------- check date is today ---------------------
 export const isToday = (dateString) => {
   if (!dateString) return false;
 
@@ -81,6 +89,7 @@ export const isToday = (dateString) => {
   return date == today;
 };
 
+//------------------- get today date as string -----------------------------------
 export const getTodayDateString = ({ today }) => {
   // const today = date?: new Date();
   const yyyy = today.getFullYear();
@@ -89,6 +98,7 @@ export const getTodayDateString = ({ today }) => {
   return `${yyyy}-${mm}-${dd}`;
 };
 
+//-------------------- appointment status color change dynamically----------------------
 export const getStatusColor = (status) => {
   switch (status) {
     case "Booked":
@@ -102,6 +112,7 @@ export const getStatusColor = (status) => {
   }
 };
 
+//---------------------- get greeting of the day-------------------
 export const getGreeting = () => {
   const hour = new Date().getHours();
   if (hour < 12) return "Good Morning";

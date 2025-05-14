@@ -8,6 +8,8 @@ import { db } from "../../Firebase/Firebase";
 import { fetchByCondition, fetchList } from "../FetchAPIs/coomonFetch";
 import { getLocalUser } from "../global";
 import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
+
+//----------------------------- Add employee ---------------------------
 export const addEmployee = async ({ values, buisnessID }) => {
   try {
     console.log("onCreateBuisness:", values);
@@ -91,6 +93,7 @@ export const addEmployee = async ({ values, buisnessID }) => {
   }
 };
 
+//------------------------------- get employee list ------------------------------
 export const getEmployeeList = async ({
   lastDoc,
   searchText = null,
@@ -167,6 +170,7 @@ export const getEmployeeList = async ({
   }
 };
 
+//---------------------------------- delete employee data ---------------------------------
 export const deleteEmployeeData = async ({ employee }) => {
   try {
     const empDocRef = doc(
@@ -221,6 +225,7 @@ export const deleteEmployeeData = async ({ employee }) => {
   }
 };
 
+//----------------------------- update employee data -----------------------------------
 export const updateEmployeeData = async ({
   employeeData,
   buisnessID,

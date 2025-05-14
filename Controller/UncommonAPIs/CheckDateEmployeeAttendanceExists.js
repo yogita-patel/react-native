@@ -8,7 +8,7 @@ import {
 
 import { db } from "../../Firebase/Firebase";
 import Strings from "../../Constants/Strings";
-
+//--------------------------- check employee attendace -------------------
 export const checkAttendance = async ({ employeeID, attendanceDate }) => {
   try {
     //   const querySnapshot = await getDocs(collection(db, Strings.collectionName.attendance));

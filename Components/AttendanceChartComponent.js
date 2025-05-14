@@ -5,6 +5,7 @@ import Colors from "../Constants/Colors";
 
 const screenWidth = Dimensions.get("window").width;
 
+//emplyee performance chart
 const AttendanceChartComponent = ({ performance }) => {
   const data = {
     labels: ["Attendance"],

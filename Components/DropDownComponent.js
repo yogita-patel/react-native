@@ -8,6 +8,7 @@ import {
   fetchByCondition,
 } from "../Controller/FetchAPIs/coomonFetch";
 
+//common dropdown
 const DropDownComponent = ({
   collectionName,
   labelField = "label",

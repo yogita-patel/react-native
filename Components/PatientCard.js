@@ -7,6 +7,7 @@ import MaterialIconComponent from "./MaterialIconComponent";
 import Colors from "../Constants/Colors";
 import images from "../Constants/ImagePath";
 
+//patient list card
 const PatientCard = ({ item, onHistory }) => {
   const IconLabelComponent = ({ iconName, label }) => {
     return (

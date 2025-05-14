@@ -29,6 +29,7 @@ const SmallDateTimepicker = ({
     onConfirm && onConfirm(date);
   };
 
+  //display hide picker on tap
   const handleVisibility = (date) => {
     console.log("tap on picker---------");
     setPickerVisible(true);

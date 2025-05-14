@@ -1,4 +1,6 @@
 import { Linking, Alert } from "react-native";
+
+//-------------------- send follow up email-------------------------
 export const sendEmail = ({ to, subject, message }) => {
   const emailUrl = `mailto:${to}?subject=${encodeURIComponent(
     subject

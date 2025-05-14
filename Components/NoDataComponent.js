@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-
+//empty list component
 const NoDataComponent = () => {
   return (
     <View style={{ padding: 20, alignItems: "center" }}>

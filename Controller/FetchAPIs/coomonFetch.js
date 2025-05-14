@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import Constants from "../../Constants/Strings";
 
-// common function for fetch data
+//-------------------------- common function for fetch data -----------------------------
 export const fetchData = async (collectionName) => {
   try {
     const querySnapshot = await getDocs(collection(db, collectionName));
@@ -30,6 +30,7 @@ export const fetchData = async (collectionName) => {
   }
 };
 
+//----------------------- fetch data by providing one condition only----------------------
 export const fetchByCondition = async ({
   collectionName,
   condition,
@@ -64,6 +65,7 @@ export const fetchByCondition = async ({
   }
 };
 
+//----------------------------- fetch data by lazy laoding ---------------------------
 export const fetchList = async ({
   collectionName,
   lastDoc,
@@ -133,6 +135,7 @@ export const fetchDataByDoc = async ({ collectionName, IDs }) => {
   }
 };
 
+//-------------------- get record count for given collection -----------------
 export const getRecordCount = async ({ collectionName, fieldName, value }) => {
   try {
     console.log("getRecordCount", value);
@@ -150,6 +153,7 @@ export const getRecordCount = async ({ collectionName, fieldName, value }) => {
   }
 };
 
+//--------------------- fetch data by daynamic multiple condition------------------
 export const fetchUsingMultipleCondition = async ({
   collectionName,
   conditions = [],

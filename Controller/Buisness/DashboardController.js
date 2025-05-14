@@ -9,11 +9,13 @@ import {
 } from "../FetchAPIs/coomonFetch";
 import { GetAttendanceByEmployee } from "../UncommonAPIs/GetAttendanceByMonthYear";
 
+//-------------------- get employee count -----------------------------------
 export const getTotalEmployee = async () => {
   try {
     const user = await getLocalUser();
     const buisnessID = user.businessID;
     // console.log("BuisnessID======", user);
+    //------------call comon method from get count from firebase-------------
     const employeeCount = await getRecordCount({
       collectionName: Constants.collectionName.employee,
       fieldName: "businessID",
@@ -28,6 +30,7 @@ export const getTotalEmployee = async () => {
   }
 };
 
+//------------------- get buinsess alert count---------------------------
 export const getAlertCount = async () => {
   try {
     const user = await getLocalUser();
@@ -51,6 +54,7 @@ export const getAlertCount = async () => {
   }
 };
 
+//-------------------------------- get current month average attendance of employees------------------------
 export const calCulateAvgAttendance = async () => {
   try {
     const user = await getLocalUser();
@@ -103,6 +107,7 @@ export const calCulateAvgAttendance = async () => {
   }
 };
 
+//--------------------- calculate current month revenue ------------------------------
 export const calculateRevenue = async () => {
   try {
     const user = await getLocalUser();

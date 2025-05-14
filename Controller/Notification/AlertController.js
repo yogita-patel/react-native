@@ -6,6 +6,7 @@ import { getLocalUser } from "../global";
 import { addUserID } from "../UpdateAPIs/CommonUpdate";
 import { updateByCondition } from "../UpdateAPIs/CommonUpdate";
 
+//------------------------- get all buisness alert----------------------------
 export const getAlert = async ({ lastDoc, type }) => {
   try {
     let buisnessId;
@@ -33,6 +34,8 @@ export const getAlert = async ({ lastDoc, type }) => {
     return null;
   }
 };
+
+//-----------------------read alert status------------------------
 
 export const markAsReadNotification = async ({ type }) => {
   try {

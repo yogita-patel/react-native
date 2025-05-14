@@ -22,6 +22,7 @@ import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
 import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
 import { MedicalStaffShift } from "../../Model/MedicalStaffShiftModel";
 
+//------------------------- add medical staff--------------------------------
 export const addMedicalStaff = async ({ values }) => {
   try {
     console.log("addMedicalStaff:", values);
@@ -85,6 +86,7 @@ export const addMedicalStaff = async ({ values }) => {
   }
 };
 
+//------------------------- get medical staff list -------------------------------
 export const getMedicalStaffList = async ({
   lastDoc = null,
   searchText = null,
@@ -164,6 +166,7 @@ export const getMedicalStaffList = async ({
   }
 };
 
+//----------------------- update medical staff ---------------------
 export const updateMedicalStaffData = async ({
   medicalStaffData,
   medicalStaffID,
@@ -210,6 +213,7 @@ export const updateMedicalStaffData = async ({
   }
 };
 
+//-------------------------- delete medical staff
 export const deleteMedicalStaffData = async ({ medicalStaff }) => {
   try {
     const empDocRef = doc(
@@ -268,6 +272,7 @@ export const deleteMedicalStaffData = async ({ medicalStaff }) => {
   }
 };
 
+//--------------------- gererate time slots automatically--------------------
 function generateSlots(shift, shiftID) {
   const {
     staffID: doctorId,
@@ -313,6 +318,7 @@ function generateSlots(shift, shiftID) {
   return slots;
 }
 
+//------------------------ save gerated time slots to firebase -------------------
 async function saveSlotsToFirestore(slots) {
   const batchPromises = slots.map((slot) =>
     addDoc(collection(db, Constants.collectionName.slots), slot)
@@ -320,6 +326,7 @@ async function saveSlotsToFirestore(slots) {
   await Promise.all(batchPromises);
 }
 
+//-------------------- assign medicalstaff shift ----------------------------
 export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
   try {
     const user = await getLocalUser();
@@ -423,6 +430,7 @@ export const asignMedicalStaffShift = async ({ values, staffId, userId }) => {
 //   }
 // };
 
+//------------------------------ get medical staff shedual-------------
 export const fetchStaffShcedule = async ({ staffId }) => {
   try {
     const data = await fetchUsingMultipleCondition({
@@ -436,9 +444,10 @@ export const fetchStaffShcedule = async ({ staffId }) => {
     return false;
   }
 };
+//----------------------------- get medical staff shcadule by date ----------------------
 export const fetchStaffShceduleByDate = async ({ staffId, selDate }) => {
   try {
-    const dateObj = new Date(selDate); // JS Date
+    const dateObj = new Date(selDate);
     const startOfDay = Timestamp.fromDate(
       new Date(dateObj.setHours(0, 0, 0, 0))
     );

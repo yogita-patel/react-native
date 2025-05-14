@@ -30,13 +30,15 @@ const RegisterScreen = ({ navigation }) => {
     console.log(roleId);
     setFieldValue("role", item.value);
   };
-
+  //------------------ calls on country selection -------------------
   const handelCountrySelection = (item, setFieldValue) => {
     setContryId(item.value);
     console.log("country");
     console.log(countryId);
     setFieldValue("country", item.value);
   };
+
+  //-------------------- calls on city selection -----------------------
   const handelCitySelection = (item, setFieldValue) => {
     try {
       setCityId(item.value);
@@ -96,43 +98,47 @@ const RegisterScreen = ({ navigation }) => {
                   onBlur={handleBlur("fullname")}
                   error={touched.fullname && errors.fullname}
                 />
-                <DropDownComponent
-                  collectionName={"Countries"}
-                  label="Country"
-                  placeholder="Select your country"
-                  labelField="name"
-                  valueField="countryID"
-                  maxHeight={1000}
-                  onSelectItem={(item) =>
-                    handelCountrySelection(item, setFieldValue)
-                  }
-                  error={errors.country}
-                  touched={errors.country}
-                  selectedValue={values.country}
-                  setSelectedValue={(val) => setFieldValue("country", val)}
-                />
-                <DropDownComponent
-                  collectionName={"Cities"}
-                  label="City"
-                  placeholder="Select your city"
-                  labelField="cityName"
-                  valueField="ID"
-                  maxHeight={1000}
-                  onSelectItem={(item) =>
-                    handelCitySelection(item, setFieldValue)
-                  }
-                  noData={
-                    !countryId
-                      ? "Please select country"
-                      : "No city found for this country"
-                  }
-                  error={errors.city}
-                  touched={errors.city}
-                  selectedValue={values.city}
-                  setSelectedValue={(val) => setFieldValue("city", val)}
-                  conditionLabel={"countryID"}
-                  conditionValue={countryId}
-                />
+                <View style={{ zIndex: 3000, position: "relative" }}>
+                  <DropDownComponent
+                    collectionName={"Countries"}
+                    label="Country"
+                    placeholder="Select your country"
+                    labelField="name"
+                    valueField="countryID"
+                    maxHeight={1000}
+                    onSelectItem={(item) =>
+                      handelCountrySelection(item, setFieldValue)
+                    }
+                    error={errors.country}
+                    touched={errors.country}
+                    selectedValue={values.country}
+                    setSelectedValue={(val) => setFieldValue("country", val)}
+                  />
+                </View>
+                <View style={{ zIndex: 1000, position: "relative" }}>
+                  <DropDownComponent
+                    collectionName={"Cities"}
+                    label="City"
+                    placeholder="Select your city"
+                    labelField="cityName"
+                    valueField="ID"
+                    maxHeight={1000}
+                    onSelectItem={(item) =>
+                      handelCitySelection(item, setFieldValue)
+                    }
+                    noData={
+                      !countryId
+                        ? "Please select country"
+                        : "No city found for this country"
+                    }
+                    error={errors.city}
+                    touched={errors.city}
+                    selectedValue={values.city}
+                    setSelectedValue={(val) => setFieldValue("city", val)}
+                    conditionLabel={"countryID"}
+                    conditionValue={countryId}
+                  />
+                </View>
                 <TextInputComponent
                   placeholder={Constants.strings.emailPlaceholder}
                   label={Constants.labels.emailLabel}

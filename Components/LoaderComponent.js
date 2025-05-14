@@ -3,6 +3,7 @@ import React from "react";
 import Colors from "../Constants/Colors";
 import styles from "../Styles/CommonStyle";
 
+//common card loader
 const LoaderComponent = ({ show = false }) => {
   return (
     <Modal transparent animationType="none" visible={show}>

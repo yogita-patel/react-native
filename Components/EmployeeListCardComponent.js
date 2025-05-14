@@ -9,6 +9,7 @@ import DividerComponent from "./DividerComponent";
 import ButtonComponent from "./ButtonComponent";
 import SmallBUttonComponent from "./SmallButtonComponent";
 
+//employee lit card component
 const EmployeeListCardComponent = ({
   name,
   email,

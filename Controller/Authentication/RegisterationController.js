@@ -13,6 +13,7 @@ import {
 import { auth } from "../../Firebase/Firebase";
 import { getLocalUser } from "../global";
 
+//--------------------- firebase registration ------------------------------------
 const registerEmailPassword = async ({ email, password }) => {
   try {
     var userAuthId;
@@ -60,6 +61,7 @@ const registerEmailPassword = async ({ email, password }) => {
   }
 };
 
+//-------------------------------- register user---------------------------------------
 const Registration = async ({ values }) => {
   try {
     const authId = await registerEmailPassword({
@@ -76,6 +78,7 @@ const Registration = async ({ values }) => {
         countryID: values.country,
         roleID: Constants.usersRole.citizen,
       });
+      //--------------- register user in firebase collection----------------------
       const userDocRef = await AddData({
         collectionName: "Users",
         modelName: user.toJson(),
@@ -116,7 +119,7 @@ const Registration = async ({ values }) => {
 
     //stored user object in local storage
     await storeData({ key: "user", value: user.toJson() });
-    const user2 = await getLocalUser();
+    const user2 = await getLocalUser(); //get user data from local storage
     console.log("isLogin = ", user2);
     return true;
   } catch (e) {
@@ -129,9 +132,9 @@ const Registration = async ({ values }) => {
 export const onRegister = async (values) => {
   try {
     console.log("register:", values);
-    LoaderComponent({ show: true });
+
     const isRegister = await Registration({ values: values });
-    LoaderComponent({ show: false });
+
     if (isRegister) {
       showToast({
         description: "Registration successful!",

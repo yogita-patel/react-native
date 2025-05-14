@@ -7,6 +7,8 @@ import { db } from "../../Firebase/Firebase";
 import { removeData } from "../../LocalStorage/RemoveLocalData";
 import { storeData } from "../../LocalStorage/SaveDataLocally";
 import { showToast } from "../../Components/ToastComponent";
+
+//------------------ get country---------------------
 export const getCountryByID = async ({ countryID }) => {
   try {
     const country = await fetchByCondition({
@@ -22,6 +24,7 @@ export const getCountryByID = async ({ countryID }) => {
   }
 };
 
+//---------------------- update user profile pic ---------------------------
 export const updateUserProfile = async ({ image, userid, currentUSer }) => {
   try {
     console.log("updateUserProfile:");

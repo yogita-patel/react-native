@@ -5,6 +5,7 @@ import Colors from "../Constants/Colors";
 import MaterialIconComponent from "./MaterialIconComponent";
 import DividerComponent from "./DividerComponent";
 import Strings from "../Constants/Strings";
+//employee attendance card
 const AttendanceCardComponent = ({
   employeeName = "Employee Name",
   checkIn = "09:00AM",

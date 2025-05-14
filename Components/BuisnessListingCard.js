@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "../Styles/CommonStyle";
 
+//buinsesss and hospital liting card
 const BuisnessListingCard = ({ item, onCardPress, type = null }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onCardPress}>

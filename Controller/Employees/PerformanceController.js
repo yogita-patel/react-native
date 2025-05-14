@@ -2,6 +2,7 @@ import Constants from "../../Constants/Strings";
 import { fetchUsingMultipleCondition } from "../FetchAPIs/coomonFetch";
 import { getFirestore, Timestamp } from "firebase/firestore";
 
+//---------------------- get employess working days for performance measure---------------------------
 export const getWorkingDaysInRange = ({ startDate, endDate, workingDays }) => {
   try {
     let currentDate = new Date(startDate);
@@ -25,6 +26,7 @@ export const getWorkingDaysInRange = ({ startDate, endDate, workingDays }) => {
   }
 };
 
+//------------------------- get attendance details ----------------------------
 export const getAttendanceData = async ({ employeeId, start, end }) => {
   try {
     var attendanceList = [];
@@ -73,6 +75,7 @@ export const getAttendanceData = async ({ employeeId, start, end }) => {
   }
 };
 
+//------------------------- calculate employee performance by attendance---------------------------------
 export const calculateAttendancePerformance = async ({
   attendanceData,
   workingDates,

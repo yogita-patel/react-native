@@ -1,5 +1,6 @@
 import Toast from "react-native-toast-message";
 
+//common toast message
 export const showToast = ({
   message = "",
   description = "",

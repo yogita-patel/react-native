@@ -4,7 +4,7 @@ import { fetchByCondition } from "../FetchAPIs/coomonFetch";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { storeData } from "../../LocalStorage/SaveDataLocally";
 import { showToast } from "../../Components/ToastComponent";
-
+//------------------------------ check is user logged in------------------------------
 export const isUserLoggedIn = async () => {
   try {
     console.log("checklogin:");
@@ -17,9 +17,11 @@ export const isUserLoggedIn = async () => {
   }
 };
 
+//------------------------------ login user method------------------------------
 export const loginUser = async (values) => {
   try {
     console.log("loginUser:", values);
+    //firebase in build method for login
     const userCredential = await signInWithEmailAndPassword(
       auth,
       values.email,
@@ -36,6 +38,7 @@ export const loginUser = async (values) => {
     // const user = await getData({ key: "user" });
     console.log("user:", user);
     // return !user ? false : true;
+    //store user in local storage
     await storeData({ key: "user", value: user[0] });
     return user[0];
   } catch (error) {
@@ -47,21 +50,18 @@ export const loginUser = async (values) => {
         type: "error",
       });
     } else if (error.code === "auth/wrong-password") {
-      // Alert.alert('Wrong Password', 'Please enter the correct password.');
       showToast({
         description: "Please enter the correct password.",
         message: "Error",
         type: "error",
       });
     } else if (error.code === "auth/invalid-credential") {
-      // Alert.alert('Invalid Email', 'Please enter a valid email address.');
       showToast({
         description: "Please enter a valid credential.",
         message: "Error",
         type: "error",
       });
     } else {
-      // Alert.alert('Login Error', 'Something went wrong. Please try again.');
       showToast({
         description: "Something went wrong. Please try again.",
         message: "Error",

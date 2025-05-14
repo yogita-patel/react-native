@@ -48,6 +48,7 @@ const BuisnessAcoountScreen = ({ navigation }) => {
     getBuisnessInfo();
   }, [navigation]);
 
+  //-------------------- calls for logout --------------------
   const onLogout = async () => {
     try {
       setShowLogoutDialog(false);
@@ -63,6 +64,7 @@ const BuisnessAcoountScreen = ({ navigation }) => {
     }
   };
 
+  //--------------------- get buisness information ----------------
   const getBuisnessInfo = async () => {
     try {
       setIsLoading(true);
@@ -102,6 +104,7 @@ const BuisnessAcoountScreen = ({ navigation }) => {
     }
   };
 
+  //------------ calls for edit profile ----------------
   const buisnessProfilePicEdit = async () => {
     try {
       setIsLoading(true);

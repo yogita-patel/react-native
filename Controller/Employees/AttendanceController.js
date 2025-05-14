@@ -11,6 +11,7 @@ import { fetchByCondition, fetchList } from "../FetchAPIs/coomonFetch";
 import { SearchUserIDs } from "../UncommonAPIs/GetEmployeeIDByName";
 import { fetchDataByDoc } from "../FetchAPIs/coomonFetch";
 
+//---------------------------- mark employee's attendance---------------------------
 export const markAttendance = async ({
   values,
   employeeID,
@@ -98,6 +99,7 @@ export const markAttendance = async ({
   }
 };
 
+//--------------------------- get employee's attendance list ------------------------
 export const getAttendanceList = async ({
   lastDoc = null,
   searchText = null,

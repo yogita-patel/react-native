@@ -5,6 +5,7 @@ import Colors from "../Constants/Colors";
 import MaterialIconComponent from "./MaterialIconComponent";
 import DividerComponent from "./DividerComponent";
 import Strings from "../Constants/Strings";
+//employee payroll card component
 const PayrollCardComponent = ({
   employeeName = "Employee Name",
   month = "May",

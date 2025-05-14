@@ -6,6 +6,7 @@ import SmallBUttonComponent from "./SmallButtonComponent";
 import MaterialIconComponent from "./MaterialIconComponent";
 import Colors from "../Constants/Colors";
 import images from "../Constants/ImagePath";
+//Doctor listing card component
 const DoctorListCard = ({ item, onViewSlots }) => {
   const IconLabelComponent = ({ iconName, label }) => {
     return (

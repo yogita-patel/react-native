@@ -28,6 +28,8 @@ const years = Array.from(
   (_, i) => new Date().getFullYear() - 10 + i
 );
 
+//month and year picker component
+
 const MonthYearPickerModal = ({ visible, onCancel, onConfirm }) => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
